@@ -1,0 +1,128 @@
+/* ==========================================================================
+   Widget: Button
+   ========================================================================== */
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  outline: none;
+}
+
+.app-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Sizes */
+.app-btn--sm {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.75rem;
+  height: 32px;
+}
+
+.app-btn--md {
+  font-size: 0.9375rem;
+  padding: 0.5rem 1.125rem;
+  height: 40px;
+}
+
+.app-btn--lg {
+  font-size: 1.0625rem;
+  padding: 0.75rem 1.5rem;
+  height: 48px;
+}
+
+.app-btn--icon-only {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.app-btn--icon-only.app-btn--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.app-btn--full {
+  width: 100%;
+}
+
+/* Variants */
+.app-btn--primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+.app-btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-light);
+}
+.app-btn--primary:active:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.app-btn--secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-contrast);
+}
+.app-btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-light);
+}
+
+.app-btn--outline {
+  background-color: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+.app-btn--outline:hover:not(:disabled) {
+  background-color: var(--color-surface-variant);
+  border-color: var(--color-text-secondary);
+}
+
+.app-btn--text {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+.app-btn--text:hover:not(:disabled) {
+  background-color: var(--color-surface-variant);
+}
+
+.app-btn--danger {
+  background-color: var(--color-error);
+  color: var(--color-error-contrast);
+}
+.app-btn--danger:hover:not(:disabled) {
+  background-color: #b71c1c;
+}
+
+/* Disabled State */
+.app-btn:disabled,
+.app-btn--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loading Spinner */
+.app-btn__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: app-spin 0.6s linear infinite;
+}
+
+@keyframes app-spin {
+  to { transform: rotate(360deg); }
+}

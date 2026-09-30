@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Widget: Dialog (Modal)
+   ========================================================================== */
+
+.app-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9990;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  padding: 1rem;
+}
+
+.app-dialog-overlay--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.app-dialog {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform var(--transition-normal);
+}
+
+.app-dialog-overlay--visible .app-dialog {
+  transform: scale(1);
+}
+
+.app-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-dialog__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.app-dialog__close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.app-dialog__close:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-variant);
+}
+
+.app-dialog__body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.app-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--color-surface-variant);
+  border-top: 1px solid var(--color-border);
+}
