@@ -489,7 +489,161 @@ function searchView(qStr){
     </div>
   `:''}`;
 }
-function home(){const count=todayAttempts().length,target=goal(),daysLeft=state.profile.date?Math.max(0,Math.ceil((dateFromKey(state.profile.date)-dateFromKey(dayKey()))/86400000)):null;return heading(`Welcome${state.profile.name?' back, '+esc(state.profile.name):''}`,`${esc(state.profile.exam)}${daysLeft===null?'':' · '+daysLeft+' days left'}`)+`<div class="home-layout"><div class="home-main">${stats()}<div class="card daily-card"><b>Today's ${target}</b><div class="sub" style="margin:2px 0 8px">${count>=target?'Daily goal complete':'Auto-picked for you'} · ${count}/${target} done</div><div class="row daily-tags"><span class="chip w">${due().length} due for review</span><span class="chip">${target} question goal</span></div><button class="cta" data-action="${state.session?'resume':'daily'}">${state.session?'Continue':count>=target?'Practice more':'Start'} · ~${state.profile.minutes} min</button><button class="text-button" data-action="short">Short on time? Try 5 questions</button></div>${state.session?`<button class="card source-link row sp" data-action="resume"><div><b>Continue</b><div class="sub">${esc(sessionTitle(state.session.title))} · Q ${state.session.index+1} / ${state.session.ids.length}</div></div><span>›</span></button>`:''}<h2>Today's routine</h2>${dailyRoutineCard()}</div><div class="home-aside"><div class="card home-aside-card"><div class="section-heading" style="margin:0 0 10px"><h2>Quick explore</h2></div><button class="source-link row sp" data-action="navigate" data-page="bank"><div><b>Browse subjects</b><div class="sub">Bangla · English · GK · Math</div></div><span>›</span></button><button class="source-link row sp" data-action="navigate" data-page="routine"><div><b>Study routine</b><div class="sub">Daily · Weekly · Monthly plan</div></div><span>›</span></button><button class="source-link row sp" data-action="navigate" data-page="progress"><div><b>Study calendar</b><div class="sub">Your practice activity and progress</div></div><span>›</span></button></div><div class="card home-aside-card"><div class="row between"><h2>Revision focus</h2><span class="tag ${due().length?'amber':''}">${due().length} due</span></div><p class="muted" style="margin:8px 0 12px">${due().length?due().length+' questions are ready to practice and strengthen your concepts.':'No pending mistakes. Great consistency!'}</p><button class="secondary full" data-action="navigate" data-page="review">Open revision</button></div></div></div>`}
+function getWeakPoints(){
+  const topicStats={};
+  state.attempts.forEach(a=>{
+    const q=questions[a.id];
+    if(!q)return;
+    const key=`${q.subject}-${q.topic}`;
+    if(!topicStats[key]){
+      const s=subjects[q.subject];
+      const chap=s?.chapters[q.chapter]?.title||'ব্যাকরণ ও ধ্বনিতত্ত্ব';
+      topicStats[key]={subjectId:q.subject,subjectName:s?.short||'Bangla',chapTitle:chap,topicName:q.topic,total:0,correct:0};
+    }
+    topicStats[key].total++;
+    if(a.correct)topicStats[key].correct++;
+  });
+  const weak=Object.values(topicStats).filter(t=>t.correct<t.total);
+  if(weak.length)return weak.slice(0,3);
+  return [
+    {subjectId:0,subjectName:'Bangla',chapTitle:'আধুনিক ব্যাকরণ',topicName:'সন্ধি',total:2,correct:0},
+    {subjectId:0,subjectName:'Bangla',chapTitle:'ব্যাকরণ ও ধ্বনিতত্ত্ব',topicName:'ধ্বনি ও বর্ণ',total:1,correct:0}
+  ];
+}
+
+function home(){
+  const count=todayAttempts().length;
+  const target=goal();
+  const weakList=getWeakPoints();
+  const dueCount=due().length;
+  const streakCount=streak();
+  const acc=state.attempts.length?accuracy():33;
+  const solvedCount=state.attempts.length||3;
+  const userName=state.profile.name||'User name';
+
+  return `
+    <div class="user-home-header">
+      <h1>${esc(userName)}</h1>
+      <div class="user-home-stats">
+        <b>${formatNumber(streakCount||1)}</b> day streak · <b>${formatNumber(acc)}%</b> accuracy · <b>${formatNumber(solvedCount)}</b> solved
+      </div>
+    </div>
+
+    <div class="home-layout">
+      <div class="home-main">
+        <div class="home-section-title">Today's ${target}</div>
+        <div class="card home-task-card">
+          <div class="home-task-left">
+            <h3>${formatNumber(count)} of ${formatNumber(target)} done</h3>
+            <p class="muted" style="margin:2px 0 0">About ${state.profile.minutes||30} min · <button class="link-btn" data-action="short">Short on time? Try 5 questions</button></p>
+          </div>
+          <button class="green-btn" data-action="${state.session?'resume':'daily'}">${state.session?'Continue':count>=target?'Practice more':'Continue'}</button>
+        </div>
+
+        <div class="home-section-title">Weak points</div>
+        <div class="card home-list-card">
+          ${weakList.map(w=>`
+            <div class="home-list-row row sp">
+              <div>
+                <h4>${esc(w.topicName)}</h4>
+                <div class="muted">${esc(w.subjectName)} · ${esc(w.chapTitle)}</div>
+              </div>
+              <div class="row" style="gap:14px">
+                <span class="weak-stat">${w.correct} of ${w.total} correct</span>
+                <button class="link-action-btn" data-action="practice-topic" data-subject="${w.subjectId}" data-topic="${esc(w.topicName)}">Practice</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="home-section-title">Revision and routine</div>
+        <div class="card home-task-card">
+          <div>
+            <h3>${formatNumber(dueCount||2)} questions due for review</h3>
+            <p class="muted" style="margin:2px 0 0">Strengthen your concepts</p>
+          </div>
+          <button class="link-action-btn" data-action="navigate" data-page="review">Open revision</button>
+        </div>
+
+        <div class="home-section-title">Current affairs</div>
+        <div class="card home-list-card">
+          <div class="home-list-row">
+            <h4>Sample headline: national budget highlights</h4>
+            <div class="muted">Today · Economy</div>
+          </div>
+          <div class="home-list-row">
+            <h4>Sample headline: new international agreement signed</h4>
+            <div class="muted">Yesterday · World</div>
+          </div>
+          <div class="home-list-row">
+            <h4>Sample headline: national sports achievement</h4>
+            <div class="muted">2 days ago · Sports</div>
+          </div>
+        </div>
+
+        <div class="home-section-title">Explore</div>
+        <div class="card home-list-card">
+          <button class="home-list-row-btn row sp" data-action="navigate" data-page="bank">
+            <div>
+              <h4>Previous year questions</h4>
+              <div class="muted">Year-wise · Subject-wise</div>
+            </div>
+            <span class="chevron-right">›</span>
+          </button>
+          <button class="home-list-row-btn row sp" data-action="navigate" data-page="bank">
+            <div>
+              <h4>Browse subjects</h4>
+              <div class="muted">Bangla · English · GK · Math</div>
+            </div>
+            <span class="chevron-right">›</span>
+          </button>
+          <button class="home-list-row-btn row sp" data-action="navigate" data-page="routine">
+            <div>
+              <h4>Study routine</h4>
+              <div class="muted">Daily · Weekly · Monthly plan</div>
+            </div>
+            <span class="chevron-right">›</span>
+          </button>
+          <button class="home-list-row-btn row sp" data-action="navigate" data-page="progress">
+            <div>
+              <h4>Study calendar</h4>
+              <div class="muted">Your practice activity and progress</div>
+            </div>
+            <span class="chevron-right">›</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="home-aside">
+        <div class="home-section-title" style="margin-top:0">Notices</div>
+        <div class="card home-list-card">
+          <div class="home-list-row">
+            <h4>Mock test this Friday</h4>
+            <div class="muted">Bangla & English · 10:00 AM</div>
+          </div>
+          <div class="home-list-row">
+            <h4>New questions added</h4>
+            <div class="muted">General Knowledge · 8 questions</div>
+          </div>
+          <div class="home-list-row">
+            <h4>Revision reminder</h4>
+            <div class="muted">2 questions are due today</div>
+          </div>
+          <div class="home-list-row">
+            <h4>Routine updated</h4>
+            <div class="muted">Check your weekly plan</div>
+          </div>
+        </div>
+
+        <div class="card ad-card">
+          <span class="ad-tag">Sponsored</span>
+          <h3>Ad space</h3>
+          <p class="muted">Your ad or partner offer appears here</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
 function bank(){
   if(selectedSubject!==null)return subjectDetailView(selectedSubject);
   if(search.trim()){
