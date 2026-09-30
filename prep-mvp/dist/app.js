@@ -681,8 +681,6 @@ function practice(){
       </div>
     </div>
   </div>`;
-    </div>
-  </div>`;
 }
 function submit(choice){
   // Legacy single question submit compatibility
