@@ -240,124 +240,54 @@ function nav(){const mobileItems=[['home','⌂','Home'],['bank','☰','Study'],[
 function heading(title,subtitle){return `<div class="page-heading row sp"><div><h1>${title}</h1><div class="sub">${subtitle}</div></div></div>`}
 function stats(){return `<div class="card row stats"><div class="stat"><b>${formatNumber(streak())}</b><span class="sub">day streak</span></div><div class="stat"><b>${state.attempts.length?formatNumber(accuracy())+'%':'—'}</b><span class="sub">accuracy</span></div><div class="stat"><b>${formatNumber(state.attempts.length)}</b><span class="sub">solved</span></div></div>`}
 function subjectCard(s,i){
-  let a=state.attempts.filter(a=>questions[a.id].subject===i);
-  let seen=new Set(a.map(a=>a.id)).size;
   let total=questions.filter(q=>q.subject===i).length;
-  let acc=a.length?accuracy(a):0;
-  return `<div class="subject-card-v2">
-    <div class="subject-card-top">
-      <span class="subject-symbol-box" style="background:${s.color}">${s.symbol}</span>
-      <div class="subject-card-meta">
-        <h3>${esc(s.name)}</h3>
-        <div class="subject-stats-row">
-          <span class="tag">${formatNumber(s.chapters.length)} Chapters</span>
-          <span class="tag">${formatNumber(s.topics.length)} Topics</span>
-          <span class="tag">${formatNumber(total)} Questions</span>
-        </div>
-      </div>
-    </div>
-    <div class="bar" style="margin:2px 0"><i style="width:${total?seen/total*100:0}%"></i></div>
-    <div class="subject-meta">
-      <span>${formatNumber(seen)}/${formatNumber(total)} practiced</span>
-      <span>${a.length?acc+'% accuracy':'Not started'}</span>
-    </div>
-    <div class="subject-card-actions">
-      <button class="primary" data-action="open-subject" data-id="${i}">Explore Chapters & Topics</button>
-      <button class="secondary" data-action="practice-subject" data-id="${i}" ${!total?'disabled':''}>Practice All (${total})</button>
-    </div>
-  </div>`;
+  return `<button class="subject-card-minimal" data-action="open-subject" data-id="${i}">
+    <h3>${esc(s.name)}</h3>
+    <p>${formatNumber(s.chapters.length)} chapters · ${formatNumber(total)} questions</p>
+  </button>`;
 }
 function subjectDetailView(sIdx){
   const s=subjects[sIdx];
   if(!s)return bank();
   const subQ=questions.filter(q=>q.subject===sIdx);
-  const subAttempts=state.attempts.filter(a=>questions[a.id].subject===sIdx);
-  const seen=new Set(subAttempts.map(a=>a.id)).size;
-  const acc=subAttempts.length?accuracy(subAttempts):0;
-  return `<div class="back-btn-row">
-    <button class="back-btn" data-action="back-subjects">‹ All Subjects</button>
-    <span class="tag">${formatNumber(subQ.length)} questions available</span>
-  </div>
-  <div class="subject-hero">
-    <div class="subject-hero-top">
-      <span class="subject-hero-symbol" style="background:${s.color}">${s.symbol}</span>
-      <div class="subject-hero-info">
-        <h1>${esc(s.name)}</h1>
+  return `<div class="bank-wrap">
+    <div class="subject-nav-bar">
+      <button class="back-link" data-action="back-subjects">‹ All Subjects</button>
+    </div>
+    <div class="subject-header">
+      <div class="subject-header-info">
+        <h1 class="subject-title">${esc(s.name)}</h1>
+        <p class="subject-meta">${formatNumber(s.chapters.length)} chapters · ${formatNumber(subQ.length)} questions</p>
       </div>
+      <button class="btn-practice-all" data-action="practice-subject" data-id="${sIdx}" ${!subQ.length?'disabled':''}>Practice all</button>
     </div>
-    <div class="subject-hero-stats">
-      <div class="subject-hero-stat-item"><b>${formatNumber(s.chapters.length)}</b><span>Chapters</span></div>
-      <div class="subject-hero-stat-item"><b>${formatNumber(s.topics.length)}</b><span>Topics</span></div>
-      <div class="subject-hero-stat-item"><b>${formatNumber(seen)}/${formatNumber(subQ.length)}</b><span>Practiced</span></div>
-      <div class="subject-hero-stat-item"><b>${subAttempts.length?acc+'%':'—'}</b><span>Accuracy</span></div>
+    <div class="chapters-list">
+      ${s.chapters.map((chap,cIdx)=>chapterRow(sIdx,chap,cIdx)).join('')}
     </div>
-    <div class="subject-hero-actions">
-      <button class="primary full" data-action="practice-subject" data-id="${sIdx}" ${!subQ.length?'disabled':''}>
-        Practice Entire Subject (${formatNumber(subQ.length)} Questions)
-      </button>
-    </div>
-  </div>
-  <div class="section-heading">
-    <h2>Chapters & Topics</h2>
-  </div>
-  <div class="chapters-container">
-    ${s.chapters.map((chap,cIdx)=>chapterRow(sIdx,chap,cIdx)).join('')}
   </div>`;
 }
 function chapterRow(sIdx,chap,cIdx){
-  const key=`${sIdx}-${cIdx}`;
-  const isExpanded=openChapters[key]!==false;
   const chapQ=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx);
-  const chapAttempts=state.attempts.filter(a=>questions[a.id].subject===sIdx&&questions[a.id].chapter===cIdx);
-  const chapSeen=new Set(chapAttempts.map(a=>a.id)).size;
-  const acc=chapAttempts.length?accuracy(chapAttempts):0;
-  const isMastered=chapQ.length>0&&chapSeen===chapQ.length&&acc>=80;
-  return `<section class="chapter-panel ${isExpanded?'expanded':''}">
-    <div class="chapter-header" data-action="toggle-chapter" data-key="${key}" role="button" aria-expanded="${isExpanded}">
-      <div class="chapter-header-left">
-        <span class="chapter-num-badge">CHAPTER ${String(cIdx+1).padStart(2,'0')}</span>
-        <div class="chapter-title-wrap">
-          <h3>${esc(chap.title)}</h3>
-          <div class="sub-title">${formatNumber(chap.topics.length)} topics · ${formatNumber(chapQ.length)} questions</div>
-        </div>
+  return `<section class="chapter-card">
+    <div class="chapter-card-header">
+      <div class="chapter-card-left">
+        <div class="chapter-num">Chapter - ${String(cIdx+1).padStart(2,'0')}</div>
+        <h3 class="chapter-title">${esc(chap.title)}</h3>
+        <div class="chapter-meta">${formatNumber(chap.topics.length)} topics · ${formatNumber(chapQ.length)} questions</div>
       </div>
-      <div class="chapter-header-right">
-        <span class="status-pill ${isMastered?'mastered':chapAttempts.length?'review':'new'}">
-          ${isMastered?'✓ Mastered':chapAttempts.length?acc+'% accuracy':'Not started'}
-        </span>
-        <button class="secondary topic-btn" data-action="practice-chapter" data-subject="${sIdx}" data-chapter="${cIdx}" ${!chapQ.length?'disabled':''} title="Practice all questions from ${esc(chap.title)}">
-          Practice Chapter
-        </button>
-        <span class="chapter-toggle-btn">${isExpanded?'▲':'▼'}</span>
-      </div>
+      <button class="chapter-practice-btn" data-action="practice-chapter" data-subject="${sIdx}" data-chapter="${cIdx}" ${!chapQ.length?'disabled':''}>Practice</button>
     </div>
-    ${isExpanded?`<div class="topics-list">
+    <div class="topic-list">
       ${chap.topics.map(topic=>topicRow(sIdx,cIdx,topic)).join('')}
-    </div>`:''}
+    </div>
   </section>`;
 }
 function topicRow(sIdx,cIdx,topic){
-  const topQ=questions.filter(q=>q.subject===sIdx&&q.topic===topic.name);
-  const topAttempts=state.attempts.filter(a=>questions[a.id].subject===sIdx&&questions[a.id].topic===topic.name);
-  const topSeen=new Set(topAttempts.map(a=>a.id)).size;
-  const acc=topAttempts.length?accuracy(topAttempts):0;
-  const isMastered=topQ.length>0&&topSeen===topQ.length&&acc>=80;
-  return `<div class="topic-row">
-    <div class="topic-info">
-      <span class="topic-bullet"></span>
-      <div class="topic-details">
-        <b>${esc(topic.name)}</b>
-        <small>${formatNumber(topQ.length)} questions${topSeen?` · ${topSeen} solved`:''}</small>
-      </div>
-    </div>
-    <div class="topic-actions">
-      <span class="status-pill ${isMastered?'mastered':topAttempts.length?'review':'new'}">
-        ${isMastered?'✓ Mastered':topAttempts.length?acc+'% correct':'Ready'}
-      </span>
-      <button class="primary topic-btn" data-action="practice-topic" data-subject="${sIdx}" data-topic="${esc(topic.name)}" ${!topQ.length?'disabled':''}>
-        Practice Topic
-      </button>
-    </div>
+  const topQ=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx&&q.topic===topic.name);
+  const count=topQ.length;
+  return `<div class="topic-item" data-action="practice-topic" data-subject="${sIdx}" data-topic="${esc(topic.name)}" role="button" tabindex="0">
+    <span class="topic-name">${esc(topic.name)}</span>
+    <span class="topic-count">${formatNumber(count)} ${count===1?'question':'questions'}</span>
   </div>`;
 }
 function syllabusView(){
@@ -454,17 +384,17 @@ function home(){const count=todayAttempts().length,target=goal(),daysLeft=state.
 function bank(){
   if(selectedSubject!==null)return subjectDetailView(selectedSubject);
   if(search.trim()){
-    return heading('Question bank','Search questions, topics and chapters.')+
+    return `<div class="bank-wrap">`+heading('Question bank','Search questions, topics and chapters.')+
       `<div class="toolbar">
         <input class="search" id="search" aria-label="Search questions and topics" placeholder="Search subjects, chapters, topics..." value="${esc(search)}">
         <select id="subject-filter" aria-label="Choose a subject">
           <option value="all">All subjects</option>
           ${subjects.map((s,i)=>`<option value="${i}" ${filter==i?'selected':''}>${s.short}</option>`).join('')}
         </select>
-      </div>`+searchView(search);
+      </div>`+searchView(search)+`</div>`;
   }
   let list=subjects.map((s,i)=>({s,i})).filter(({s,i})=>(filter==='all'||+filter===i));
-  return heading('Question bank','Choose a subject to practice.')+
+  return `<div class="bank-wrap">`+heading('Question bank','Choose a subject to practice.')+
     `<div class="tabs">
       <button class="tab ${bankTab==='subjects'?'active':''}" data-action="bank-tab" data-id="subjects">By Subject</button>
       <button class="tab ${bankTab==='syllabus'?'active':''}" data-action="bank-tab" data-id="syllabus">Full Syllabus</button>
@@ -488,8 +418,7 @@ function bank(){
         <p class="muted">Mixed questions from all subjects & chapters · 10 minutes · 1 point per correct answer<br>No negative marking in this demo. Explanations appear after the test.</p>
         <button class="primary" data-action="exam">Start mock test</button>
       </div>
-    `}
-    <div class="demo-note">4 Subjects · 15 Chapters · 39 Topics</div>`;
+    `}</div>`;
 }
 function review(){let ids=reviewTab==='saved'?state.saved:reviewTab==='all'?Object.keys(state.reviews).map(Number):due();return heading('Revisit. Understand. Improve.','Build confidence with questions you missed or guessed.')+`<div class="tabs">${[['due','Due today'],['all','All mistakes'],['saved','Saved']].map(([id,label])=>`<button class="tab ${reviewTab===id?'active':''}" data-action="review-tab" data-id="${id}">${label}</button>`).join('')}</div>${ids.length?`<div class="row between" style="margin:20px 0"><p class="muted" style="margin:0">${formatNumber(ids.length)} questions</p><button class="primary" data-action="review-start">Practice all</button></div><div class="panel">${ids.map(id=>`<div class="review-row row between"><div><span class="tag">${subjects[questions[id].subject].short} · ${questions[id].topic}</span><h3 style="margin-top:9px">${questions[id].text}</h3><p>${reviewTab==='saved'?'Saved for later':state.reviews[id].due<=Date.now()?'Ready to practice':'Next review: '+new Date(state.reviews[id].due).toLocaleDateString('en-GB')}</p></div><button class="secondary" data-action="single" data-id="${id}">Practice</button></div>`).join('')}</div>`:`<div class="empty"><span style="font-size:36px;color:#89a36e">✓</span><h3>${reviewTab==='saved'?'No saved questions yet':'You are all caught up'}</h3><p>${reviewTab==='saved'?'Tap ☆ during practice to save a question.':'Questions you miss during practice will appear here.'}</p><button class="primary" data-action="daily">Start practicing</button></div>`}${state.reports.length?`<div class="section-heading"><h2>Your demo reports</h2></div><div class="panel">${state.reports.map(r=>`<div class="review-row"><b>${esc(r.type)}</b><p>${esc(r.detail||questions[r.id].text)}</p><span class="tag">Saved in this browser</span></div>`).join('')}</div>`:''}`}
 function progress(){let days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);days.push({label:d.toLocaleDateString('en-GB',{weekday:'short'}),count:state.attempts.filter(a=>a.day===dayKey(d)).length})}let max=Math.max(5,...days.map(d=>d.count));return heading('Your progress','Your effort, reflected in your own results.')+studyCalendar()+stats()+`<div class="progress-grid"><div class="panel"><h2>Practice this week</h2><p class="fine">Questions answered each day</p><div class="chart">${days.map(d=>`<div class="chart-col"><b>${formatNumber(d.count)}</b><i style="height:${d.count/max*120}px"></i><span>${d.label}</span></div>`).join('')}</div></div><div class="panel"><h2>Accuracy by subject</h2>${subjects.map((s,i)=>{let a=state.attempts.filter(a=>questions[a.id].subject===i);return `<div class="progress-topic"><div class="row between"><span>${s.short}</span><b>${a.length?formatNumber(accuracy(a))+'%':'—'}</b></div><div class="bar" style="margin-top:8px"><i style="width:${accuracy(a)}%"></i></div><span class="fine">${formatNumber(a.length)} answers${a.length<5?' · More practice needed':''}</span></div>`}).join('')}</div></div><div class="section-heading"><h2>Recent practice</h2></div>${state.attempts.length?`<div class="panel">${state.attempts.slice(-6).reverse().map(a=>`<div class="review-row row between"><div><h3>${questions[a.id].text}</h3><span class="fine">${subjects[questions[a.id].subject].short} · ${new Date(a.at).toLocaleDateString('en-GB')}</span></div><span class="tag ${a.correct?'':'amber'}">${a.correct?'Correct':a.choice===null?'Skipped':'Review again'}</span></div>`).join('')}</div>`:'<div class="empty"><h3>Your first chapter starts here</h3><p>Complete a practice session to see your results here.</p><button class="primary" data-action="daily">Start your first session</button></div>'}`}
