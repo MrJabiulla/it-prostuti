@@ -271,11 +271,13 @@ function chapterRow(sIdx,chap,cIdx){
   return `<section class="chapter-card">
     <div class="chapter-card-header">
       <div class="chapter-card-left">
-        <div class="chapter-num">Chapter - ${String(cIdx+1).padStart(2,'0')}</div>
         <h3 class="chapter-title">${esc(chap.title)}</h3>
         <div class="chapter-meta">${formatNumber(chap.topics.length)} topics · ${formatNumber(chapQ.length)} questions</div>
       </div>
-      <button class="chapter-practice-btn" data-action="practice-chapter" data-subject="${sIdx}" data-chapter="${cIdx}" ${!chapQ.length?'disabled':''}>Practice</button>
+      <div class="row-actions">
+        <button class="btn-link-study" data-action="study-chapter" data-subject="${sIdx}" data-chapter="${cIdx}" title="Study ${esc(chap.title)}">Study</button>
+        <button class="btn-link-practice" data-action="practice-chapter" data-subject="${sIdx}" data-chapter="${cIdx}" ${!chapQ.length?'disabled':''} title="Practice ${esc(chap.title)}">Practice</button>
+      </div>
     </div>
     <div class="topic-list">
       ${chap.topics.map(topic=>topicRow(sIdx,cIdx,topic)).join('')}
@@ -285,10 +287,117 @@ function chapterRow(sIdx,chap,cIdx){
 function topicRow(sIdx,cIdx,topic){
   const topQ=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx&&q.topic===topic.name);
   const count=topQ.length;
-  return `<div class="topic-item" data-action="practice-topic" data-subject="${sIdx}" data-topic="${esc(topic.name)}" role="button" tabindex="0">
-    <span class="topic-name">${esc(topic.name)}</span>
-    <span class="topic-count">${formatNumber(count)} ${count===1?'question':'questions'}</span>
+  return `<div class="topic-item">
+    <div class="topic-info">
+      <h4 class="topic-title">${esc(topic.name)}</h4>
+      <div class="topic-meta">${formatNumber(count)} ${count===1?'question':'questions'}</div>
+    </div>
+    <div class="row-actions">
+      <button class="btn-link-study" data-action="study-topic" data-subject="${sIdx}" data-chapter="${cIdx}" data-topic="${esc(topic.name)}" title="Study ${esc(topic.name)}">Study</button>
+      <button class="btn-link-practice" data-action="practice-topic" data-subject="${sIdx}" data-topic="${esc(topic.name)}" ${!count?'disabled':''} title="Practice ${esc(topic.name)}">Practice</button>
+    </div>
   </div>`;
+}
+
+const topicNotes={
+  'ধ্বনি ও বর্ণ':{
+    readTime:'3 min read',
+    summary:'বাংলা ধ্বনিতত্ত্ব ও বর্ণমালার মৌলিক নিয়মাবলী।',
+    points:[
+      {label:'ধ্বনি ও বর্ণ',desc:'বাগ্যন্ত্রের সাহায্যে উচ্চারিত অর্থপূর্ণ আওয়াজই হলো ‘ধ্বনি’। ধ্বনির দৃষ্টিগ্রাহ্য লিখিত রূপকে বলা হয় ‘বর্ণ’ (যেমন: অ, আ, ক)।'},
+      {label:'মৌলিক স্বরধ্বনি (৭টি)',desc:'বাংলা ভাষার ৭টি মৌলিক স্বরধ্বনি: অ, আ, ই, উ, এ, ও এবং অ্যা।'},
+      {label:'যৌগিক স্বরধ্বনি',desc:'বাংলায় যৌগিক স্বরধ্বনি ২৫টি, তবে বর্ণমালায় প্রতীক ২টি: ঐ (অ+ই) ও ঔ (অ+উ)।'},
+      {label:'বর্ণের সংখ্যা ও মাত্রা',desc:'মোট বর্ণ ৫০টি (স্বরবর্ণ ১১টি, ব্যঞ্জনবর্ণ ৩৯টি)। পূর্ণমাত্রা ৩২টি, অর্ধমাত্রা ৮টি এবং মাত্রাহীন ১০টি।'},
+      {label:'স্পর্শ/বর্গীয় বর্ণ',desc:'ক থেকে ম পর্যন্ত ২৫টি বর্ণ ৫টি বর্গে বিভক্ত (ক, চ, ট, ত, প বর্গে)।'}
+    ]
+  },
+  'সন্ধি':{
+    readTime:'4 min read',
+    summary:'সন্ধির প্রকারভেদ, স্বরসন্ধির প্রধান সূত্র ও ব্যতিক্রমী উদাহরণ।',
+    points:[
+      {label:'সন্ধির সংজ্ঞা',desc:'সন্নিহিত দুটি ধ্বনির মিলনকে সন্ধি বলে। দ্রুত ও সহজ উচ্চারণের সুবিধার জন্য সন্ধি ঘটে।'},
+      {label:'প্রকারভেদ',desc:'বাংলা সন্ধি ২ প্রকার (স্বর ও ব্যঞ্জন)। তৎসম (সংস্কৃত) সন্ধি ৩ প্রকার (স্বরসন্ধি, ব্যঞ্জনসন্ধি ও বিসর্গসন্ধি)।'},
+      {label:'স্বরসন্ধির প্রধান সূত্র',desc:'অ/আ + অ/আ = আ (হিম + আলয় = হিমালয়, বিদ্যা + আলয় = বিদ্যালয়)। অ/আ + ই/ঈ = এ (শুভ + ইচ্ছা = শুভেচ্ছা)। অ/আ + উ/ঊ = ও (সূর্য + উদয় = সূর্যোদয়)।'},
+      {label:'নিপাতনে সিদ্ধ সন্ধি',desc:'যেসব সন্ধি প্রচলিত ব্যাকরণগত কোনো নিয়ম মানে না: কুল + অটা = কুলটা, এক + দশ = একাদশ, পতৎ + অঞ্জলি = পতঞ্জলি, পর + পর = পরস্পর, গো + অক্ষ = গবাক্ষ।'}
+    ]
+  },
+  'ণ-ত্ব ও ষ-ত্ব বিধান':{
+    readTime:'3 min read',
+    summary:'তৎসম শব্দে মূর্ধন্য-ণ এবং মূর্ধন্য-ষ ব্যবহারের নির্ভুল নিয়ম।',
+    points:[
+      {label:'প্রয়োগক্ষেত্র',desc:'ণ-ত্ব ও ষ-ত্ব বিধান কেবল তৎসম (সংস্কৃত) শব্দেই প্রযোজ্য। তদ্ভব, দেশি বা বিদেশি শব্দে কখনো ণ বা ষ হয় না (যেমন: করন, পোস্ট, মাস্টার, জিনিস)।'},
+      {label:'ণ-ত্ব বিধানের নিয়ম',desc:'ঋ, র, ষ-এর পর মূর্ধন্য-ণ বসে (ঋণ, বর্ণ, কারণ, ভীষণ)। ট-বর্গীয় বর্ণের পূর্বে যুক্ত ব্যঞ্জনে মূর্ধন্য-ণ হয় (ঘণ্টা, কাণ্ড, লুণ্ঠন)।'},
+      {label:'ষ-ত্ব বিধানের নিয়ম',desc:'অ, আ ভিন্ন অন্য স্বরধ্বনি এবং ক ও র-এর পরে প্রত্যয়ের ‘স’ ‘ষ’ হয় (অভিষেক, বিষম, পরিষ্কার)। ট ও ঠ বর্ণের পূর্বে মূর্ধন্য-ষ হয় (কষ্ট, স্পষ্ট, বৃষ্টি)।'},
+      {label:'স্বভাবতই মূর্ধন্য-ষ',desc:'কোনো নিয়ম ছাড়াই যেসব শব্দে মূর্ধন্য-ষ ব্যবহৃত হয়: আষাঢ়, ভাষণ, উষা, পাষাণ, সরিষা, ভাষা, রোষ, কোষ ইত্যাদি।'}
+    ]
+  },
+  'শব্দের শ্রেণিবিভাগ':{
+    readTime:'3 min read',
+    summary:'উৎস, গঠন ও অর্থ অনুসারে বাংলা শব্দের বৈচিত্র্য।',
+    points:[
+      {label:'উৎস অনুসারে (৫ প্রকার)',desc:'তৎসম (চন্দ্র, সূর্য, হস্তী), অর্ধ-তৎসম (জোছনা, গিন্নি), তদ্ভব (হাত, চাঁদ), দেশি (কুলা, ডাব, ঢেঁকি), বিদেশি (টেবিল, চেয়ার, আইন)।'},
+      {label:'গঠন অনুসারে (২ প্রকার)',desc:'মৌলিক শব্দ (গোলাপ, লাল, তিন) ও সাধিত শব্দ (চাঁদমুখ, ডুবুরি, চলন্ত)।'}
+    ]
+  },
+  'পদ প্রকরণ':{
+    readTime:'3 min read',
+    summary:'বাক্যে ব্যবহৃত বিভক্তিযুক্ত পদ ও তাদের শ্রেণিবিভাগ।',
+    points:[
+      {label:'পদের সংজ্ঞা',desc:'বাক্যে ব্যবহৃত প্রত্যেকটি বিভক্তিযুক্ত শব্দ ও ধাতুকে পদ বলে। পদ প্রধানত ২ প্রকার: নামপদ ও ক্রিয়াপদ। মোট ৫ প্রকার।'},
+      {label:'ক্রিয়া বিশেষণ',desc:'যে পদ ক্রিয়া সংঘটনের ভাব, সময় বা তীব্রতা নির্দেশ করে (যেমন: ‘ধীরে ধীরে বায়ু বয়’ — ধীরে ধীরে ক্রিয়া বিশেষণ)।'}
+    ]
+  },
+  'সমাস':{
+    readTime:'4 min read',
+    summary:'পরস্পর সম্বন্ধযুক্ত একাধিক পদের একপদীকরণ পদ্ধতি।',
+    points:[
+      {label:'সমাসের অর্থ',desc:'সমাস অর্থ সংক্ষেপ, মিলন, একাধিক পদের একপদীকরণ।'},
+      {label:'প্রধান সমাস',desc:'দ্বন্দ্ব (উভয়পদ প্রধান), কর্মধারয় (পরপদ প্রধান), তৎপুরুষ (পরপদ প্রধান, বিভক্তি লোপ), বহুব্রীহি (অন্যপদ প্রধান), দ্বিগু (সংখ্যাবাচক পূর্বপদ), অব্যয়ীভাব (পূর্বপদ প্রধান)।'},
+      {label:'উপমিত বনাম উপমান',desc:'সাধারণ গুণের উল্লেখ না থাকলে উপমিত (সিংহ সদৃশ পুরুষ = সিংহপুরুষ); সাধারণ গুণের উল্লেখ থাকলে উপমান (ভ্রমরের ন্যায় কৃষ্ণ কেশ = ভ্রমরকৃষ্ণ কেশ)।'},
+      {label:'তৎপুরুষ সমাস',desc:'পূর্বপদের বিভক্তি লোপ পেয়ে যে সমাস হয় (রাজার পুত্র = রাজপুত্র — ষষ্ঠী তৎপুরুষ সমাস)।'}
+    ]
+  }
+};
+
+function openStudyTopic(sIdx,cIdx,topName){
+  const s=subjects[sIdx];
+  const chap=s?.chapters[cIdx];
+  const qList=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx&&q.topic===topName);
+  const note=topicNotes[topName];
+  const dlg=$('#study-dialog');
+  if(!dlg)return;
+  $('#study-dialog-badge').textContent='Topic Study';
+  $('#study-dialog-title').textContent=topName;
+  $('#study-dialog-meta').textContent=`${esc(s.short)} › ${esc(chap?chap.title:'')} · ${note?note.readTime:'3 min read'} · ${qList.length} questions`;
+  let bodyHtml='';
+  if(note){
+    bodyHtml=`<p class="study-summary-text">${note.summary}</p><div class="study-points-list">${note.points.map(p=>`<div class="study-point-card"><b>${p.label}</b><p>${p.desc}</p></div>`).join('')}</div>`;
+  }else{
+    bodyHtml=`<p class="study-summary-text">Key concepts and revision summary for <b>${esc(topName)}</b>.</p><div class="study-points-list">${qList.map((q,idx)=>`<div class="study-point-card"><b>Concept #${idx+1}</b><p>${q.explanation||q.text}</p></div>`).join('')}</div>`;
+  }
+  $('#study-dialog-content').innerHTML=bodyHtml;
+  $('#study-dialog-foot').innerHTML=`<button class="primary full" data-action="practice-topic-direct" data-subject="${sIdx}" data-topic="${esc(topName)}" ${!qList.length?'disabled':''}>Practice this topic (${qList.length} ${qList.length===1?'Question':'Questions'}) ➔</button>`;
+  dlg.showModal();
+}
+
+function openStudyChapter(sIdx,cIdx){
+  const s=subjects[sIdx];
+  const chap=s?.chapters[cIdx];
+  if(!chap)return;
+  const chapQ=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx);
+  const dlg=$('#study-dialog');
+  if(!dlg)return;
+  $('#study-dialog-badge').textContent='Chapter Study Guide';
+  $('#study-dialog-title').textContent=chap.title;
+  $('#study-dialog-meta').textContent=`${esc(s.name)} · ${chap.topics.length} topics · ${chapQ.length} questions`;
+  let bodyHtml=`<p class="study-summary-text">Chapter overview and essential key points for revision:</p><div class="study-points-list">${chap.topics.map(t=>{
+    const n=topicNotes[t.name];
+    const topQ=questions.filter(q=>q.subject===sIdx&&q.chapter===cIdx&&q.topic===t.name);
+    return `<div class="study-point-card"><div class="row between"><b>${esc(t.name)}</b><span class="fine">${topQ.length} questions</span></div><p>${n?n.summary:'Essential concepts and practice for '+esc(t.name)}</p></div>`;
+  }).join('')}</div>`;
+  $('#study-dialog-content').innerHTML=bodyHtml;
+  $('#study-dialog-foot').innerHTML=`<button class="primary full" data-action="practice-chapter-direct" data-subject="${sIdx}" data-chapter="${cIdx}" ${!chapQ.length?'disabled':''}>Practice entire chapter (${chapQ.length} ${chapQ.length===1?'Question':'Questions'}) ➔</button>`;
+  dlg.showModal();
 }
 function syllabusView(){
   return `<div class="section-heading">
@@ -422,18 +531,189 @@ function bank(){
 }
 function review(){let ids=reviewTab==='saved'?state.saved:reviewTab==='all'?Object.keys(state.reviews).map(Number):due();return heading('Revisit. Understand. Improve.','Build confidence with questions you missed or guessed.')+`<div class="tabs">${[['due','Due today'],['all','All mistakes'],['saved','Saved']].map(([id,label])=>`<button class="tab ${reviewTab===id?'active':''}" data-action="review-tab" data-id="${id}">${label}</button>`).join('')}</div>${ids.length?`<div class="row between" style="margin:20px 0"><p class="muted" style="margin:0">${formatNumber(ids.length)} questions</p><button class="primary" data-action="review-start">Practice all</button></div><div class="panel">${ids.map(id=>`<div class="review-row row between"><div><span class="tag">${subjects[questions[id].subject].short} · ${questions[id].topic}</span><h3 style="margin-top:9px">${questions[id].text}</h3><p>${reviewTab==='saved'?'Saved for later':state.reviews[id].due<=Date.now()?'Ready to practice':'Next review: '+new Date(state.reviews[id].due).toLocaleDateString('en-GB')}</p></div><button class="secondary" data-action="single" data-id="${id}">Practice</button></div>`).join('')}</div>`:`<div class="empty"><span style="font-size:36px;color:#89a36e">✓</span><h3>${reviewTab==='saved'?'No saved questions yet':'You are all caught up'}</h3><p>${reviewTab==='saved'?'Tap ☆ during practice to save a question.':'Questions you miss during practice will appear here.'}</p><button class="primary" data-action="daily">Start practicing</button></div>`}${state.reports.length?`<div class="section-heading"><h2>Your demo reports</h2></div><div class="panel">${state.reports.map(r=>`<div class="review-row"><b>${esc(r.type)}</b><p>${esc(r.detail||questions[r.id].text)}</p><span class="tag">Saved in this browser</span></div>`).join('')}</div>`:''}`}
 function progress(){let days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);days.push({label:d.toLocaleDateString('en-GB',{weekday:'short'}),count:state.attempts.filter(a=>a.day===dayKey(d)).length})}let max=Math.max(5,...days.map(d=>d.count));return heading('Your progress','Your effort, reflected in your own results.')+studyCalendar()+stats()+`<div class="progress-grid"><div class="panel"><h2>Practice this week</h2><p class="fine">Questions answered each day</p><div class="chart">${days.map(d=>`<div class="chart-col"><b>${formatNumber(d.count)}</b><i style="height:${d.count/max*120}px"></i><span>${d.label}</span></div>`).join('')}</div></div><div class="panel"><h2>Accuracy by subject</h2>${subjects.map((s,i)=>{let a=state.attempts.filter(a=>questions[a.id].subject===i);return `<div class="progress-topic"><div class="row between"><span>${s.short}</span><b>${a.length?formatNumber(accuracy(a))+'%':'—'}</b></div><div class="bar" style="margin-top:8px"><i style="width:${accuracy(a)}%"></i></div><span class="fine">${formatNumber(a.length)} answers${a.length<5?' · More practice needed':''}</span></div>`}).join('')}</div></div><div class="section-heading"><h2>Recent practice</h2></div>${state.attempts.length?`<div class="panel">${state.attempts.slice(-6).reverse().map(a=>`<div class="review-row row between"><div><h3>${questions[a.id].text}</h3><span class="fine">${subjects[questions[a.id].subject].short} · ${new Date(a.at).toLocaleDateString('en-GB')}</span></div><span class="tag ${a.correct?'':'amber'}">${a.correct?'Correct':a.choice===null?'Skipped':'Review again'}</span></div>`).join('')}</div>`:'<div class="empty"><h3>Your first chapter starts here</h3><p>Complete a practice session to see your results here.</p><button class="primary" data-action="daily">Start your first session</button></div>'}`}
-function start(ids,title,mode='practice'){if(state.session){toast('You have an unfinished session. Complete it before starting a new one.');navigate('practice');return}state.session={ids,title,mode,index:0,answers:[],startedAt:Date.now(),deadline:mode==='exam'?Date.now()+600000:null};selection=null;guess=false;save();navigate('practice')}
+function getAnswer(qId){
+  if(!state.session||!state.session.answers)return null;
+  const ans=state.session.answers;
+  if(Array.isArray(ans))return ans.find(a=>a.id===qId)||null;
+  return ans[qId]||null;
+}
+function answerQuestion(qId,choice){
+  const s=state.session;
+  if(!s)return;
+  if(!s.answers||Array.isArray(s.answers)){
+    s.answers=Array.isArray(s.answers)?Object.fromEntries(s.answers.map(x=>[x.id,x])):{};
+  }
+  if(s.mode!=='exam'&&s.answers[qId])return;
+  const q=questions[qId];
+  if(!q)return;
+  const a={
+    id:qId,
+    choice,
+    correct:choice===q.answer,
+    guess:false,
+    at:Date.now(),
+    day:dayKey()
+  };
+  s.answers[qId]=a;
+  if(s.mode!=='exam')record(a);
+  save();
+  render();
+}
+function start(ids,title,mode='practice'){
+  if(state.session){
+    toast('You have an unfinished session. Complete it before starting a new one.');
+    navigate('practice');
+    return;
+  }
+  state.session={
+    ids,
+    title,
+    mode,
+    index:0,
+    page:0,
+    answers:{},
+    startedAt:Date.now(),
+    deadline:mode==='exam'?Date.now()+600000:null
+  };
+  selection=null;
+  guess=false;
+  save();
+  navigate('practice');
+}
 function daily(short=false){const attempted=new Set(state.attempts.map(a=>a.id));let ids=[...new Set([...due(),...questions.filter(q=>state.profile.focus?.includes(q.subject)&&!attempted.has(q.id)).map(q=>q.id),...questions.filter(q=>!attempted.has(q.id)).map(q=>q.id),...questions.map(q=>q.id)])].slice(0,short?5:goal());start(ids,short?'5-minute practice':'Today’s practice')}
 const sessionTitle=title=>({"বাংলা ভাষা ও সাহিত্য": "Bangla Language & Literature", "গাণিতিক যুক্তি": "Mathematical Reasoning", "সাধারণ জ্ঞান": "General Knowledge", "রিভিশন": "Revision", "৫ মিনিটের ছোট অনুশীলন": "5-minute practice", "আজকের অনুশীলন": "Today’s practice", "নতুন কিছু শেখা": "Learn something new", "প্রস্তুতি মডেল টেস্ট": "Prosthuti mock test"})[title]||title;
-function practice(){let s=state.session;if(!s)return '<div class="empty"><h3>Ready to learn something new?</h3><button class="primary" data-action="daily">Start practicing</button></div>';const q=questions[s.ids[s.index]],a=s.answers[s.index],reveal=a&&s.mode!=='exam',marked=state.saved.includes(q.id);return `<div class="practice-wrap"><div class="row between practice-header"><div><button class="text-button" data-action="pause">Save & exit</button><h2 style="margin:7px 0 0">${esc(sessionTitle(s.title))}</h2></div><div class="row"><span class="tag" id="session-time">${s.mode==='exam'?'Time left':'At your own pace'}</span><button class="icon-button" data-action="bookmark" aria-label="${marked?'Remove bookmark':'Bookmark question'}" aria-pressed="${marked}">${marked?'★':'☆'}</button></div></div><div class="row between"><span class="fine">Question ${formatNumber(s.index+1)} / ${formatNumber(s.ids.length)}</span><span class="fine">${subjects[q.subject].short} · ${q.topic}</span></div><div class="bar" style="height:6px"><i style="width:${s.index/s.ids.length*100}%"></i></div><section class="question-card"><span class="chip">${s.mode==='exam'?'Mock test':'Practice'} · Demo</span><h2>${q.text}</h2><div class="options">${q.options.map((o,i)=>`<button class="option ${selection===i?'selected':''} ${reveal&&i===q.answer?'correct':''} ${reveal&&a.choice===i&&!a.correct?'wrong':''}" data-action="select" data-id="${i}" ${a?'disabled':''}><em>${'ABCD'[i]}</em><span>${o}</span>${reveal&&i===q.answer?'<span style="margin-left:auto">✓</span>':''}</button>`).join('')}</div>${reveal?`<div class="feedback ${a.correct?'':'wrong'}" role="status"><b>${a.correct?'Correct!':a.choice===null?'Let’s work through the answer.':'Good effort. Let’s understand why.'}</b><p>${q.explanation}</p></div>`:''}${!a?`<div class="question-actions"><label class="guess"><input type="checkbox" id="guess" ${guess?'checked':''}> I am guessing</label><button class="text-button" data-action="skip">Not sure / Skip</button></div>`:''}<div class="question-actions">${a?`<button class="text-button" data-action="report">Report an issue</button><button class="primary" data-action="next">${s.index===s.ids.length-1?'View results':'Next question'}</button>`:`<span class="fine">${s.mode==='exam'?'Explanations appear after the test':'Submit to see the explanation'}</span><button class="primary" data-action="submit" ${selection===null?'disabled':''}>Submit answer</button>`}</div></section></div>`}
-function submit(choice){let s=state.session;if(!s||s.answers[s.index])return;let q=questions[s.ids[s.index]],a={id:q.id,choice,correct:choice===q.answer,guess,at:Date.now(),day:dayKey()};s.answers.push(a);if(s.mode!=='exam')record(a);save();render();}
+function practice(){
+  const s=state.session;
+  if(!s)return '<div class="empty"><h3>Ready to learn something new?</h3><button class="primary" data-action="daily">Start practicing</button></div>';
+
+  const PAGE_SIZE=20;
+  const totalQuestions=s.ids.length;
+  const totalPages=Math.ceil(totalQuestions/PAGE_SIZE)||1;
+  const currentPage=Math.min(Math.max(0,Number(s.page)||0),totalPages-1);
+  s.page=currentPage;
+
+  const startIdx=currentPage*PAGE_SIZE;
+  const endIdx=Math.min(startIdx+PAGE_SIZE,totalQuestions);
+  const pageIds=s.ids.slice(startIdx,endIdx);
+
+  const answeredCount=s.ids.filter(id=>getAnswer(id)!==null).length;
+  const remainingCount=totalQuestions-answeredCount;
+
+  return `<div class="practice-wrap minimalist-practice-wrap">
+    <div class="practice-header-top">
+      <div class="row between" style="align-items:center">
+        <div>
+          <button class="back-link" data-action="pause">‹ Back</button>
+          <h2 style="margin:4px 0 0;font-size:calc(18px * var(--font-scale,1))">${esc(sessionTitle(s.title))}</h2>
+        </div>
+        ${s.mode==='exam'?'<span class="tag" id="session-time">Time left</span>':''}
+      </div>
+      ${totalPages>1?`
+        <div class="row sp pagination-top-row" style="margin-top:10px">
+          <span class="fine">Showing questions <b>${startIdx+1}–${endIdx}</b> of ${totalQuestions}</span>
+          <span class="fine">Page ${currentPage+1} of ${totalPages}</span>
+        </div>
+      `:''}
+    </div>
+
+    <div class="multi-questions-list">
+      ${pageIds.map((qId,localIdx)=>{
+        const q=questions[qId];
+        const a=getAnswer(qId);
+        const reveal=a&&s.mode!=='exam';
+
+        return `<section class="card question-card-v3" id="q-card-${q.id}">
+          <h2 class="question-title-v3">${q.text}</h2>
+
+          <div class="options-v3">
+            ${q.options.map((opt,optIdx)=>{
+              const isSelected=a&&a.choice===optIdx;
+              const isCorrect=optIdx===q.answer;
+              let stateClass='';
+              if(a){
+                if(s.mode!=='exam'){
+                  if(isCorrect)stateClass='is-correct';
+                  else if(isSelected)stateClass='is-incorrect';
+                }else{
+                  if(isSelected)stateClass='is-selected';
+                }
+              }
+              return `<button class="opt-card-v3 ${stateClass}" data-action="answer-q" data-qid="${q.id}" data-opt="${optIdx}" ${a&&s.mode!=='exam'?'disabled':''}>
+                <span class="opt-letter-v3">${'ABCD'[optIdx]}</span>
+                <span class="opt-text-v3">${esc(opt)}</span>
+              </button>`;
+            }).join('')}
+          </div>
+
+          ${reveal?`
+            <div class="question-divider-v3"></div>
+            <div class="feedback-v3">
+              <div class="feedback-status-v3 ${a.correct?'status-correct':'status-incorrect'}">
+                ${a.correct?'Correct':'Incorrect'}
+              </div>
+              <p class="feedback-text-v3">${esc(q.explanation)}</p>
+            </div>
+          `:''}
+        </section>`;
+      }).join('')}
+    </div>
+
+    ${totalPages>1?`
+      <div class="pagination-bar">
+        <button class="pagination-nav-btn" data-action="practice-page" data-page="${currentPage-1}" ${currentPage===0?'disabled':''}>‹ Previous 20</button>
+        <div class="pagination-pages-group">
+          ${Array.from({length:totalPages},(_,i)=>`
+            <button class="pagination-page-btn ${currentPage===i?'active':''}" data-action="practice-page" data-page="${i}">${i+1}</button>
+          `).join('')}
+        </div>
+        <button class="pagination-nav-btn" data-action="practice-page" data-page="${currentPage+1}" ${currentPage===totalPages-1?'disabled':''}>Next 20 ›</button>
+      </div>
+    `:''}
+
+    <div class="practice-footer-v3">
+      <div class="practice-footer-left">
+        <span class="answered-count-text"><b>${answeredCount} of ${totalQuestions} answered</b></span>
+        <span class="remaining-count-text"> · ${remainingCount} left</span>
+      </div>
+      <div class="practice-footer-right">
+        <button class="btn-save-exit" data-action="pause">Save & exit</button>
+        <button class="btn-finish-v3" data-action="finish-practice">Finish</button>
+      </div>
+    </div>
+  </div>`;
+    </div>
+  </div>`;
+}
+function submit(choice){
+  // Legacy single question submit compatibility
+  if(state.session&&state.session.ids[state.session.index]!==undefined){
+    answerQuestion(state.session.ids[state.session.index],choice);
+  }
+}
 function record(a){state.attempts.push(a);if(!a.correct||a.guess)state.reviews[a.id]={due:Date.now(),level:0};else if(state.reviews[a.id]){let level=Math.min((state.reviews[a.id].level||0)+1,4);state.reviews[a.id]={due:Date.now()+[1,3,7,21,30][level-1]*86400000,level}}}
-function finish(){let s=state.session;if(!s)return;if(s.mode==='exam'){while(s.answers.length<s.ids.length){s.answers.push({id:s.ids[s.answers.length],choice:null,correct:false,guess:false,at:Date.now(),day:dayKey()})}s.answers.forEach(record)}if(s.routineTask){state.completedTasks[s.routineTask]=true;}state.lastResult={...s,endedAt:Date.now()};state.session=null;save();navigate('result')}
+function finish(){
+  let s=state.session;
+  if(!s)return;
+  const finalAnswers=s.ids.map(id=>{
+    const a=getAnswer(id);
+    return a||{id,choice:null,correct:false,guess:false,at:Date.now(),day:dayKey()};
+  });
+  if(s.mode==='exam'){
+    finalAnswers.forEach(record);
+  }
+  if(s.routineTask){
+    state.completedTasks[s.routineTask]=true;
+  }
+  state.lastResult={...s,answers:finalAnswers,endedAt:Date.now()};
+  state.session=null;
+  save();
+  navigate('result');
+}
 function result(){const r=state.lastResult;if(!r)return '<div class="empty"><h3>No completed sessions yet</h3><button class="primary" data-action="daily">Start</button></div>';let correct=r.answers.filter(a=>a.correct).length,wrong=r.answers.filter(a=>!a.correct&&a.choice!==null).length,skip=r.answers.filter(a=>a.choice===null).length,p=Math.round(correct/r.ids.length*100);return `<div class="result"><span class="tag">${r.mode==='exam'?'Mock test':'Practice'} complete</span><h1 style="margin-top:16px">One more step forward!</h1><p class="muted">${esc(sessionTitle(r.title))} · ${formatNumber(r.ids.length)} questions</p><div class="panel"><div class="circle-progress" style="--angle:${p*3.6}deg"><div><b>${formatNumber(p)}%</b><small>Correct answers</small></div></div><div class="stats"><div><h2>${formatNumber(correct)}</h2><span class="muted">Correct</span></div><div><h2>${formatNumber(wrong)}</h2><span class="muted">Incorrect</span></div><div><h2>${formatNumber(skip)}</h2><span class="muted">Skipped</span></div></div><p class="muted">${wrong+skip?'Missed and skipped questions have been added to revision.':'Great work! Keep practicing regularly.'}</p><div class="result-actions"><a class="primary" href="#review">View revision</a><a class="secondary" href="#home">Back to today</a></div></div></div><div class="practice-wrap"><h2>Answers & explanations</h2>${r.answers.map(a=>{let q=questions[a.id];return `<div class="panel" style="margin-bottom:12px"><span class="tag ${a.correct?'':'amber'}">${a.correct?'Correct':a.choice===null?'Skipped':'Incorrect answer'}</span><h3 style="margin-top:13px">${q.text}</h3><p class="fine">Your answer: ${a.choice===null?'Not answered':q.options[a.choice]}</p><p style="margin-bottom:0">${q.explanation}</p></div>`}).join('')}</div>`}
 function render(){nav();$('#main').innerHTML=({home,bank,review,progress,routine,practice,result,settings}[page]||home)();applyPreferences();updateTimer()}
 function navigate(id){if(location.hash==='#'+id){page=id;render()}else location.hash=id;window.scrollTo({top:0,behavior:'instant'})}
 window.addEventListener('hashchange',()=>{page=location.hash.slice(1)||'home';selection=null;guess=false;render();window.scrollTo(0,0)});
-document.addEventListener('click',e=>{let b=e.target.closest('[data-action]');if(!b)return;let act=b.dataset.action,id=Number(b.dataset.id);if(act==='navigate'){if(b.dataset.page==='bank')selectedSubject=null;navigate(b.dataset.page)}else if(act==='daily')daily();else if(act==='short')daily(true);else if(act==='mixed')start(questions.filter(q=>q.subject!==0).map(q=>q.id).slice(0,6),'Learn something new');else if(act==='subject'||act==='open-subject'){selectedSubject=id;render();window.scrollTo(0,0)}else if(act==='back-subjects'){selectedSubject=null;render();window.scrollTo(0,0)}else if(act==='toggle-chapter'){const k=b.dataset.key;openChapters[k]=(openChapters[k]===false)?true:false;render()}else if(act==='practice-subject'){const ids=questions.filter(q=>q.subject===id).map(q=>q.id);if(ids.length)start(ids,subjects[id].name)}else if(act==='practice-chapter'){const sId=Number(b.dataset.subject),cId=Number(b.dataset.chapter);const ids=questions.filter(q=>q.subject===sId&&q.chapter===cId).map(q=>q.id);const t=subjects[sId].chapters[cId]?.title||'Chapter';if(ids.length)start(ids,`${subjects[sId].short}: ${t}`)}else if(act==='practice-topic'){const sId=Number(b.dataset.subject),topName=b.dataset.topic;const ids=questions.filter(q=>q.subject===sId&&q.topic===topName).map(q=>q.id);if(ids.length)start(ids,`${subjects[sId].short}: ${topName}`)}else if(act==='clear-search'){search='';render()}else if(act==='resume')navigate('practice');else if(act==='pause'){save();navigate('home');toast('Your place is saved. Pick up where you left off.')}else if(act==='review')navigate('review');else if(act==='single')start([id],'Revision');else if(act==='review-start'){let ids=reviewTab==='saved'?state.saved:reviewTab==='all'?Object.keys(state.reviews).map(Number):due();if(ids.length)start([...ids],'Revision')}else if(act==='bank-tab'){bankTab=b.dataset.id;selectedSubject=null;render()}else if(act==='review-tab'){reviewTab=b.dataset.id;render()}else if(act==='select'){selection=id;render()}else if(act==='submit'){if(selection!==null)submit(selection)}else if(act==='skip')submit(null);else if(act==='next'){if(state.session.index+1>=state.session.ids.length)finish();else{state.session.index++;selection=null;guess=false;save();render();window.scrollTo(0,0)}}else if(act==='bookmark'){let q=state.session.ids[state.session.index];state.saved=state.saved.includes(q)?state.saved.filter(x=>x!==q):[...state.saved,q];save();render();toast(state.saved.includes(q)?'Question bookmarked':'Bookmark removed')}else if(act==='exam')start(questions.map(q=>q.id),'Prosthuti mock test','exam');else if(act==='toggle-settings-sub'){settingsExpanded=!settingsExpanded;render();}else if(act==='settings-sub'){settingsTab=b.dataset.id;settingsExpanded=true;navigate('settings');}else if(act==='toggle-sidebar'){sidebarHidden=!sidebarHidden;render();}else if(act==='settings'){if(b.textContent.includes('target')||b.textContent.includes('Target'))settingsTab='plan';navigate('settings');}else if(act==='report')$('#report-dialog').showModal();else if(act==='close-report')$('#report-dialog').close()});
+document.addEventListener('click',e=>{let b=e.target.closest('[data-action]');if(!b)return;let act=b.dataset.action,id=Number(b.dataset.id);if(act==='navigate'){if(b.dataset.page==='bank')selectedSubject=null;navigate(b.dataset.page)}else if(act==='daily')daily();else if(act==='short')daily(true);else if(act==='mixed')start(questions.filter(q=>q.subject!==0).map(q=>q.id).slice(0,6),'Learn something new');else if(act==='subject'||act==='open-subject'){selectedSubject=id;render();window.scrollTo(0,0)}else if(act==='back-subjects'){selectedSubject=null;render();window.scrollTo(0,0)}else if(act==='toggle-chapter'){const k=b.dataset.key;openChapters[k]=(openChapters[k]===false)?true:false;render()}else if(act==='practice-subject'){const ids=questions.filter(q=>q.subject===id).map(q=>q.id);if(ids.length)start(ids,subjects[id].name)}else if(act==='practice-chapter'){const sId=Number(b.dataset.subject),cId=Number(b.dataset.chapter);const ids=questions.filter(q=>q.subject===sId&&q.chapter===cId).map(q=>q.id);const t=subjects[sId].chapters[cId]?.title||'Chapter';if(ids.length)start(ids,`${subjects[sId].short}: ${t}`)}else if(act==='practice-topic'){const sId=Number(b.dataset.subject),topName=b.dataset.topic;const ids=questions.filter(q=>q.subject===sId&&q.topic===topName).map(q=>q.id);if(ids.length)start(ids,`${subjects[sId].short}: ${topName}`)}else if(act==='answer-q'){answerQuestion(Number(b.dataset.qid),Number(b.dataset.opt))}else if(act==='practice-page'){if(state.session){state.session.page=Number(b.dataset.page);save();render();window.scrollTo({top:0,behavior:'smooth'});}}else if(act==='finish-practice'){finish()}else if(act==='toggle-q-bookmark'){const qId=Number(b.dataset.id);state.saved=state.saved.includes(qId)?state.saved.filter(x=>x!==qId):[...state.saved,qId];save();render();toast(state.saved.includes(qId)?'Question bookmarked':'Bookmark removed');}else if(act==='study-topic'){openStudyTopic(Number(b.dataset.subject),Number(b.dataset.chapter),b.dataset.topic)}else if(act==='study-chapter'){openStudyChapter(Number(b.dataset.subject),Number(b.dataset.chapter))}else if(act==='close-study'){$('#study-dialog').close()}else if(act==='practice-topic-direct'){$('#study-dialog').close();const sId=Number(b.dataset.subject),topName=b.dataset.topic;const ids=questions.filter(q=>q.subject===sId&&q.topic===topName).map(q=>q.id);if(ids.length)start(ids,`${subjects[sId].short}: ${topName}`)}else if(act==='practice-chapter-direct'){$('#study-dialog').close();const sId=Number(b.dataset.subject),cId=Number(b.dataset.chapter);const ids=questions.filter(q=>q.subject===sId&&q.chapter===cId).map(q=>q.id);const t=subjects[sId].chapters[cId]?.title||'Chapter';if(ids.length)start(ids,`${subjects[sId].short}: ${t}`)}else if(act==='clear-search'){search='';render()}else if(act==='resume')navigate('practice');else if(act==='pause'){save();navigate('home');toast('Your place is saved. Pick up where you left off.')}else if(act==='review')navigate('review');else if(act==='single')start([id],'Revision');else if(act==='review-start'){let ids=reviewTab==='saved'?state.saved:reviewTab==='all'?Object.keys(state.reviews).map(Number):due();if(ids.length)start([...ids],'Revision')}else if(act==='bank-tab'){bankTab=b.dataset.id;selectedSubject=null;render()}else if(act==='review-tab'){reviewTab=b.dataset.id;render()}else if(act==='select'){selection=id;render()}else if(act==='submit'){if(selection!==null)submit(selection)}else if(act==='skip')submit(null);else if(act==='next'){if(state.session.index+1>=state.session.ids.length)finish();else{state.session.index++;selection=null;guess=false;save();render();window.scrollTo(0,0)}}else if(act==='bookmark'){let q=state.session.ids[state.session.index];state.saved=state.saved.includes(q)?state.saved.filter(x=>x!==q):[...state.saved,q];save();render();toast(state.saved.includes(q)?'Question bookmarked':'Bookmark removed')}else if(act==='exam')start(questions.map(q=>q.id),'Prosthuti mock test','exam');else if(act==='toggle-settings-sub'){settingsExpanded=!settingsExpanded;render();}else if(act==='settings-sub'){settingsTab=b.dataset.id;settingsExpanded=true;navigate('settings');}else if(act==='toggle-sidebar'){sidebarHidden=!sidebarHidden;render();}else if(act==='settings'){if(b.textContent.includes('target')||b.textContent.includes('Target'))settingsTab='plan';navigate('settings');}else if(act==='report')$('#report-dialog').showModal();else if(act==='close-report')$('#report-dialog').close()});
 document.addEventListener('input',e=>{if(e.target.id==='search'){let pos=e.target.selectionStart;search=e.target.value;render();$('#search').focus();$('#search').setSelectionRange(pos,pos)}});document.addEventListener('change',e=>{if(e.target.id==='subject-filter'){filter=e.target.value;render()}if(e.target.id==='guess')guess=e.target.checked});
 $('#report-form').addEventListener('submit',e=>{e.preventDefault();if(!state.session)return;let f=new FormData(e.target);state.reports.push({id:state.session.ids[state.session.index],type:f.get('type'),detail:f.get('detail'),at:Date.now()});save();$('#report-dialog').close();e.target.reset();toast('Demo report saved in this browser')});
 function updateTimer(){let s=state.session;if(!s||s.mode!=='exam')return;let remaining=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));if(!remaining){finish();toast('Time is up. Your test has been submitted.');return}let el=$('#session-time');if(el)el.textContent=`Time left ${formatNumber(Math.floor(remaining/60))}:${formatNumber(String(remaining%60).padStart(2,'0'))}`}
