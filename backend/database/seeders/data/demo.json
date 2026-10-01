@@ -1,0 +1,2452 @@
+{
+  "subjects": [
+    {
+      "name": "Bangla Language & Literature",
+      "bengali": "বাংলা ভাষা ও সাহিত্য",
+      "short": "Bangla",
+      "symbol": "অ",
+      "color": "#eef1e8",
+      "chapters": [
+        {
+          "id": "bn-c1",
+          "title": "বাংলা ব্যাকরণ ও ধ্বনিতত্ত্ব",
+          "english": "Grammar & Phonetics",
+          "topics": [
+            {
+              "name": "ধ্বনি ও বর্ণ",
+              "english": "Phonetics & Letters"
+            },
+            {
+              "name": "সন্ধি",
+              "english": "Sandhi (Sound joining)"
+            },
+            {
+              "name": "ণ-ত্ব ও ষ-ত্ব বিধান",
+              "english": "Natwa & Shatwa Rules"
+            }
+          ]
+        },
+        {
+          "id": "bn-c2",
+          "title": "শব্দ ও পদ প্রকরণ",
+          "english": "Morphology & Parts of Speech",
+          "topics": [
+            {
+              "name": "শব্দের শ্রেণিবিভাগ",
+              "english": "Word Classifications"
+            },
+            {
+              "name": "পদ প্রকরণ",
+              "english": "Parts of Speech"
+            },
+            {
+              "name": "উপসর্গ ও অনুসর্গ",
+              "english": "Prefixes & Postpositions"
+            }
+          ]
+        },
+        {
+          "id": "bn-c3",
+          "title": "বাক্যতত্ত্ব ও সমাস",
+          "english": "Syntax & Compounds",
+          "topics": [
+            {
+              "name": "সমাস",
+              "english": "Samas (Compounds)"
+            },
+            {
+              "name": "কারক ও বিভক্তি",
+              "english": "Case & Inflection"
+            },
+            {
+              "name": "বাগধারা ও বাক্য শুদ্ধি",
+              "english": "Idioms & Sentence Correction"
+            }
+          ]
+        },
+        {
+          "id": "bn-c4",
+          "title": "বাংলা সাহিত্য",
+          "english": "Bengali Literature",
+          "topics": [
+            {
+              "name": "প্রাচীন ও মধ্যযুগ",
+              "english": "Ancient & Medieval Age"
+            },
+            {
+              "name": "আধুনিক যুগ ও কবিতা",
+              "english": "Modern Age & Poetry"
+            },
+            {
+              "name": "নাটক ও উপন্যাস",
+              "english": "Drama & Novel"
+            }
+          ]
+        }
+      ],
+      "topics": [
+        "ধ্বনি ও বর্ণ",
+        "সন্ধি",
+        "ণ-ত্ব ও ষ-ত্ব বিধান",
+        "শব্দের শ্রেণিবিভাগ",
+        "পদ প্রকরণ",
+        "উপসর্গ ও অনুসর্গ",
+        "সমাস",
+        "কারক ও বিভক্তি",
+        "বাগধারা ও বাক্য শুদ্ধি",
+        "প্রাচীন ও মধ্যযুগ",
+        "আধুনিক যুগ ও কবিতা",
+        "নাটক ও উপন্যাস"
+      ]
+    },
+    {
+      "name": "English Language & Literature",
+      "bengali": "ইংরেজি ভাষা ও সাহিত্য",
+      "short": "English",
+      "symbol": "Aa",
+      "color": "#f6efe4",
+      "chapters": [
+        {
+          "id": "en-c1",
+          "title": "Grammar & Parts of Speech",
+          "english": "Grammar Foundations",
+          "topics": [
+            {
+              "name": "Grammar",
+              "english": "Parts of Speech & Basics"
+            },
+            {
+              "name": "Subject-Verb Agreement",
+              "english": "Agreement Rules"
+            },
+            {
+              "name": "Tense & Verbs",
+              "english": "Tenses & Right Forms"
+            }
+          ]
+        },
+        {
+          "id": "en-c2",
+          "title": "Sentence & Mechanics",
+          "english": "Sentence Structure",
+          "topics": [
+            {
+              "name": "Voice & Narration",
+              "english": "Voice & Speech"
+            },
+            {
+              "name": "Prepositions",
+              "english": "Appropriate Prepositions"
+            },
+            {
+              "name": "Sentence Correction",
+              "english": "Common Errors & Clauses"
+            }
+          ]
+        },
+        {
+          "id": "en-c3",
+          "title": "Vocabulary & Idioms",
+          "english": "Lexicon & Expressions",
+          "topics": [
+            {
+              "name": "Vocabulary",
+              "english": "Synonyms & Antonyms"
+            },
+            {
+              "name": "Idioms & Phrases",
+              "english": "Idiomatic Expressions"
+            },
+            {
+              "name": "Spelling",
+              "english": "Commonly Confused Words"
+            }
+          ]
+        },
+        {
+          "id": "en-c4",
+          "title": "English Literature",
+          "english": "Literary Works & Authors",
+          "topics": [
+            {
+              "name": "Major Writers & Dramatists",
+              "english": "Shakespeare & Classic Authors"
+            },
+            {
+              "name": "Literary History & Quotes",
+              "english": "Famous Quotes & Periods"
+            }
+          ]
+        }
+      ],
+      "topics": [
+        "Grammar",
+        "Subject-Verb Agreement",
+        "Tense & Verbs",
+        "Voice & Narration",
+        "Prepositions",
+        "Sentence Correction",
+        "Vocabulary",
+        "Idioms & Phrases",
+        "Spelling",
+        "Major Writers & Dramatists",
+        "Literary History & Quotes"
+      ]
+    },
+    {
+      "name": "Mathematical Reasoning",
+      "bengali": "গাণিতিক যুক্তি ও মানসিক দক্ষতা",
+      "short": "Math",
+      "symbol": "∑",
+      "color": "#edf0f8",
+      "chapters": [
+        {
+          "id": "ma-c1",
+          "title": "পাটিগণিত (Arithmetic)",
+          "english": "Arithmetic & Numbers",
+          "topics": [
+            {
+              "name": "বাস্তব সংখ্যা",
+              "english": "Real Numbers & Primes"
+            },
+            {
+              "name": "শতকরা",
+              "english": "Percentage & Profit-Loss"
+            },
+            {
+              "name": "গড় ও অনুপাত",
+              "english": "Average & Ratio"
+            }
+          ]
+        },
+        {
+          "id": "ma-c2",
+          "title": "বীজগণিত (Algebra)",
+          "english": "Algebra & Equations",
+          "topics": [
+            {
+              "name": "বীজগণিত",
+              "english": "Algebraic Equations"
+            },
+            {
+              "name": "সূচক ও লগারিদম",
+              "english": "Indices & Logarithms"
+            }
+          ]
+        },
+        {
+          "id": "ma-c3",
+          "title": "জ্যামিতি ও পরিমিতি",
+          "english": "Geometry & Mensuration",
+          "topics": [
+            {
+              "name": "রেখা ও কোণ",
+              "english": "Lines, Angles & Triangles"
+            },
+            {
+              "name": "পরিমিতি ও বৃত্ত",
+              "english": "Perimeter, Area & Circles"
+            }
+          ]
+        },
+        {
+          "id": "ma-c4",
+          "title": "মানসিক দক্ষতা (Mental Ability)",
+          "english": "Analytical & Logical Reasoning",
+          "topics": [
+            {
+              "name": "ধারাবাহিকতা ও সিরিজ",
+              "english": "Number & Letter Series"
+            },
+            {
+              "name": "সম্পর্ক ও দিক",
+              "english": "Blood Relations & Directions"
+            }
+          ]
+        }
+      ],
+      "topics": [
+        "বাস্তব সংখ্যা",
+        "শতকরা",
+        "গড় ও অনুপাত",
+        "বীজগণিত",
+        "সূচক ও লগারিদম",
+        "রেখা ও কোণ",
+        "পরিমিতি ও বৃত্ত",
+        "ধারাবাহিকতা ও সিরিজ",
+        "সম্পর্ক ও দিক"
+      ]
+    },
+    {
+      "name": "General Knowledge",
+      "bengali": "সাধারণ জ্ঞান (বাংলাদেশ ও বিশ্ব)",
+      "short": "General Knowledge",
+      "symbol": "◎",
+      "color": "#f5ece7",
+      "chapters": [
+        {
+          "id": "gk-c1",
+          "title": "বাংলাদেশ বিষয়াবলী",
+          "english": "Bangladesh Affairs",
+          "topics": [
+            {
+              "name": "বাংলাদেশ",
+              "english": "National Symbols & Geography"
+            },
+            {
+              "name": "মুক্তিযুদ্ধ ও ইতিহাস",
+              "english": "Liberation War & History"
+            },
+            {
+              "name": "সংবিধান ও প্রশাসন",
+              "english": "Constitution & Polity"
+            }
+          ]
+        },
+        {
+          "id": "gk-c2",
+          "title": "আন্তর্জাতিক বিষয়াবলী",
+          "english": "International Affairs",
+          "topics": [
+            {
+              "name": "বিশ্ব",
+              "english": "Global Geography & Planets"
+            },
+            {
+              "name": "আন্তর্জাতিক সংস্থা",
+              "english": "UN & Treaties"
+            }
+          ]
+        },
+        {
+          "id": "gk-c3",
+          "title": "সাধারণ বিজ্ঞান ও তথ্যপ্রযুক্তি",
+          "english": "General Science & ICT",
+          "topics": [
+            {
+              "name": "বিজ্ঞান",
+              "english": "Physical & Biological Science"
+            },
+            {
+              "name": "তথ্যপ্রযুক্তি",
+              "english": "Computer, Internet & Cyber"
+            }
+          ]
+        }
+      ],
+      "topics": [
+        "বাংলাদেশ",
+        "মুক্তিযুদ্ধ ও ইতিহাস",
+        "সংবিধান ও প্রশাসন",
+        "বিশ্ব",
+        "আন্তর্জাতিক সংস্থা",
+        "বিজ্ঞান",
+        "তথ্যপ্রযুক্তি"
+      ]
+    }
+  ],
+  "lessons": {
+    "ধ্বনি ও বর্ণ": {
+      "readTime": "3 min read",
+      "summary": "বাংলা ধ্বনিতত্ত্ব ও বর্ণমালার মৌলিক নিয়মাবলী।",
+      "demo": false,
+      "points": [
+        {
+          "label": "ধ্বনি ও বর্ণ",
+          "desc": "বাগ্যন্ত্রের সাহায্যে উচ্চারিত অর্থপূর্ণ আওয়াজই হলো ‘ধ্বনি’। ধ্বনির দৃষ্টিগ্রাহ্য লিখিত রূপকে বলা হয় ‘বর্ণ’ (যেমন: অ, আ, ক)।"
+        },
+        {
+          "label": "মৌলিক স্বরধ্বনি (৭টি)",
+          "desc": "বাংলা ভাষার ৭টি মৌলিক স্বরধ্বনি: অ, আ, ই, উ, এ, ও এবং অ্যা।"
+        },
+        {
+          "label": "যৌগিক স্বরধ্বনি",
+          "desc": "বাংলায় যৌগিক স্বরধ্বনি ২৫টি, তবে বর্ণমালায় প্রতীক ২টি: ঐ (অ+ই) ও ঔ (অ+উ)।"
+        },
+        {
+          "label": "বর্ণের সংখ্যা ও মাত্রা",
+          "desc": "মোট বর্ণ ৫০টি (স্বরবর্ণ ১১টি, ব্যঞ্জনবর্ণ ৩৯টি)। পূর্ণমাত্রা ৩২টি, অর্ধমাত্রা ৮টি এবং মাত্রাহীন ১০টি।"
+        },
+        {
+          "label": "স্পর্শ/বর্গীয় বর্ণ",
+          "desc": "ক থেকে ম পর্যন্ত ২৫টি বর্ণ ৫টি বর্গে বিভক্ত (ক, চ, ট, ত, প বর্গে)।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?\nAnswer: ৭টি\nবাংলা ভাষায় মৌলিক স্বরধ্বনি ৭টি: অ, আ, ই, উ, এ, ও, অ্যা।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "সন্ধি": {
+      "readTime": "4 min read",
+      "summary": "সন্ধির প্রকারভেদ, স্বরসন্ধির প্রধান সূত্র ও ব্যতিক্রমী উদাহরণ।",
+      "demo": false,
+      "points": [
+        {
+          "label": "সন্ধির সংজ্ঞা",
+          "desc": "সন্নিহিত দুটি ধ্বনির মিলনকে সন্ধি বলে। দ্রুত ও সহজ উচ্চারণের সুবিধার জন্য সন্ধি ঘটে।"
+        },
+        {
+          "label": "প্রকারভেদ",
+          "desc": "বাংলা সন্ধি ২ প্রকার (স্বর ও ব্যঞ্জন)। তৎসম (সংস্কৃত) সন্ধি ৩ প্রকার (স্বরসন্ধি, ব্যঞ্জনসন্ধি ও বিসর্গসন্ধি)।"
+        },
+        {
+          "label": "স্বরসন্ধির প্রধান সূত্র",
+          "desc": "অ/আ + অ/আ = আ (হিম + আলয় = হিমালয়, বিদ্যা + আলয় = বিদ্যালয়)। অ/আ + ই/ঈ = এ (শুভ + ইচ্ছা = শুভেচ্ছা)। অ/আ + উ/ঊ = ও (সূর্য + উদয় = সূর্যোদয়)।"
+        },
+        {
+          "label": "নিপাতনে সিদ্ধ সন্ধি",
+          "desc": "যেসব সন্ধি প্রচলিত ব্যাকরণগত কোনো নিয়ম মানে না: কুল + অটা = কুলটা, এক + দশ = একাদশ, পতৎ + অঞ্জলি = পতঞ্জলি, পর + পর = পরস্পর, গো + অক্ষ = গবাক্ষ।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?\nAnswer: বিদ্যা + আলয়\nবিদ্যা + আলয় = বিদ্যালয়। আ + আ মিলে আ হয়; এটি স্বরসন্ধির উদাহরণ।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "ণ-ত্ব ও ষ-ত্ব বিধান": {
+      "readTime": "3 min read",
+      "summary": "তৎসম শব্দে মূর্ধন্য-ণ এবং মূর্ধন্য-ষ ব্যবহারের নির্ভুল নিয়ম।",
+      "demo": false,
+      "points": [
+        {
+          "label": "প্রয়োগক্ষেত্র",
+          "desc": "ণ-ত্ব ও ষ-ত্ব বিধান কেবল তৎসম (সংস্কৃত) শব্দেই প্রযোজ্য। তদ্ভব, দেশি বা বিদেশি শব্দে কখনো ণ বা ষ হয় না (যেমন: করন, পোস্ট, মাস্টার, জিনিস)।"
+        },
+        {
+          "label": "ণ-ত্ব বিধানের নিয়ম",
+          "desc": "ঋ, র, ষ-এর পর মূর্ধন্য-ণ বসে (ঋণ, বর্ণ, কারণ, ভীষণ)। ট-বর্গীয় বর্ণের পূর্বে যুক্ত ব্যঞ্জনে মূর্ধন্য-ণ হয় (ঘণ্টা, কাণ্ড, লুণ্ঠন)।"
+        },
+        {
+          "label": "ষ-ত্ব বিধানের নিয়ম",
+          "desc": "অ, আ ভিন্ন অন্য স্বরধ্বনি এবং ক ও র-এর পরে প্রত্যয়ের ‘স’ ‘ষ’ হয় (অভিষেক, বিষম, পরিষ্কার)। ট ও ঠ বর্ণের পূর্বে মূর্ধন্য-ষ হয় (কষ্ট, স্পষ্ট, বৃষ্টি)।"
+        },
+        {
+          "label": "স্বভাবতই মূর্ধন্য-ষ",
+          "desc": "কোনো নিয়ম ছাড়াই যেসব শব্দে মূর্ধন্য-ষ ব্যবহৃত হয়: আষাঢ়, ভাষণ, উষা, পাষাণ, সরিষা, ভাষা, রোষ, কোষ ইত্যাদি।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?\nAnswer: আষাঢ়\nআষাঢ়, ভাষণ, উষা প্রভৃতি শব্দে স্বভাবতই মূর্ধন্য-ষ হয়।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "শব্দের শ্রেণিবিভাগ": {
+      "readTime": "3 min read",
+      "summary": "উৎস, গঠন ও অর্থ অনুসারে বাংলা শব্দের বৈচিত্র্য।",
+      "demo": false,
+      "points": [
+        {
+          "label": "উৎস অনুসারে (৫ প্রকার)",
+          "desc": "তৎসম (চন্দ্র, সূর্য, হস্তী), অর্ধ-তৎসম (জোছনা, গিন্নি), তদ্ভব (হাত, চাঁদ), দেশি (কুলা, ডাব, ঢেঁকি), বিদেশি (টেবিল, চেয়ার, আইন)।"
+        },
+        {
+          "label": "গঠন অনুসারে (২ প্রকার)",
+          "desc": "মৌলিক শব্দ (গোলাপ, লাল, তিন) ও সাধিত শব্দ (চাঁদমুখ, ডুবুরি, চলন্ত)।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘হস্তী’ কোন ধরনের শব্দ?\nAnswer: তৎসম শব্দ\n‘হস্তী’ একটি প্রাচীন সংস্কৃত বা তৎসম শব্দ।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "পদ প্রকরণ": {
+      "readTime": "3 min read",
+      "summary": "বাক্যে ব্যবহৃত বিভক্তিযুক্ত পদ ও তাদের শ্রেণিবিভাগ।",
+      "demo": false,
+      "points": [
+        {
+          "label": "পদের সংজ্ঞা",
+          "desc": "বাক্যে ব্যবহৃত প্রত্যেকটি বিভক্তিযুক্ত শব্দ ও ধাতুকে পদ বলে। পদ প্রধানত ২ প্রকার: নামপদ ও ক্রিয়াপদ। মোট ৫ প্রকার।"
+        },
+        {
+          "label": "ক্রিয়া বিশেষণ",
+          "desc": "যে পদ ক্রিয়া সংঘটনের ভাব, সময় বা তীব্রতা নির্দেশ করে (যেমন: ‘ধীরে ধীরে বায়ু বয়’ — ধীরে ধীরে ক্রিয়া বিশেষণ)।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?\nAnswer: ক্রিয়া বিশেষণ\n‘ধীরে ধীরে’ পদটি বায়ু বওয়ার ভাব বা গতি প্রকাশ করছে, তাই এটি ক্রিয়া বিশেষণ।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "উপসর্গ ও অনুসর্গ": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for উপসর্গ ও অনুসর্গ. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of উপসর্গ ও অনুসর্গ, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about উপসর্গ ও অনুসর্গ. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "সমাস": {
+      "readTime": "4 min read",
+      "summary": "পরস্পর সম্বন্ধযুক্ত একাধিক পদের একপদীকরণ পদ্ধতি।",
+      "demo": false,
+      "points": [
+        {
+          "label": "সমাসের অর্থ",
+          "desc": "সমাস অর্থ সংক্ষেপ, মিলন, একাধিক পদের একপদীকরণ।"
+        },
+        {
+          "label": "প্রধান সমাস",
+          "desc": "দ্বন্দ্ব (উভয়পদ প্রধান), কর্মধারয় (পরপদ প্রধান), তৎপুরুষ (পরপদ প্রধান, বিভক্তি লোপ), বহুব্রীহি (অন্যপদ প্রধান), দ্বিগু (সংখ্যাবাচক পূর্বপদ), অব্যয়ীভাব (পূর্বপদ প্রধান)।"
+        },
+        {
+          "label": "উপমিত বনাম উপমান",
+          "desc": "সাধারণ গুণের উল্লেখ না থাকলে উপমিত (সিংহ সদৃশ পুরুষ = সিংহপুরুষ); সাধারণ গুণের উল্লেখ থাকলে উপমান (ভ্রমরের ন্যায় কৃষ্ণ কেশ = ভ্রমরকৃষ্ণ কেশ)।"
+        },
+        {
+          "label": "তৎপুরুষ সমাস",
+          "desc": "পূর্বপদের বিভক্তি লোপ পেয়ে যে সমাস হয় (রাজার পুত্র = রাজপুত্র — ষষ্ঠী তৎপুরুষ সমাস)।"
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘রাজপুত্র’ কোন সমাসের উদাহরণ?\nAnswer: ষষ্ঠী তৎপুরুষ সমাস\nরাজার পুত্র = রাজপুত্র। এখানে ষষ্ঠী বিভক্তি ‘-র’ লোপ পেয়েছে, তাই ষষ্ঠী তৎপুরুষ সমাস।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "কারক ও বিভক্তি": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for কারক ও বিভক্তি. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of কারক ও বিভক্তি, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘তিলে তেল আছে’ — এখানে ‘তিলে’ কোন কারকে কোন বিভক্তি?\nAnswer: অধিকরণে ৭মী\nস্থান বা আধারের সম্পূর্ণ অংশে ব্যাপ্তি বোঝালে অভিব্যপক অধিকরণ কারক হয়।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "বাগধারা ও বাক্য শুদ্ধি": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বাগধারা ও বাক্য শুদ্ধি. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বাগধারা ও বাক্য শুদ্ধি, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about বাগধারা ও বাক্য শুদ্ধি. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "প্রাচীন ও মধ্যযুগ": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for প্রাচীন ও মধ্যযুগ. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of প্রাচীন ও মধ্যযুগ, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "বাংলা সাহিত্যের প্রাচীনতম নিদর্শন ‘চর্যাপদ’ কত সালে আবিষ্কৃত হয়?\nAnswer: ১৯০৭ সালে\nমহামহোপাধ্যায় হরপ্রসাদ শাস্ত্রী ১৯০৭ সালে নেপালের রয়েল লাইব্রেরি থেকে চর্যাপদ আবিষ্কার করেন।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "আধুনিক যুগ ও কবিতা": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for আধুনিক যুগ ও কবিতা. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of আধুনিক যুগ ও কবিতা, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "‘আমাদের ছোট নদী’ কবিতার রচয়িতা কে?\nAnswer: রবীন্দ্রনাথ ঠাকুর\n‘আমাদের ছোট নদী’ রবীন্দ্রনাথ ঠাকুরের লেখা একটি সুপরিচিত কবিতা।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "নাটক ও উপন্যাস": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for নাটক ও উপন্যাস. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of নাটক ও উপন্যাস, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "ভাষা আন্দোলনের পটভূমিতে রচিত বিখ্যাত ‘কবর’ নাটকের রচয়িতা কে?\nAnswer: মুনীর চৌধুরী\nশহীদ বুদ্ধিজীবী মুনীর চৌধুরী ১৯৫৩ সালে ঢাকা কেন্দ্রীয় কারাগারে বন্দি থাকা অবস্থায় ‘কবর’ নাটকটি রচনা করেন।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Grammar": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Grammar. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Grammar, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Choose the correct sentence.\nAnswer: He goes to school.\nSimple present tense-এ third person singular subject (He)-এর সঙ্গে verb-এ s/es যোগ হয়।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Subject-Verb Agreement": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Subject-Verb Agreement. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Subject-Verb Agreement, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Neither of the boys ___ present yesterday.\nAnswer: was\n“Neither of” এর পর plural noun বসলেও verb সর্বদা singular হয়। তাই “was” সঠিক।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Tense & Verbs": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Tense & Verbs. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Tense & Verbs, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about Tense & Verbs. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Voice & Narration": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Voice & Narration. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Voice & Narration, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "“Who wrote Hamlet?” Choose the correct passive form.\nAnswer: By whom was Hamlet written?\nInterrogative voice-এ “Who”-এর জায়গায় “By whom + auxiliary verb + object + V3” বসে।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Prepositions": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Prepositions. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Prepositions, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "He is proficient ___ English.\nAnswer: in\nদক্ষতা বোঝাতে “proficient in” উপযুক্ত preposition হিসেবে বসে।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Sentence Correction": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Sentence Correction. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Sentence Correction, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about Sentence Correction. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Vocabulary": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Vocabulary. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Vocabulary, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "What is the synonym of “rapid”?\nAnswer: Fast\n“Rapid” অর্থ দ্রুত। এর সমার্থক শব্দ হলো “Fast”।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Idioms & Phrases": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Idioms & Phrases. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Idioms & Phrases, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "What is the meaning of the idiom “A bed of roses”?\nAnswer: A life of ease and luxury\n“A bed of roses” বাগধারাটির অর্থ নিষ্কণ্টক বা আরামদায়ক জীবন।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Spelling": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Spelling. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Spelling, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about Spelling. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Major Writers & Dramatists": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Major Writers & Dramatists. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Major Writers & Dramatists, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Who is the author of the tragedy “Romeo and Juliet”?\nAnswer: William Shakespeare\n“Romeo and Juliet” বিশ্ববিখ্যাত নাট্যকার William Shakespeare-এর অমর ট্র্যাজেডি নাটক।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "Literary History & Quotes": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for Literary History & Quotes. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of Literary History & Quotes, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about Literary History & Quotes. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "বাস্তব সংখ্যা": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বাস্তব সংখ্যা. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বাস্তব সংখ্যা, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "নিচের কোনটি মৌলিক সংখ্যা?\nAnswer: ৪৭\n৪৭ কে ১ ও ৪৭ ছাড়া অন্য কোনো সংখ্যা দিয়ে ভাগ করা যায় না। তাই ৪৭ একটি মৌলিক সংখ্যা।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "শতকরা": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for শতকরা. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of শতকরা, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "২০০-এর ১৫% কত?\nAnswer: ৩০\n২০০ × ১৫ ÷ ১০০ = ৩০। শতকরা মানে প্রতি একশতে মান।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        },
+        {
+          "label": "Formula & example",
+          "desc": "Percentage = (part ÷ whole) × 100. Example: 15 out of 60 = 25%."
+        }
+      ]
+    },
+    "গড় ও অনুপাত": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for গড় ও অনুপাত. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of গড় ও অনুপাত, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "১০, ২০ ও ৩০-এর গড় কত?\nAnswer: ২০\nগড় = সংখ্যাগুলোর যোগফল ÷ মোট সংখ্যা = (১০ + ২০ + ৩০) ÷ ৩ = ৬০ ÷ ৩ = ২০।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        },
+        {
+          "label": "Formula & example",
+          "desc": "Arithmetic mean = sum of values ÷ number of values. Example: mean of 2, 4 and 6 = 4."
+        }
+      ]
+    },
+    "বীজগণিত": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বীজগণিত. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বীজগণিত, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "২x + ৬ = ১৬ হলে x-এর মান কত?\nAnswer: ৫\n২x = ১৬ − ৬ = ১০। সুতরাং x = ১০ ÷ ২ = ৫।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        },
+        {
+          "label": "Formula & example",
+          "desc": "(a + b)² = a² + 2ab + b². Example: (2 + 3)² = 4 + 12 + 9 = 25."
+        }
+      ]
+    },
+    "সূচক ও লগারিদম": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for সূচক ও লগারিদম. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of সূচক ও লগারিদম, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "log₂ 8-এর মান কত?\nAnswer: ৩\n8 = 2³। সুতরাং log₂ (2³) = 3 log₂ 2 = 3 × 1 = 3।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        },
+        {
+          "label": "Formula & example",
+          "desc": "For a positive base a, aᵐ × aⁿ = aᵐ⁺ⁿ. Example: 2² × 2³ = 2⁵ = 32."
+        }
+      ]
+    },
+    "রেখা ও কোণ": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for রেখা ও কোণ. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of রেখা ও কোণ, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "একটি ত্রিভুজের তিন কোণের সমষ্টি কত ডিগ্রি?\nAnswer: ১৮০°\nইউক্লিডীয় জ্যামিতি অনুসারে যেকোনো সমতলীয় ত্রিভুজের তিন কোণের সমষ্টি দুই সমকোণ বা ১৮০°।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "পরিমিতি ও বৃত্ত": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for পরিমিতি ও বৃত্ত. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of পরিমিতি ও বৃত্ত, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about পরিমিতি ও বৃত্ত. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        },
+        {
+          "label": "Formula & example",
+          "desc": "Circle area = πr²; circumference = 2πr, where r is the radius."
+        }
+      ]
+    },
+    "ধারাবাহিকতা ও সিরিজ": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for ধারাবাহিকতা ও সিরিজ. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of ধারাবাহিকতা ও সিরিজ, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "ধারাটির পরবর্তী সংখ্যা কত: ৩, ৬, ১২, ২৪, ___?\nAnswer: ৪৮\nপ্রতিটি পদ পূর্ববর্তী পদের দ্বিগুণ হচ্ছে (৩ × ২ = ৬, ৬ × ২ = ১২...)। সুতরাং ২৪ × ২ = ৪৮।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "সম্পর্ক ও দিক": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for সম্পর্ক ও দিক. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of সম্পর্ক ও দিক, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "Demo exercise: write down one concept you already know about সম্পর্ক ও দিক. Explain it in one sentence, then compare it with your textbook. A subject-specific worked example is pending."
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "বাংলাদেশ": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বাংলাদেশ. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বাংলাদেশ, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "বাংলাদেশের জাতীয় ফুল কোনটি?\nAnswer: শাপলা\nবাংলাদেশের জাতীয় ফুল সাদা শাপলা।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "মুক্তিযুদ্ধ ও ইতিহাস": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for মুক্তিযুদ্ধ ও ইতিহাস. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of মুক্তিযুদ্ধ ও ইতিহাস, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "১৯৭১ সালের ঐতিহাসিক ৭ই মার্চের ভাষণ কোথায় অনুষ্ঠিত হয়েছিল?\nAnswer: রেসকোর্স ময়দান (সোহরাওয়ার্দী উদ্যান)\nবঙ্গবন্ধু শেখ মুজিবুর রহমান ১৯৭১ সালের ৭ই মার্চ তৎকালীন রেসকোর্স ময়দানে ঐতিহাসিক ভাষণ দেন।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "সংবিধান ও প্রশাসন": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for সংবিধান ও প্রশাসন. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of সংবিধান ও প্রশাসন, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধান কোন তারিখ থেকে কার্যকর হয়?\nAnswer: ১৬ ডিসেম্বর ১৯৭২\n১৯৭২ সালের ৪ নভেম্বর গণপরিষদে সংবিধান গৃহীত হয় এবং ১৬ ডিসেম্বর ১৯৭২ থেকে কার্যকর হয়।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "বিশ্ব": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বিশ্ব. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বিশ্ব, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "সৌরজগতের বৃহত্তম গ্রহ কোনটি?\nAnswer: বৃহস্পতি\nবৃহস্পতি সৌরজগতের সর্ববৃহৎ গ্রহ।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "আন্তর্জাতিক সংস্থা": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for আন্তর্জাতিক সংস্থা. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of আন্তর্জাতিক সংস্থা, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "জাতিসংঘের (United Nations) সদর দপ্তর কোথায় অবস্থিত?\nAnswer: নিউইয়র্ক\nজাতিসংঘের মূল সদর দপ্তর মার্কিন যুক্তরাষ্ট্রের নিউইয়র্ক সিটিতে অবস্থিত।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "বিজ্ঞান": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for বিজ্ঞান. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of বিজ্ঞান, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "পানির রাসায়নিক সংকেত কোনটি?\nAnswer: H₂O\nপানির একটি অণুতে দুটি হাইড্রোজেন এবং একটি অক্সিজেন পরমাণু থাকে, তাই সংকেত H₂O।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    },
+    "তথ্যপ্রযুক্তি": {
+      "readTime": "3 min read",
+      "summary": "Demo lesson for তথ্যপ্রযুক্তি. This sample demonstrates the reading flow; a reviewed lesson has not yet been supplied.",
+      "demo": true,
+      "points": [
+        {
+          "label": "Learning objective · Demo",
+          "desc": "Identify the core ideas of তথ্যপ্রযুক্তি, explain them in your own words, and apply them to a practice question."
+        },
+        {
+          "label": "Worked example",
+          "desc": "কম্পিউটারের ‘মস্তিষ্ক’ (Brain) বলা হয় কোন অংশটিকে?\nAnswer: CPU\nCPU (Central Processing Unit) কম্পিউটারের সকল নির্দেশনা প্রক্রিয়াকরণ ও নিয়ন্ত্রণ করে।"
+        },
+        {
+          "label": "Important points",
+          "desc": "Read each definition carefully. Record the condition under which a rule applies and keep any exception beside it in your personal note."
+        },
+        {
+          "label": "Common mistake",
+          "desc": "Do not treat a single example as a rule for every question. Check the wording, units and conditions before choosing an answer."
+        },
+        {
+          "label": "Quick revision",
+          "desc": "Close the lesson and recall its main points. Reopen the sections you could not explain, then attempt the related practice."
+        }
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": 0,
+      "subject": 0,
+      "chapter": 0,
+      "topic": "সন্ধি",
+      "text": "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+      "options": [
+        "বিদ্যা + আলয়",
+        "বিদ্যা + লয়",
+        "বিদ্য + আলয়",
+        "বিদ্যা + অলয়"
+      ],
+      "answer": 0,
+      "explanation": "বিদ্যা + আলয় = বিদ্যালয়। আ + আ মিলে আ হয়; এটি স্বরসন্ধির উদাহরণ।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 1,
+      "subject": 0,
+      "chapter": 0,
+      "topic": "সন্ধি",
+      "text": "‘হিমালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+      "options": [
+        "হিম + আলয়",
+        "হিমা + লয়",
+        "হিম + লয়",
+        "হিমা + অলয়"
+      ],
+      "answer": 0,
+      "explanation": "হিম + আলয় = হিমালয়। অ + আ মিলে আ হয়েছে।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 2,
+      "subject": 0,
+      "chapter": 0,
+      "topic": "ধ্বনি ও বর্ণ",
+      "text": "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+      "options": [
+        "৭টি",
+        "১১টি",
+        "৩৯টি",
+        "৫০টি"
+      ],
+      "answer": 0,
+      "explanation": "বাংলা ভাষায় মৌলিক স্বরধ্বনি ৭টি: অ, আ, ই, উ, এ, ও, অ্যা।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 3,
+      "subject": 0,
+      "chapter": 0,
+      "topic": "ণ-ত্ব ও ষ-ত্ব বিধান",
+      "text": "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+      "options": [
+        "আষাঢ়",
+        "কষ্ট",
+        "সুপ্ত",
+        "বৃষ্টি"
+      ],
+      "answer": 0,
+      "explanation": "আষাঢ়, ভাষণ, উষা প্রভৃতি শব্দে স্বভাবতই মূর্ধন্য-ষ হয়।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 4,
+      "subject": 0,
+      "chapter": 1,
+      "topic": "শব্দের শ্রেণিবিভাগ",
+      "text": "‘হস্তী’ কোন ধরনের শব্দ?",
+      "options": [
+        "তৎসম শব্দ",
+        "তদ্ভব শব্দ",
+        "দেশি শব্দ",
+        "বিদেশি শব্দ"
+      ],
+      "answer": 0,
+      "explanation": "‘হস্তী’ একটি প্রাচীন সংস্কৃত বা তৎসম শব্দ।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 5,
+      "subject": 0,
+      "chapter": 1,
+      "topic": "পদ প্রকরণ",
+      "text": "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?",
+      "options": [
+        "ক্রিয়া বিশেষণ",
+        "বিশেষণ",
+        "ক্রিয়া পদ",
+        "অব্যয় পদ"
+      ],
+      "answer": 0,
+      "explanation": "‘ধীরে ধীরে’ পদটি বায়ু বওয়ার ভাব বা গতি প্রকাশ করছে, তাই এটি ক্রিয়া বিশেষণ।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 6,
+      "subject": 0,
+      "chapter": 2,
+      "topic": "সমাস",
+      "text": "‘রাজপুত্র’ কোন সমাসের উদাহরণ?",
+      "options": [
+        "দ্বন্দ্ব সমাস",
+        "বহুব্রীহি সমাস",
+        "কর্মধারয় সমাস",
+        "ষষ্ঠী তৎপুরুষ সমাস"
+      ],
+      "answer": 3,
+      "explanation": "রাজার পুত্র = রাজপুত্র। এখানে ষষ্ঠী বিভক্তি ‘-র’ লোপ পেয়েছে, তাই ষষ্ঠী তৎপুরুষ সমাস।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 7,
+      "subject": 0,
+      "chapter": 2,
+      "topic": "সমাস",
+      "text": "‘সিংহপুরুষ’ কোন সমাসের উদাহরণ?",
+      "options": [
+        "উপমিত কর্মধারয়",
+        "উপমান কর্মধারয়",
+        "রূপক কর্মধারয়",
+        "বহুব্রীহি"
+      ],
+      "answer": 0,
+      "explanation": "সিংহ সদৃশ পুরুষ = সিংহপুরুষ। এটি সাধারণ গুণের উল্লেখ ছাড়া উপমিত কর্মধারয় সমাস।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 8,
+      "subject": 0,
+      "chapter": 2,
+      "topic": "কারক ও বিভক্তি",
+      "text": "‘তিলে তেল আছে’ — এখানে ‘তিলে’ কোন কারকে কোন বিভক্তি?",
+      "options": [
+        "অধিকরণে ৭মী",
+        "অপাদানে ৭মী",
+        "করণে ৭মী",
+        "কর্মে ৭মী"
+      ],
+      "answer": 0,
+      "explanation": "স্থান বা আধারের সম্পূর্ণ অংশে ব্যাপ্তি বোঝালে অভিব্যপক অধিকরণ কারক হয়।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 9,
+      "subject": 0,
+      "chapter": 3,
+      "topic": "আধুনিক যুগ ও কবিতা",
+      "text": "‘আমাদের ছোট নদী’ কবিতার রচয়িতা কে?",
+      "options": [
+        "কাজী নজরুল ইসলাম",
+        "জসীমউদ্দীন",
+        "রবীন্দ্রনাথ ঠাকুর",
+        "সুকান্ত ভট্টাচার্য"
+      ],
+      "answer": 2,
+      "explanation": "‘আমাদের ছোট নদী’ রবীন্দ্রনাথ ঠাকুরের লেখা একটি সুপরিচিত কবিতা।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 10,
+      "subject": 0,
+      "chapter": 3,
+      "topic": "প্রাচীন ও মধ্যযুগ",
+      "text": "বাংলা সাহিত্যের প্রাচীনতম নিদর্শন ‘চর্যাপদ’ কত সালে আবিষ্কৃত হয়?",
+      "options": [
+        "১৯০৭ সালে",
+        "১৯১৬ সালে",
+        "১৯২১ সালে",
+        "১৯৫০ সালে"
+      ],
+      "answer": 0,
+      "explanation": "মহামহোপাধ্যায় হরপ্রসাদ শাস্ত্রী ১৯০৭ সালে নেপালের রয়েল লাইব্রেরি থেকে চর্যাপদ আবিষ্কার করেন।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 11,
+      "subject": 0,
+      "chapter": 3,
+      "topic": "নাটক ও উপন্যাস",
+      "text": "ভাষা আন্দোলনের পটভূমিতে রচিত বিখ্যাত ‘কবর’ নাটকের রচয়িতা কে?",
+      "options": [
+        "মুনীর চৌধুরী",
+        "সেলিম আল দীন",
+        "নুরুল মোমেন",
+        "সৈয়দ শামসুল হক"
+      ],
+      "answer": 0,
+      "explanation": "শহীদ বুদ্ধিজীবী মুনীর চৌধুরী ১৯৫৩ সালে ঢাকা কেন্দ্রীয় কারাগারে বন্দি থাকা অবস্থায় ‘কবর’ নাটকটি রচনা করেন।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 12,
+      "subject": 1,
+      "chapter": 0,
+      "topic": "Grammar",
+      "text": "Choose the correct sentence.",
+      "options": [
+        "He go to school.",
+        "He goes to school.",
+        "He going to school.",
+        "He gone to school."
+      ],
+      "answer": 1,
+      "explanation": "Simple present tense-এ third person singular subject (He)-এর সঙ্গে verb-এ s/es যোগ হয়।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 13,
+      "subject": 1,
+      "chapter": 0,
+      "topic": "Grammar",
+      "text": "She has lived here ___ 2020.",
+      "options": [
+        "for",
+        "since",
+        "from",
+        "at"
+      ],
+      "answer": 1,
+      "explanation": "নির্দিষ্ট অতীতের নির্দিষ্ট সময় বিন্দু বোঝাতে since ব্যবহৃত হয়; সময়ের ব্যাপ্তি বোঝাতে for ব্যবহৃত হয়।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 14,
+      "subject": 1,
+      "chapter": 0,
+      "topic": "Subject-Verb Agreement",
+      "text": "Neither of the boys ___ present yesterday.",
+      "options": [
+        "was",
+        "were",
+        "are",
+        "have been"
+      ],
+      "answer": 0,
+      "explanation": "“Neither of” এর পর plural noun বসলেও verb সর্বদা singular হয়। তাই “was” সঠিক।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 15,
+      "subject": 1,
+      "chapter": 1,
+      "topic": "Voice & Narration",
+      "text": "“Who wrote Hamlet?” Choose the correct passive form.",
+      "options": [
+        "By whom was Hamlet written?",
+        "By whom Hamlet was written?",
+        "Who was written Hamlet?",
+        "Whom wrote Hamlet?"
+      ],
+      "answer": 0,
+      "explanation": "Interrogative voice-এ “Who”-এর জায়গায় “By whom + auxiliary verb + object + V3” বসে।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 16,
+      "subject": 1,
+      "chapter": 1,
+      "topic": "Prepositions",
+      "text": "He is proficient ___ English.",
+      "options": [
+        "in",
+        "at",
+        "with",
+        "on"
+      ],
+      "answer": 0,
+      "explanation": "দক্ষতা বোঝাতে “proficient in” উপযুক্ত preposition হিসেবে বসে।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 17,
+      "subject": 1,
+      "chapter": 2,
+      "topic": "Vocabulary",
+      "text": "What is the synonym of “rapid”?",
+      "options": [
+        "Slow",
+        "Fast",
+        "Quiet",
+        "Weak"
+      ],
+      "answer": 1,
+      "explanation": "“Rapid” অর্থ দ্রুত। এর সমার্থক শব্দ হলো “Fast”।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 18,
+      "subject": 1,
+      "chapter": 2,
+      "topic": "Vocabulary",
+      "text": "Choose the opposite of “ancient”.",
+      "options": [
+        "Old",
+        "Modern",
+        "Historic",
+        "Early"
+      ],
+      "answer": 1,
+      "explanation": "“Ancient” অর্থ প্রাচীন বা পুরাতন। এর বিপরীত শব্দ হলো “Modern” (আধুনিক)।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 19,
+      "subject": 1,
+      "chapter": 2,
+      "topic": "Idioms & Phrases",
+      "text": "What is the meaning of the idiom “A bed of roses”?",
+      "options": [
+        "A life of ease and luxury",
+        "A difficult path",
+        "A flower garden",
+        "A complex problem"
+      ],
+      "answer": 0,
+      "explanation": "“A bed of roses” বাগধারাটির অর্থ নিষ্কণ্টক বা আরামদায়ক জীবন।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 20,
+      "subject": 1,
+      "chapter": 3,
+      "topic": "Major Writers & Dramatists",
+      "text": "Who is the author of the tragedy “Romeo and Juliet”?",
+      "options": [
+        "William Shakespeare",
+        "Christopher Marlowe",
+        "John Milton",
+        "John Keats"
+      ],
+      "answer": 0,
+      "explanation": "“Romeo and Juliet” বিশ্ববিখ্যাত নাট্যকার William Shakespeare-এর অমর ট্র্যাজেডি নাটক।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "chapter": 0,
+      "topic": "বাস্তব সংখ্যা",
+      "text": "নিচের কোনটি মৌলিক সংখ্যা?",
+      "options": [
+        "৪৭",
+        "৫১",
+        "৮৭",
+        "৯১"
+      ],
+      "answer": 0,
+      "explanation": "৪৭ কে ১ ও ৪৭ ছাড়া অন্য কোনো সংখ্যা দিয়ে ভাগ করা যায় না। তাই ৪৭ একটি মৌলিক সংখ্যা।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "chapter": 0,
+      "topic": "শতকরা",
+      "text": "২০০-এর ১৫% কত?",
+      "options": [
+        "১৫",
+        "২০",
+        "৩০",
+        "৪০"
+      ],
+      "answer": 2,
+      "explanation": "২০০ × ১৫ ÷ ১০০ = ৩০। শতকরা মানে প্রতি একশতে মান।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "chapter": 0,
+      "topic": "শতকরা",
+      "text": "একটি বইয়ের মূল্য ৫০০ টাকা। ১০% ছাড়ে বইটির বিক্রয়মূল্য কত?",
+      "options": [
+        "৪০০ টাকা",
+        "৪৫০ টাকা",
+        "৪৮০ টাকা",
+        "৪৯০ টাকা"
+      ],
+      "answer": 1,
+      "explanation": "ছাড় = ৫০০ × ১০ ÷ ১০০ = ৫০ টাকা। বিক্রয়মূল্য = ৫০০ − ৫০ = ৪৫০ টাকা।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "chapter": 0,
+      "topic": "গড় ও অনুপাত",
+      "text": "১০, ২০ ও ৩০-এর গড় কত?",
+      "options": [
+        "১৫",
+        "২০",
+        "২৫",
+        "৩০"
+      ],
+      "answer": 1,
+      "explanation": "গড় = সংখ্যাগুলোর যোগফল ÷ মোট সংখ্যা = (১০ + ২০ + ৩০) ÷ ৩ = ৬০ ÷ ৩ = ২০।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "chapter": 1,
+      "topic": "বীজগণিত",
+      "text": "২x + ৬ = ১৬ হলে x-এর মান কত?",
+      "options": [
+        "৩",
+        "৪",
+        "৫",
+        "৬"
+      ],
+      "answer": 2,
+      "explanation": "২x = ১৬ − ৬ = ১০। সুতরাং x = ১০ ÷ ২ = ৫।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "chapter": 1,
+      "topic": "সূচক ও লগারিদম",
+      "text": "log₂ 8-এর মান কত?",
+      "options": [
+        "২",
+        "৩",
+        "৪",
+        "৮"
+      ],
+      "answer": 1,
+      "explanation": "8 = 2³। সুতরাং log₂ (2³) = 3 log₂ 2 = 3 × 1 = 3।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "chapter": 2,
+      "topic": "রেখা ও কোণ",
+      "text": "একটি ত্রিভুজের তিন কোণের সমষ্টি কত ডিগ্রি?",
+      "options": [
+        "৯০°",
+        "১৮০°",
+        "২৭০°",
+        "৩৬০°"
+      ],
+      "answer": 1,
+      "explanation": "ইউক্লিডীয় জ্যামিতি অনুসারে যেকোনো সমতলীয় ত্রিভুজের তিন কোণের সমষ্টি দুই সমকোণ বা ১৮০°।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "chapter": 3,
+      "topic": "ধারাবাহিকতা ও সিরিজ",
+      "text": "ধারাটির পরবর্তী সংখ্যা কত: ৩, ৬, ১২, ২৪, ___?",
+      "options": [
+        "৪৮",
+        "৩৬",
+        "৩০",
+        "৫০"
+      ],
+      "answer": 0,
+      "explanation": "প্রতিটি পদ পূর্ববর্তী পদের দ্বিগুণ হচ্ছে (৩ × ২ = ৬, ৬ × ২ = ১২...)। সুতরাং ২৪ × ২ = ৪৮।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 29,
+      "subject": 3,
+      "chapter": 0,
+      "topic": "বাংলাদেশ",
+      "text": "বাংলাদেশের জাতীয় ফুল কোনটি?",
+      "options": [
+        "গোলাপ",
+        "শাপলা",
+        "বেলি",
+        "জবা"
+      ],
+      "answer": 1,
+      "explanation": "বাংলাদেশের জাতীয় ফুল সাদা শাপলা।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 30,
+      "subject": 3,
+      "chapter": 0,
+      "topic": "বাংলাদেশ",
+      "text": "বাংলাদেশের জাতীয় স্মৃতিসৌধ কোথায় অবস্থিত?",
+      "options": [
+        "সাভার",
+        "টুঙ্গিপাড়া",
+        "কুমিল্লা",
+        "সিলেট"
+      ],
+      "answer": 0,
+      "explanation": "জাতীয় স্মৃতিসৌধ ঢাকা জেলার সাভারের নবীনগরে অবস্থিত।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 31,
+      "subject": 3,
+      "chapter": 0,
+      "topic": "মুক্তিযুদ্ধ ও ইতিহাস",
+      "text": "১৯৭১ সালের ঐতিহাসিক ৭ই মার্চের ভাষণ কোথায় অনুষ্ঠিত হয়েছিল?",
+      "options": [
+        "রেসকোর্স ময়দান (সোহরাওয়ার্দী উদ্যান)",
+        "পল্টন ময়দান",
+        "ঢাকা বিশ্ববিদ্যালয়",
+        "কেন্দ্রীয় শহীদ মিনার"
+      ],
+      "answer": 0,
+      "explanation": "বঙ্গবন্ধু শেখ মুজিবুর রহমান ১৯৭১ সালের ৭ই মার্চ তৎকালীন রেসকোর্স ময়দানে ঐতিহাসিক ভাষণ দেন।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 32,
+      "subject": 3,
+      "chapter": 0,
+      "topic": "সংবিধান ও প্রশাসন",
+      "text": "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধান কোন তারিখ থেকে কার্যকর হয়?",
+      "options": [
+        "১৬ ডিসেম্বর ১৯৭২",
+        "২৬ মার্চ ১৯৭২",
+        "৪ নভেম্বর ১৯৭২",
+        "১০ জানুয়ারি ১৯৭২"
+      ],
+      "answer": 0,
+      "explanation": "১৯৭২ সালের ৪ নভেম্বর গণপরিষদে সংবিধান গৃহীত হয় এবং ১৬ ডিসেম্বর ১৯৭২ থেকে কার্যকর হয়।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 33,
+      "subject": 3,
+      "chapter": 1,
+      "topic": "বিশ্ব",
+      "text": "সৌরজগতের বৃহত্তম গ্রহ কোনটি?",
+      "options": [
+        "পৃথিবী",
+        "মঙ্গল",
+        "শনি",
+        "বৃহস্পতি"
+      ],
+      "answer": 3,
+      "explanation": "বৃহস্পতি সৌরজগতের সর্ববৃহৎ গ্রহ।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 34,
+      "subject": 3,
+      "chapter": 1,
+      "topic": "আন্তর্জাতিক সংস্থা",
+      "text": "জাতিসংঘের (United Nations) সদর দপ্তর কোথায় অবস্থিত?",
+      "options": [
+        "নিউইয়র্ক",
+        "জেনেভা",
+        "প্যারিস",
+        "লন্ডন"
+      ],
+      "answer": 0,
+      "explanation": "জাতিসংঘের মূল সদর দপ্তর মার্কিন যুক্তরাষ্ট্রের নিউইয়র্ক সিটিতে অবস্থিত।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 35,
+      "subject": 3,
+      "chapter": 2,
+      "topic": "বিজ্ঞান",
+      "text": "পানির রাসায়নিক সংকেত কোনটি?",
+      "options": [
+        "CO₂",
+        "O₂",
+        "H₂O",
+        "NaCl"
+      ],
+      "answer": 2,
+      "explanation": "পানির একটি অণুতে দুটি হাইড্রোজেন এবং একটি অক্সিজেন পরমাণু থাকে, তাই সংকেত H₂O।",
+      "source": "Existing local practice set",
+      "verified": false
+    },
+    {
+      "id": 36,
+      "subject": 3,
+      "chapter": 2,
+      "topic": "তথ্যপ্রযুক্তি",
+      "text": "কম্পিউটারের ‘মস্তিষ্ক’ (Brain) বলা হয় কোন অংশটিকে?",
+      "options": [
+        "CPU",
+        "RAM",
+        "Hard Disk",
+        "Monitor"
+      ],
+      "answer": 0,
+      "explanation": "CPU (Central Processing Unit) কম্পিউটারের সকল নির্দেশনা প্রক্রিয়াকরণ ও নিয়ন্ত্রণ করে।",
+      "source": "Existing local practice set",
+      "verified": false
+    }
+  ],
+  "exams": [
+    {
+      "name": "BCS Preliminary",
+      "institute": "bpsc",
+      "post": "Demo general cadre",
+      "subjects": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "Bank",
+      "institute": "bank",
+      "post": "Demo officer",
+      "subjects": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "Primary",
+      "institute": "primary",
+      "post": "Demo assistant teacher",
+      "subjects": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "NTRCA",
+      "institute": "ntrc",
+      "post": "Demo teacher",
+      "subjects": [
+        0,
+        1,
+        3
+      ]
+    }
+  ],
+  "papers": [
+    {
+      "id": "demo-bpsc-2024",
+      "title": "BCS Preliminary · 2024 · Demo paper",
+      "exam": "BCS Preliminary",
+      "institute": "bpsc",
+      "post": "Demo general cadre",
+      "year": 2024,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 8,
+        "marks": 1,
+        "penalty": 0.5
+      },
+      "questionIds": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "questionTexts": [
+        "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "‘হিমালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?"
+      ]
+    },
+    {
+      "id": "demo-bpsc-2025",
+      "title": "BCS Preliminary · 2025 · Demo paper",
+      "exam": "BCS Preliminary",
+      "institute": "bpsc",
+      "post": "Demo general cadre",
+      "year": 2025,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 8,
+        "marks": 1,
+        "penalty": 0.5
+      },
+      "questionIds": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "questionTexts": [
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?",
+        "‘রাজপুত্র’ কোন সমাসের উদাহরণ?",
+        "‘সিংহপুরুষ’ কোন সমাসের উদাহরণ?"
+      ]
+    },
+    {
+      "id": "demo-bank-2024",
+      "title": "Bank · 2024 · Demo paper",
+      "exam": "Bank",
+      "institute": "bank",
+      "post": "Demo officer",
+      "year": 2024,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 10,
+        "marks": 1,
+        "penalty": 0.25
+      },
+      "questionIds": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "questionTexts": [
+        "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "‘হিমালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?"
+      ]
+    },
+    {
+      "id": "demo-bank-2025",
+      "title": "Bank · 2025 · Demo paper",
+      "exam": "Bank",
+      "institute": "bank",
+      "post": "Demo officer",
+      "year": 2025,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 10,
+        "marks": 1,
+        "penalty": 0.25
+      },
+      "questionIds": [
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "questionTexts": [
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?",
+        "‘রাজপুত্র’ কোন সমাসের উদাহরণ?",
+        "‘সিংহপুরুষ’ কোন সমাসের উদাহরণ?"
+      ]
+    },
+    {
+      "id": "demo-primary-2024",
+      "title": "Primary · 2024 · Demo paper",
+      "exam": "Primary",
+      "institute": "primary",
+      "post": "Demo assistant teacher",
+      "year": 2024,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 12,
+        "marks": 1,
+        "penalty": 0.5
+      },
+      "questionIds": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66
+      ],
+      "questionTexts": [
+        "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "‘হিমালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?"
+      ]
+    },
+    {
+      "id": "demo-primary-2025",
+      "title": "Primary · 2025 · Demo paper",
+      "exam": "Primary",
+      "institute": "primary",
+      "post": "Demo assistant teacher",
+      "year": 2025,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 12,
+        "marks": 1,
+        "penalty": 0.5
+      },
+      "questionIds": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72
+      ],
+      "questionTexts": [
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?",
+        "‘রাজপুত্র’ কোন সমাসের উদাহরণ?",
+        "‘সিংহপুরুষ’ কোন সমাসের উদাহরণ?"
+      ]
+    },
+    {
+      "id": "demo-ntrc-2024",
+      "title": "NTRCA · 2024 · Demo paper",
+      "exam": "NTRCA",
+      "institute": "ntrc",
+      "post": "Demo teacher",
+      "year": 2024,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 14,
+        "marks": 1,
+        "penalty": 0.25
+      },
+      "questionIds": [
+        73,
+        74,
+        75,
+        76,
+        77,
+        78
+      ],
+      "questionTexts": [
+        "‘বিদ্যালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "‘হিমালয়’ শব্দের সন্ধি বিচ্ছেদ কোনটি?",
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?"
+      ]
+    },
+    {
+      "id": "demo-ntrc-2025",
+      "title": "NTRCA · 2025 · Demo paper",
+      "exam": "NTRCA",
+      "institute": "ntrc",
+      "post": "Demo teacher",
+      "year": 2025,
+      "stage": "Demo preliminary",
+      "source": "Synthetic local fixture, adapted from the existing practice set",
+      "verified": false,
+      "rules": {
+        "minutes": 14,
+        "marks": 1,
+        "penalty": 0.25
+      },
+      "questionIds": [
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ],
+      "questionTexts": [
+        "বাংলা বর্ণমালায় মোট মৌলিক স্বরধ্বনি কয়টি?",
+        "কোন শব্দটিতে স্বভাবতই ‘ষ’ হয়েছে?",
+        "‘হস্তী’ কোন ধরনের শব্দ?",
+        "‘ধীরে ধীরে বায়ু বয়’ — এখানে ‘ধীরে ধীরে’ কোন পদ?",
+        "‘রাজপুত্র’ কোন সমাসের উদাহরণ?",
+        "‘সিংহপুরুষ’ কোন সমাসের উদাহরণ?"
+      ]
+    }
+  ],
+  "affairs": [
+    {
+      "id": "demo-affairs-1",
+      "month": "2026-10",
+      "date": "2026-10-01",
+      "title": "Demo: a new public learning programme",
+      "text": "This fictional programme offers free weekly study sessions. This article demonstrates dated reading material and an associated quiz; it does not describe a real announcement.",
+      "source": "Synthetic local demo",
+      "question": "In this fictional programme, how often are the study sessions held?",
+      "options": [
+        "Daily",
+        "Weekly",
+        "Monthly",
+        "Yearly"
+      ],
+      "answer": 1,
+      "questionId": 85
+    },
+    {
+      "id": "demo-affairs-2",
+      "month": "2026-09",
+      "date": "2026-09-01",
+      "title": "Demo: a digital reading initiative",
+      "text": "In this fictional initiative, learners can save reading notes offline. This is sample content for testing the monthly archive, not a real news report.",
+      "source": "Synthetic local demo",
+      "question": "What can learners save in this fictional initiative?",
+      "options": [
+        "Reading notes",
+        "Travel tickets",
+        "Bank cards",
+        "Exam certificates"
+      ],
+      "answer": 0,
+      "questionId": 86
+    }
+  ]
+}

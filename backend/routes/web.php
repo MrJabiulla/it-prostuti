@@ -1,0 +1,76 @@
+<?php
+
+use App\Http\Controllers\AdminCatalogueController;
+use App\Http\Controllers\AdminContentController;
+use App\Http\Controllers\AttemptController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PreparationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\ActiveUser;
+use App\Http\Middleware\AdminOnly;
+use App\Http\Middleware\ApiResponseHeaders;
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class])->group(function () {
+    Route::get('auth/csrf', fn () => response()->json(['csrf_token' => csrf_token()])->header('Cache-Control', 'no-store'));
+    Route::post('auth/otp/request', [AuthController::class, 'requestOtp'])->middleware('throttle:otp-send');
+    Route::post('auth/otp/verify', [AuthController::class, 'verifyOtp'])->middleware('throttle:otp-verify');
+    Route::get('auth/google/nonce', [AuthController::class, 'googleNonce'])->middleware('throttle:login');
+    Route::post('auth/google', [AuthController::class, 'google'])->middleware('throttle:login');
+    Route::middleware(['auth', ActiveUser::class])->group(function () {
+        Route::get('me', [ProfileController::class, 'show']);
+        Route::put('me', [ProfileController::class, 'update']);
+        Route::post('auth/google/link', [AuthController::class, 'linkGoogle'])->middleware('throttle:login');
+        Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::get('subjects', [CatalogueController::class, 'subjects']);
+        Route::get('subjects/{subject}', [CatalogueController::class, 'subject'])->whereNumber('subject');
+        Route::get('chapters/{chapter}', [CatalogueController::class, 'chapter'])->whereNumber('chapter');
+        Route::get('lessons/{lesson}', [CatalogueController::class, 'lesson'])->whereNumber('lesson');
+        Route::put('lessons/{lesson}/progress', [PreparationController::class, 'progress'])->whereNumber('lesson');
+        Route::put('lessons/{lesson}/note', [PreparationController::class, 'note'])->whereNumber('lesson');
+        Route::put('lessons/{lesson}/bookmark', [PreparationController::class, 'lessonBookmark'])->whereNumber('lesson');
+        Route::get('questions', [CatalogueController::class, 'questions']);
+        Route::put('questions/{question}/bookmark', [PreparationController::class, 'questionBookmark'])->whereNumber('question');
+        Route::get('exams', [CatalogueController::class, 'exams']);
+        Route::get('exams/{exam}', [CatalogueController::class, 'exam'])->whereNumber('exam');
+        Route::get('papers/filters', [CatalogueController::class, 'paperFilters']);
+        Route::get('papers', [CatalogueController::class, 'papers']);
+        Route::get('papers/{paper}', [CatalogueController::class, 'paper'])->whereNumber('paper');
+        Route::get('current-affairs', [CatalogueController::class, 'affairs']);
+        Route::get('dashboard', [PreparationController::class, 'dashboard']);
+        Route::get('revision', [PreparationController::class, 'revision']);
+        Route::get('routine', [PreparationController::class, 'routine']);
+        Route::post('routine', [PreparationController::class, 'saveTask']);
+        Route::put('routine/{task}', [PreparationController::class, 'saveTask'])->whereNumber('task');
+        Route::delete('routine/{task}', [PreparationController::class, 'deleteTask'])->whereNumber('task');
+        Route::get('attempts', [AttemptController::class, 'index']);
+        Route::post('attempts', [AttemptController::class, 'store'])->middleware('throttle:attempt-start');
+        Route::get('attempts/{attempt}', [AttemptController::class, 'show'])->whereUuid('attempt');
+        Route::put('attempts/{attempt}/answers', [AttemptController::class, 'answers'])->whereUuid('attempt');
+        Route::post('attempts/{attempt}/submit', [AttemptController::class, 'submit'])->whereUuid('attempt');
+        Route::get('media/{media}/download', [MediaController::class, 'download'])->whereNumber('media');
+
+        Route::prefix('admin')->middleware(AdminOnly::class)->group(function () {
+            Route::get('catalogue/{resource}', [AdminCatalogueController::class, 'index']);
+            Route::post('catalogue/{resource}', [AdminCatalogueController::class, 'save']);
+            Route::put('catalogue/{resource}/{id}', [AdminCatalogueController::class, 'save'])->whereNumber('id');
+            Route::delete('catalogue/{resource}/{id}', [AdminCatalogueController::class, 'destroy'])->whereNumber('id');
+            Route::put('exams/{exam}/syllabus', [AdminCatalogueController::class, 'syllabus'])->whereNumber('exam');
+            Route::get('content/{resource}', [AdminContentController::class, 'index']);
+            Route::get('content/{resource}/{id}', [AdminContentController::class, 'show'])->whereNumber('id');
+            Route::post('lessons', [AdminContentController::class, 'lesson']);
+            Route::put('lessons/{id}', [AdminContentController::class, 'lesson'])->whereNumber('id');
+            Route::post('questions', [AdminContentController::class, 'question']);
+            Route::put('questions/{id}', [AdminContentController::class, 'question'])->whereNumber('id');
+            Route::post('papers', [AdminContentController::class, 'paper']);
+            Route::put('papers/{id}', [AdminContentController::class, 'paper'])->whereNumber('id');
+            Route::post('current-affairs', [AdminContentController::class, 'affair']);
+            Route::put('current-affairs/{id}', [AdminContentController::class, 'affair'])->whereNumber('id');
+            Route::get('media', [MediaController::class, 'index']);
+            Route::post('media', [MediaController::class, 'store'])->middleware('throttle:uploads');
+            Route::put('media/{media}', [MediaController::class, 'publish'])->whereNumber('media');
+        });
+    });
+});

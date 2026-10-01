@@ -1,0 +1,2821 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Prosthuti API",
+    "version": "1.0.0",
+    "description": "Local Laravel API. Cookie sessions; mutations require CSRF. See API.md for payloads and workflow constraints. Response schemas are intentionally not exhaustive."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000/api/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "prosthuti_session"
+      }
+    }
+  },
+  "paths": {
+    "/admin/catalogue/{resource}": {
+      "get": {
+        "operationId": "AdminCatalogueController_index_get",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "AdminCatalogueController_save_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/catalogue/{resource}/{id}": {
+      "put": {
+        "operationId": "AdminCatalogueController_save_put_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "AdminCatalogueController_destroy_delete_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/admin/content/{resource}": {
+      "get": {
+        "operationId": "AdminContentController_index_get",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/admin/content/{resource}/{id}": {
+      "get": {
+        "operationId": "AdminContentController_show_get_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/admin/current-affairs": {
+      "post": {
+        "operationId": "AdminContentController_affair_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/current-affairs/{id}": {
+      "put": {
+        "operationId": "AdminContentController_affair_put_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/exams/{exam}/syllabus": {
+      "put": {
+        "operationId": "AdminCatalogueController_syllabus_put",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "exam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/lessons": {
+      "post": {
+        "operationId": "AdminContentController_lesson_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/lessons/{id}": {
+      "put": {
+        "operationId": "AdminContentController_lesson_put_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/media": {
+      "get": {
+        "operationId": "MediaController_index_get",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "operationId": "MediaController_store_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/media/{media}": {
+      "put": {
+        "operationId": "MediaController_publish_put",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/papers": {
+      "post": {
+        "operationId": "AdminContentController_paper_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/papers/{id}": {
+      "put": {
+        "operationId": "AdminContentController_paper_put_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/questions": {
+      "post": {
+        "operationId": "AdminContentController_question_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/questions/{id}": {
+      "put": {
+        "operationId": "AdminContentController_question_put_item",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attempts": {
+      "get": {
+        "operationId": "AttemptController_index_get",
+        "tags": [
+          "attempts"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "operationId": "AttemptController_store_post",
+        "tags": [
+          "attempts"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          },
+          "201": {
+            "description": "New or idempotently replayed attempt"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attempts/{attempt}": {
+      "get": {
+        "operationId": "AttemptController_show_get",
+        "tags": [
+          "attempts"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "attempt",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/attempts/{attempt}/answers": {
+      "put": {
+        "operationId": "AttemptController_answers_put",
+        "tags": [
+          "attempts"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "attempt",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attempts/{attempt}/submit": {
+      "post": {
+        "operationId": "AttemptController_submit_post",
+        "tags": [
+          "attempts"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "attempt",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/csrf": {
+      "get": {
+        "operationId": "csrf_get",
+        "tags": [
+          "auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "operationId": "AuthController_google_post",
+        "tags": [
+          "auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google/link": {
+      "post": {
+        "operationId": "AuthController_linkGoogle_post",
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google/nonce": {
+      "get": {
+        "operationId": "AuthController_googleNonce_get",
+        "tags": [
+          "auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout_post",
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/otp/request": {
+      "post": {
+        "operationId": "AuthController_requestOtp_post",
+        "tags": [
+          "auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          },
+          "202": {
+            "description": "Code requested; expires_in=600"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/otp/verify": {
+      "post": {
+        "operationId": "AuthController_verifyOtp_post",
+        "tags": [
+          "auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapters/{chapter}": {
+      "get": {
+        "operationId": "CatalogueController_chapter_get",
+        "tags": [
+          "chapters"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "chapter",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/current-affairs": {
+      "get": {
+        "operationId": "CatalogueController_affairs_get",
+        "tags": [
+          "current-affairs"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "operationId": "PreparationController_dashboard_get",
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/exams": {
+      "get": {
+        "operationId": "CatalogueController_exams_get",
+        "tags": [
+          "exams"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/exams/{exam}": {
+      "get": {
+        "operationId": "CatalogueController_exam_get",
+        "tags": [
+          "exams"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "exam",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/lessons/{lesson}": {
+      "get": {
+        "operationId": "CatalogueController_lesson_get",
+        "tags": [
+          "lessons"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "lesson",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/lessons/{lesson}/bookmark": {
+      "put": {
+        "operationId": "PreparationController_lessonBookmark_put",
+        "tags": [
+          "lessons"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "lesson",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lessons/{lesson}/note": {
+      "put": {
+        "operationId": "PreparationController_note_put",
+        "tags": [
+          "lessons"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "lesson",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lessons/{lesson}/progress": {
+      "put": {
+        "operationId": "PreparationController_progress_put",
+        "tags": [
+          "lessons"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "lesson",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "operationId": "ProfileController_show_get",
+        "tags": [
+          "me"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      },
+      "put": {
+        "operationId": "ProfileController_update_put",
+        "tags": [
+          "me"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/media/{media}/download": {
+      "get": {
+        "operationId": "MediaController_download_get",
+        "tags": [
+          "media"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "media",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/papers": {
+      "get": {
+        "operationId": "CatalogueController_papers_get",
+        "tags": [
+          "papers"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/papers/filters": {
+      "get": {
+        "operationId": "CatalogueController_paperFilters_get",
+        "tags": [
+          "papers"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/papers/{paper}": {
+      "get": {
+        "operationId": "CatalogueController_paper_get",
+        "tags": [
+          "papers"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "paper",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/questions": {
+      "get": {
+        "operationId": "CatalogueController_questions_get",
+        "tags": [
+          "questions"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/questions/{question}/bookmark": {
+      "put": {
+        "operationId": "PreparationController_questionBookmark_put",
+        "tags": [
+          "questions"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "question",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/revision": {
+      "get": {
+        "operationId": "PreparationController_revision_get",
+        "tags": [
+          "revision"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/routine": {
+      "get": {
+        "operationId": "PreparationController_routine_get",
+        "tags": [
+          "routine"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "operationId": "PreparationController_saveTask_post",
+        "tags": [
+          "routine"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routine/{task}": {
+      "put": {
+        "operationId": "PreparationController_saveTask_put_item",
+        "tags": [
+          "routine"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "PreparationController_deleteTask_delete_item",
+        "tags": [
+          "routine"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/subjects": {
+      "get": {
+        "operationId": "CatalogueController_subjects_get",
+        "tags": [
+          "subjects"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/subjects/{subject}": {
+      "get": {
+        "operationId": "CatalogueController_subject_get",
+        "tags": [
+          "subjects"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "subject",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
