@@ -8,9 +8,17 @@
 ## 📁 1. Directory Structure (ক্যাটাগরি ভিত্তিক ডিরেক্টরি কাঠামো)
 
 ```text
-web/
-├── index.html                    # ইন্টারঅ্যাক্টিভ লাইভ ডেমো ও শোকেস
+it-prostuti/
+├── index.html                    # মূল Prosthuti app entry point
+├── .openai/hosting.json          # Static hosting configuration
+├── examples/
+│   └── ui-kit.html               # UI kit demo ও showcase
 ├── src/
+│   ├── app/                      # App-specific scripts and styles
+│   │   ├── app.js                # Main application
+│   │   ├── study.js              # Study flows (loads after app.js)
+│   │   └── style.css             # Application styles
+│   │
 │   ├── index.js                  # Master Barrel Export (এক জায়গা থেকে সহজে ব্যবহারের জন্য)
 │   ├── styles.css                # একীভূত স্টাইলশিট বান্ডেল
 │   │
@@ -53,6 +61,19 @@ web/
 ```
 
 ---
+
+## Running locally
+
+Serve the repository root with `python3 -m http.server 8000`.
+Open `http://localhost:8000/` for the app and
+`http://localhost:8000/examples/ui-kit.html` for the UI kit showcase.
+
+This project uses plain browser JavaScript and CSS with no build step.
+`src/app/` owns application code; the other existing `src/` folders own the
+reusable UI kit. The app currently uses its own styles and does not import the
+UI kit. Keep `app.js` before `study.js`: they share classic-script globals.
+The hosting configuration serves the repository root. Do not place secrets or
+private files in the static serving directory.
 
 ## 🚀 2. Quick Usage Guide (সহজ ব্যবহারের নিয়মাবলী)
 
