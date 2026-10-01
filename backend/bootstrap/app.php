@@ -1,7 +1,7 @@
 <?php
 
+use App\Foundation\EnvironmentApplication as Application;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;

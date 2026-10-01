@@ -4,17 +4,21 @@ Laravel 13 / PHP 8.3+ / MySQL 8.4+, built independently of the existing web UI. 
 
 ## Local setup
 
+See [environment management](docs/ENVIRONMENTS.md) for local/staging/production templates, secrets, config caching and release steps.
+
 ```sh
 cd backend
+cp .env.example .env # Only for a new checkout; preserve existing files.
+cp .env.local.example .env.local
+cp .env.testing.example .env.testing
 composer install
-cp .env.example .env # Only for a new checkout; preserve an existing .env.
 php artisan key:generate
 php artisan migrate
 php artisan db:seed
 php artisan serve --host=127.0.0.1 --port=8000
 ```
 
-Configure your MySQL connection in `.env` before migrating. The local workspace uses a dedicated MySQL 8.4 instance in `storage/mysql`, socket `/tmp/prosthuti-mysql.sock`, and separate `prosthuti` and `prosthuti_test` databases. TCP and MySQL X listeners are disabled. Database files and backups are ignored by Git. Restart the local instance after reboot with:
+Configure your local MySQL connection in `.env.local` before migrating. The local workspace uses a dedicated MySQL 8.4 instance in `storage/mysql`, socket `/tmp/prosthuti-mysql.sock`, and separate `prosthuti` and `prosthuti_test` databases. TCP and MySQL X listeners are disabled. Database files and backups are ignored by Git. Restart the local instance after reboot with:
 
 ```sh
 /opt/homebrew/opt/mysql@8.4/bin/mysqld --no-defaults --datadir="$PWD/storage/mysql" --socket=/tmp/prosthuti-mysql.sock --pid-file="$PWD/storage/mysql/server.pid" --log-error="$PWD/storage/mysql/server.log" --skip-networking --mysqlx=OFF --daemonize
@@ -48,7 +52,7 @@ Grant admin access only to an existing active verified account, from your truste
 php artisan app:make-admin student@example.com
 ```
 
-Registration payloads cannot set role, verification state or active status. All admin routes enforce the current database role. Set `SESSION_SECURE_COOKIE=true` with HTTPS and configure exact `FRONTEND_URLS` for future deployment. No wildcard credentialed CORS is enabled.
+Registration payloads cannot set role, verification state or active status. All admin routes enforce the current database role. In the selected profile, set `SESSION_SECURE_COOKIE=true` with HTTPS and configure exact `FRONTEND_URLS` for future deployment. No wildcard credentialed CORS is enabled.
 
 ## Data structure and ownership
 
