@@ -343,11 +343,9 @@ async function loadApiCatalogue() {
     },
     questionIds: questionRows.filter((question) => question.papers?.some((item) => item.paper_id === paper.id)).map((question) => apiQuestionIndexes.get(question.id)),
   })));
-  // The existing paper select uses institute labels from paper data.
-  for (const paper of demoPapers) {
-    const label = filters.institutes.find((item) => String(item.id) === paper.institute)?.title;
-    if (label)
-      apiInstituteLabels.set(paper.institute, label);
+  apiInstituteLabels.clear();
+  for (const institute of filters.institutes) {
+    apiInstituteLabels.set(String(institute.id), institute.title);
   }
 }
 const apiInstituteLabels = new Map<string, string>();

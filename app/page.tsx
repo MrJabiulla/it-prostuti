@@ -7,8 +7,12 @@ export default function StudentPage() {
       <div id="app">
         <aside id="sidebar-nav" aria-label="Desktop navigation"></aside>
         <div id="app-body">
-          <header id="desktop-header"></header>
-          <div id="account-controls" className="account-controls" aria-label="Account"></div>
+          <header id="desktop-header">
+            <div className="desktop-header-inner">
+              <div id="desktop-header-content"></div>
+              <div id="account-controls" className="account-controls" aria-label="Account"></div>
+            </div>
+          </header>
           <p id="api-status" className="fine" role="status" hidden></p>
           <main id="main"></main>
         </div>

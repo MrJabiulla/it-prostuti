@@ -3790,14 +3790,26 @@ button.opt-card-v3:disabled {
   white-space: pre-line;
 }
 
-/* Account access stays available on both desktop and mobile. */
+/* Keep account actions inside the shared desktop and mobile app bar. */
+.desktop-header-inner {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+#desktop-header-content {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .account-controls {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 12px 20px;
+  margin-left: auto;
+}
+.account-controls:empty {
+  display: none;
 }
 .account-controls .fine {
   overflow-wrap: anywhere;

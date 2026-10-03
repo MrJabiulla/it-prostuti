@@ -30,6 +30,12 @@ The previous local database was backed up to ignored `storage/backups/pre-mysql.
 
 Seed data is explicitly synthetic/unverified. It includes 39 topic lessons, question options, 4 exam tracks, 8 papers and dated sample affairs. The seed command refuses production, creates no administrator, and leaves existing catalogues unchanged. Never classify these samples as historical papers or official syllabuses.
 
+## Expanded local preview content
+
+Run `php artisan db:seed --class=PreviewContentSeeder` to add sample content to an existing local catalogue without resetting the database. The seeder also initializes the base demo catalogue on a fresh database. It creates four sample papers per institution across nine institution categories, with six to nine linked questions per new paper, plus four ICT chapters and lessons, 24 technical questions, four current-affairs reading exercises with questions, and six notices. Existing demo papers remain available.
+
+The command is restricted to local/testing environments. Repeating it preserves existing records and avoids duplicates. All new questions, papers, lessons and affairs remain synthetic demo content; notices explicitly identify themselves as samples. Account activity, attempts and personal study progress are not fabricated. The original `DatabaseSeeder` remains unchanged for the baseline API test fixtures.
+
 ## Email OTP and Google authentication
 
 The intended Next.js web and Admin clients use Laravel's encrypted HttpOnly session cookie, not bearer tokens in browser localStorage. Use one consistent hostname (`localhost` or `127.0.0.1`) and `credentials: 'include'`. Both clients can share the same API session; authorization is always enforced by the server.

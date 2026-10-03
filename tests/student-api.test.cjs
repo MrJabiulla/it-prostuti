@@ -143,3 +143,29 @@ test('note autosave retains an unsaved draft across renders after a failed reque
   assert.equal(app.run("apiNoteDrafts.has('21-0')"), false);
   assert.equal(app.run("state.reading['21-0'].note"), 'Saved revision');
 });
+
+test('Home institutions use the API catalogue and open filtered previous questions', async () => {
+  const app = createApiApp({ '/papers/filters': { institutes: [{ id: 81, title: 'Server Institute' }, { id: 82, title: 'Empty Institute' }] } });
+  await app.ready();
+  const html = app.run('home()');
+  assert.match(html, /data-inst="81"/);
+  assert.match(html, /Server Institute/);
+  assert.match(html, /1 papers · 1 questions/);
+  assert.ok(!html.includes('data-inst="it"'));
+  app.run("paperPost = 'Old post'; paperYear = '2000'; openInstituteModal('81')");
+  assert.equal(app.run('location.hash'), 'papers');
+  assert.equal(app.run('paperInstitute'), '81');
+  assert.equal(app.run('paperPost'), '');
+  assert.equal(app.run('paperYear'), '');
+  assert.match(app.run('papers()'), /data-paper="51"/);
+  app.run("openInstituteModal('82')");
+  assert.match(app.run('papers()'), /No papers available for this selection/);
+  assert.ok(!app.run('papers()').includes('data-paper="51"'));
+});
+
+test('Home does not fall back to static institutions for an empty API catalogue', async () => {
+  const app = createApiApp({ '/papers/filters': { institutes: [] } });
+  await app.ready();
+  assert.match(app.run('home()'), /No institutions available/);
+  assert.ok(!app.run('home()').includes('data-action="institute-select"'));
+});

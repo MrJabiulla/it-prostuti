@@ -726,7 +726,8 @@ function nav() {
     sideNav.innerHTML = `<div><div class="brand"><div class="brand-logo">P</div><div><div class="brand-title">Prosthuti</div><div class="brand-sub">A little progress every day</div></div><button class="icon-button sidebar-collapse-btn" data-action="toggle-sidebar" aria-label="Hide sidebar" title="Hide sidebar">‹</button></div><div class="sidebar-section-label">Your study space</div><div class="sidebar-menu">${sidebarItems.map(([id, symbol, label, badge]) => `<button data-action="navigate" data-page="${id}" class="sidebar-item ${activePage === id ? 'active' : ''}" ${activePage === id ? 'aria-current="page"' : ''}><span class="sidebar-icon">${symbol}</span><span class="sidebar-label">${label}</span>${badge ? `<span class="badge">${badge}</span>` : ''}</button>`).join('')}<div class="sidebar-group ${settingsExpanded ? 'open' : ''}"><button class="sidebar-item sidebar-parent ${page === 'settings' ? 'active' : ''}" data-action="toggle-settings-sub" ${page === 'settings' ? 'aria-current="page"' : ''}><span class="sidebar-icon">⚙</span><span class="sidebar-label">Settings</span><span class="chevron ${settingsExpanded ? 'expanded' : ''}">▾</span></button><div class="sidebar-sub-menu ${settingsExpanded ? '' : 'hide-sub'}">${settingsSubItems.map(([id, label]) => `<button data-action="settings-sub" data-id="${id}" class="sidebar-sub-item ${page === 'settings' && typeof settingsTab !== 'undefined' && settingsTab === id ? 'active' : ''}"><span class="sidebar-sub-label">${label}</span></button>`).join('')}</div></div></div></div><div class="sidebar-footer-card"><div class="sidebar-card-icon">✦</div><b>Small steps. Real progress.</b><p class="fine" style="margin:4px 0 0">A little practice today, more confidence tomorrow.</p></div>`;
   }
   const deskHeader = $('#desktop-header');
-  if (deskHeader) {
+  const headerContent = $('#desktop-header-content');
+  if (deskHeader && headerContent) {
     if (page === 'practice') {
       deskHeader.style.display = 'none';
     } else {
@@ -769,9 +770,9 @@ function nav() {
       const acc = apiEnabled && apiReady ? accuracy() : state.attempts.length ? accuracy() : 33;
       const solvedCount = apiEnabled && apiReady ? state.attempts.length : state.attempts.length || 3;
       if (page === 'home') {
-        deskHeader.innerHTML = `<div class="desktop-header-inner"><div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="appbar-user-wrap"><h1 class="appbar-user-name">${esc(userName)}</h1><div class="appbar-user-stats"><b>${formatNumber(apiEnabled && apiReady ? streakCount : streakCount || 1)}</b> day streak · <b>${formatNumber(acc)}%</b> accuracy · <b>${formatNumber(solvedCount)}</b> solved</div></div></div></div>`;
+        headerContent.innerHTML = `<div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="appbar-user-wrap"><h1 class="appbar-user-name">${esc(userName)}</h1><div class="appbar-user-stats"><b>${formatNumber(apiEnabled && apiReady ? streakCount : streakCount || 1)}</b> day streak · <b>${formatNumber(acc)}%</b> accuracy · <b>${formatNumber(solvedCount)}</b> solved</div></div></div>`;
       } else {
-        deskHeader.innerHTML = `<div class="desktop-header-inner"><div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="breadcrumbs"><b class="active-crumb">${titles[page] || 'Today'}</b>${page === 'settings' && curSub ? `<span class="sep">/</span><span class="active-crumb-sub">${curSub}</span>` : ''}${page === 'bank' && selectedSubject !== null ? `<span class="sep">/</span><span class="active-crumb-sub">${esc(subjects[selectedSubject].short)}</span>` : ''}</div></div></div>`;
+        headerContent.innerHTML = `<div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="breadcrumbs"><b class="active-crumb">${titles[page] || 'Today'}</b>${page === 'settings' && curSub ? `<span class="sep">/</span><span class="active-crumb-sub">${curSub}</span>` : ''}${page === 'bank' && selectedSubject !== null ? `<span class="sep">/</span><span class="active-crumb-sub">${esc(subjects[selectedSubject].short)}</span>` : ''}</div></div>`;
       }
     }
   }
@@ -2319,10 +2320,7 @@ const INSTITUTES = [
 ];
 
 function openInstituteModal(instId) {
-  if (apiEnabled) {
-    toast("This institution card is not linked to the API catalogue yet. Use Previous Questions filters.");
-    return;
-  }
+  if (apiEnabled && (!apiReady || !apiInstituteLabels.has(instId))) return;
   paperInstitute = instId;
   paperPost = '';
   paperYear = '';
@@ -2330,6 +2328,18 @@ function openInstituteModal(instId) {
 }
 
 function home() {
+  const institutes = apiEnabled
+    ? [...apiInstituteLabels].map(([id, name]) => {
+        const papers = demoPapers.filter((paper) => paper.institute === id);
+        return {
+          id,
+          name,
+          dept: [...new Set(papers.map((paper) => paper.post).filter(Boolean))].join(', '),
+          tag: `${papers.length} papers`,
+          count: new Set(papers.flatMap((paper) => paper.questionIds)).size,
+        };
+      })
+    : INSTITUTES;
   const count = todayAttempts().length;
   const target = goal();
   const weakList = getWeakPoints(showMoreWeak);
@@ -2436,9 +2446,9 @@ function home() {
 
         <div class="home-section-title">Explore by institution</div>
         <div class="institute-grid">
-          ${INSTITUTES.map(
+          ${institutes.map(
             (inst) => `
-            <button class="inst-minimal-card" data-action="institute-select" data-inst="${inst.id}">
+            <button class="inst-minimal-card" data-action="institute-select" data-inst="${esc(inst.id)}">
               <div class="inst-minimal-content">
                 <div class="inst-minimal-title">${esc(inst.name)}</div>
                 <div class="inst-minimal-dept">${esc(inst.dept)}</div>
@@ -2447,7 +2457,7 @@ function home() {
               <div class="inst-minimal-meta">${esc(inst.tag)} · ${inst.count} questions</div>
             </button>
           `,
-          ).join('')}
+          ).join('') || '<p class="muted">No institutions available.</p>'}
         </div>
       </div>
 
