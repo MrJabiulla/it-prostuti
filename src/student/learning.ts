@@ -51,7 +51,7 @@ function learningHeader(title, back = 'preparation') {
 function continueReading() {
   const lesson = lessons.find((item) => item.id === state.lastLesson);
   if (!lesson) return '';
-  return `<section class="panel learning-panel"><h2>Continue reading</h2><p>${esc(lesson.chapterTitle)}</p>${lessonLink(lesson)}<p class="fine">${state.reading[lesson.id]?.done ? 'Completed · available for revision' : 'Your reading place is saved on this browser.'}</p></section>`;
+  return `<section class="panel learning-panel"><h2>Continue reading</h2><p>${esc(lesson.chapterTitle)}</p>${lessonLink(lesson)}<p class="fine">${state.reading[lesson.id]?.done ? 'Completed · available for revision' : (apiEnabled && apiReady ? 'Your reading place is saved to your account.' : 'Your reading place is saved on this browser.')}</p></section>`;
 }
 function study() {
   let list = lessons;
@@ -87,7 +87,12 @@ function study() {
   }
   return `${learningHeader(studySubject === null ? 'Study' : subjects[studySubject].name, 'home')}<div class="learning-actions"><button class="secondary" data-action="study-root">All subjects</button>${studyChapter !== null ? `<button class="secondary" data-action="study-subject" data-subject="${studySubject}">All chapters</button>` : ''}</div><p>${completed}/${list.length} topics completed</p><progress max="${list.length}" value="${completed}" aria-label="Reading progress"></progress>${continueReading()}<div class="learning-grid">${content}</div>`;
 }
-function openLesson(id) {
+async function openLesson(id) {
+  if (apiEnabled) {
+    if (!apiReady) return;
+    try { await loadApiLesson(id); } catch (error) { apiFailure(error); return; }
+    if (!await saveApiProfile({ ...state, lastLesson: id })) return;
+  }
   const lesson = lessons.find((item) => item.id === id);
   if (!lesson) return;
   activeLesson = id;
@@ -97,7 +102,9 @@ function openLesson(id) {
 }
 function lessonScreen() {
   const lesson = lessons.find((item) => item.id === activeLesson) || lessons[0];
-  const reading = state.reading[lesson.id] || {};
+  if (!lesson) return `${learningHeader('Study', 'study')}<p>No lessons available.</p>`;
+  const reading = { ...state.reading[lesson.id] };
+  if (apiEnabled && apiNoteDrafts.has(lesson.id)) reading.note = apiNoteDrafts.get(lesson.id);
   const siblings = lessons.filter(
     (item) =>
       item.subject === lesson.subject && item.chapter === lesson.chapter,
@@ -106,7 +113,7 @@ function lessonScreen() {
   const qs = lessonQuestions(lesson);
   return `${learningHeader(lesson.topic, 'study')}${lesson.note?.demo ? '<p class="tag">Demo lesson · sample content</p>' : ''}<p class="muted">${esc(subjects[lesson.subject].short)} → ${esc(lesson.chapterTitle)}</p><!-- Temporarily disabled reader controls.
 <div class="learning-actions"><label>Font size<select id="reader-size">${[16, 18, 20, 24].map((size) => `<option value="${size}" ${state.readerSize === size ? 'selected' : ''}>${size}px</option>`).join('')}</select></label><button class="secondary" data-action="save-lesson">${reading.saved ? 'Remove bookmark' : 'Bookmark'}</button><button class="secondary" data-action="download-lesson" ${!lesson.note ? 'disabled' : ''}>Download lesson</button></div>
--->${lesson.note ? `<section class="panel learning-panel lesson-contents" role="navigation" aria-label="Table of contents"><h2>Contents</h2>${lesson.note.points.map((point, i) => `<button class="text-button" data-action="lesson-section" data-section="${i}">${esc(point.label)}</button>`).join('')}</section><article class="panel learning-panel lesson-article" style="font-size:${state.readerSize}px"><p>${esc(lesson.note.summary)}</p>${lesson.note.points.map((point, i) => `<section id="lesson-section-${i}"><h2>${esc(point.label)}</h2><p>${esc(point.desc)}</p></section>`).join('')}<h2>Related paper questions</h2><p class="fine">Demo paper references, not verified previous questions.</p>${relatedPapers(lesson)}<h2>Practice concepts</h2>${qs.map((q) => `<section><h3>${esc(q.text)}</h3><p>${esc(q.explanation)}</p></section>`).join('') || '<p>No related practice questions available.</p>'}<p class="fine">These are local study notes with demo learning sections. Verified previous questions and source-reviewed lesson material have not been added.</p></article>` : '<section class="panel learning-panel"><h2>Lesson content not available</h2><p>This topic needs a complete lesson before it can be marked as read.</p></section>'}<section class="panel learning-panel"><label for="lesson-note">My short note</label><textarea id="lesson-note" maxlength="4000" rows="4" placeholder="Write a note for revision">${esc(reading.note || '')}</textarea><p class="fine" id="note-status">Saved automatically on this browser.</p></section><div class="learning-actions"><button class="primary" data-action="complete-lesson" ${!lesson.note ? 'disabled' : ''}>${reading.done ? 'Mark unread' : 'পড়া শেষ'}</button><button class="secondary" data-action="lesson-practice" ${!qs.length ? 'disabled' : ''}>এই topic practice করো (${qs.length})</button></div><div class="learning-actions">${index > 0 ? lessonLink(siblings[index - 1], '← Previous topic') : ''}${index < siblings.length - 1 ? lessonLink(siblings[index + 1], 'Next topic →') : `<button class="secondary" data-action="study-chapter" data-subject="${lesson.subject}" data-chapter="${lesson.chapter}">Chapter overview & test</button>`}</div>`;
+-->${lesson.note ? `<section class="panel learning-panel lesson-contents" role="navigation" aria-label="Table of contents"><h2>Contents</h2>${lesson.note.points.map((point, i) => `<button class="text-button" data-action="lesson-section" data-section="${i}">${esc(point.label)}</button>`).join('')}</section><article class="panel learning-panel lesson-article" style="font-size:${state.readerSize}px"><p>${esc(lesson.note.summary)}</p>${lesson.note.points.map((point, i) => `<section id="lesson-section-${i}"><h2>${esc(point.label)}</h2><p>${esc(point.desc)}</p></section>`).join('')}<h2>Related paper questions</h2><p class="fine">Demo paper references, not verified previous questions.</p>${relatedPapers(lesson)}<h2>Practice concepts</h2>${qs.map((q) => `<section><h3>${esc(q.text)}</h3><p>${esc(q.explanation)}</p></section>`).join('') || '<p>No related practice questions available.</p>'}<p class="fine">These are local study notes with demo learning sections. Verified previous questions and source-reviewed lesson material have not been added.</p></article>` : '<section class="panel learning-panel"><h2>Lesson content not available</h2><p>This topic needs a complete lesson before it can be marked as read.</p></section>'}<section class="panel learning-panel"><label for="lesson-note">My short note</label><textarea id="lesson-note" maxlength="4000" rows="4" placeholder="Write a note for revision">${esc(reading.note || '')}</textarea><p class="fine" id="note-status">${apiEnabled && apiReady ? (apiNoteDrafts.has(lesson.id) ? 'Not saved yet.' : 'Saved to your account.') : 'Saved automatically on this browser.'}</p></section><div class="learning-actions"><button class="primary" data-action="complete-lesson" ${!lesson.note ? 'disabled' : ''}>${reading.done ? 'Mark unread' : 'পড়া শেষ'}</button><button class="secondary" data-action="lesson-practice" ${!qs.length ? 'disabled' : ''}>এই topic practice করো (${qs.length})</button></div><div class="learning-actions">${index > 0 ? lessonLink(siblings[index - 1], '← Previous topic') : ''}${index < siblings.length - 1 ? lessonLink(siblings[index + 1], 'Next topic →') : `<button class="secondary" data-action="study-chapter" data-subject="${lesson.subject}" data-chapter="${lesson.chapter}">Chapter overview & test</button>`}</div>`;
 }
 function customPractice() {
   const chapters =
@@ -160,7 +167,7 @@ function paperOptions(values, selected) {
   return [...new Set(values)]
     .map(
       (value) =>
-        `<option value="${esc(value)}" ${String(value) === selected ? 'selected' : ''}>${esc(value)}</option>`,
+        `<option value="${esc(value)}" ${String(value) === selected ? 'selected' : ''}>${esc(apiEnabled && apiReady ? apiInstituteLabels.get(String(value)) || value : value)}</option>`,
     )
     .join('');
 }
@@ -174,7 +181,7 @@ function papers() {
   const filtered = postPapers.filter(
     (paper) => !paperYear || String(paper.year) === paperYear,
   );
-  return `${learningHeader('Previous Questions', 'bank')}<section class="panel learning-panel"><p class="tag">Demo data · not actual previous papers</p><div class="field-grid"><label>Institute<select id="paper-institute"><option value="">All institutes</option>${paperOptions([...INSTITUTES.map((inst) => inst.id), 'primary'], paperInstitute)}</select></label><label>Post<select id="paper-post"><option value="">All posts</option>${paperOptions(
+  return `${learningHeader('Previous Questions', 'bank')}<section class="panel learning-panel"><p class="tag">Demo data · not actual previous papers</p><div class="field-grid"><label>Institute<select id="paper-institute"><option value="">All institutes</option>${paperOptions(apiEnabled && apiReady ? [...apiInstituteLabels.keys()] : [...INSTITUTES.map((inst) => inst.id), 'primary'], paperInstitute)}</select></label><label>Post<select id="paper-post"><option value="">All posts</option>${paperOptions(
     institutePapers.map((paper) => paper.post),
     paperPost,
   )}</select></label><label>Year<select id="paper-year"><option value="">All years</option>${paperOptions(
@@ -187,6 +194,7 @@ function questionIdentity(question) {
 }
 function paperScreen() {
   const paper = demoPapers.find((item) => item.id === selectedPaper);
+  if (!paper) return `${learningHeader('Previous Questions', 'papers')}<p>No papers available for this selection.</p>`;
   return `${learningHeader(paper.title, 'papers')}<section class="panel learning-panel"><p class="tag">Demo paper · not a historical exam</p><p>${esc(paper.post)} · ${paper.year} · ${esc(paper.stage)}</p><p>${paper.questionIds.length} questions · ${paper.rules.minutes} minutes · +${paper.rules.marks} correct · −${paper.rules.penalty} wrong · 0 skipped</p><p class="fine">Source: ${esc(paper.source)}. Explanation status: not verified.</p><button class="primary" data-action="paper-test">Take full demo paper test</button></section>${paper.questionIds
     .map((id, index) => {
       const question = questions[id];
@@ -197,6 +205,7 @@ function paperScreen() {
 function examPreparation() {
   const exam =
     demoExams.find((item) => item.name === state.profile.exam) || demoExams[0];
+  if (!exam) return `${learningHeader('Exam-wise preparation', 'bank')}<p>No exams available.</p>`;
   return `${learningHeader('Exam-wise preparation', 'bank')}<section class="panel learning-panel"><label>Target exam<select id="preparation-exam">${demoExams.map((item) => `<option ${exam.name === item.name ? 'selected' : ''}>${esc(item.name)}</option>`).join('')}</select></label><p class="tag">Demo syllabus · not an official syllabus</p><h2>${esc(exam.name)}</h2>${exam.subjects.map((index) => `<div class="learning-row"><button class="text-button" data-action="study-subject" data-subject="${index}">${esc(subjects[index].name)}</button><p class="fine">${subjects[index].chapters.map((chapter) => esc(chapter.title)).join(' · ')}</p></div>`).join('')}<div class="learning-actions"><button class="primary" data-action="exam-practice">Practice demo exam questions</button><button class="secondary" data-action="exam-papers">Browse demo papers</button></div></section>`;
 }
 
@@ -233,6 +242,7 @@ function preparation() {
     .join('')}</section>`;
 }
 function sessionScore(session) {
+  if (session.serverScore !== undefined) return session.serverScore;
   const correct = session.answers.filter((answer) => answer.correct).length;
   const wrong = session.answers.filter(
     (answer) => !answer.correct && answer.choice !== null,
@@ -277,11 +287,17 @@ function currentReading() {
   state.reading[activeLesson] ||= {};
   return state.reading[activeLesson];
 }
-document.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-action]');
+document.addEventListener('click', async (event) => {
+  const target = event.target as Element;
+  const button = target.closest<HTMLElement>('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'open-paper') {
+    if (apiEnabled) {
+      if (!apiReady) return;
+      try { await loadApiPaper(button.dataset.paper); } catch (error) { apiFailure(error); return; }
+    }
+    if (apiEnabled && !await saveApiProfile({ ...state, selectedPaper: button.dataset.paper })) return;
     selectedPaper = button.dataset.paper;
     state.selectedPaper = selectedPaper;
     save();
@@ -289,12 +305,21 @@ document.addEventListener('click', (event) => {
   } else if (action === 'paper-test') {
     if (state.session) return navigate('practice');
     const paper = demoPapers.find((item) => item.id === selectedPaper);
+    if (apiEnabled) {
+      await startApiSession(paper.questionIds.slice(), paper.title, 'exam', { paperId: paper.id });
+      return;
+    }
     start(paper.questionIds.slice(), paper.title, 'exam');
     state.session.rules = { ...paper.rules };
     state.session.paperId = paper.id;
     state.session.deadline = Date.now() + paper.rules.minutes * 60000;
     save();
   } else if (action === 'exam-practice') {
+    if (apiEnabled) {
+      const ids = [...new Set(demoPapers.filter((paper) => paper.exam === state.profile.exam).flatMap((paper) => paper.questionIds))];
+      await start(ids, state.profile.exam);
+      return;
+    }
     const exam =
       demoExams.find((item) => item.name === state.profile.exam) ||
       demoExams[0];
@@ -315,7 +340,7 @@ document.addEventListener('click', (event) => {
     const article = demoAffairs.find(
       (item) => item.id === button.dataset.article,
     );
-    start([article.questionId], article.title);
+    start(apiEnabled ? apiAffairQuestionIds.get(article.id) || [] : [article.questionId], article.title);
   } else if (action === 'study-subject') {
     studySubject = Number(button.dataset.subject);
     studyChapter = null;
@@ -327,6 +352,7 @@ document.addEventListener('click', (event) => {
   } else if (action === 'read-lesson') openLesson(button.dataset.lesson);
   else if (action === 'save-lesson' || action === 'complete-lesson') {
     const key = action === 'save-lesson' ? 'saved' : 'done';
+    if (apiEnabled) return saveApiReading(activeLesson, key, !currentReading()[key]);
     currentReading()[key] = !currentReading()[key];
     save();
     render();
@@ -356,6 +382,11 @@ document.addEventListener('click', (event) => {
     if (!ids.length) return toast('No chapter test questions available.');
     start(ids, subjects[studySubject].chapters[studyChapter].title, 'exam');
   } else if (action === 'history-result') {
+    if (apiEnabled) {
+      const session = state.history.find((item) => item.endedAt === Number(button.dataset.result));
+      if (session) await showApiResult(session);
+      return;
+    }
     state.lastResult = state.history.find(
       (session) => session.endedAt === Number(button.dataset.result),
     );
@@ -380,16 +411,23 @@ document.addEventListener('click', (event) => {
   }
 });
 document.addEventListener('input', (event) => {
-  if (event.target.id === 'lesson-note') {
-    currentReading().note = event.target.value;
+  const target = event.target as HTMLInputElement;
+  if (target.id === 'lesson-note') {
+    if (apiEnabled) {
+      if (apiReady) saveApiNote(activeLesson, target.value);
+      return;
+    }
+    currentReading().note = target.value;
     save();
   }
-  if (event.target.id === 'practice-count')
-    practiceOptions.count = Number(event.target.value);
+  if (target.id === 'practice-count')
+    practiceOptions.count = Number(target.value);
 });
-document.addEventListener('change', (event) => {
-  const element = event.target;
+document.addEventListener('change', async (event) => {
+  const target = event.target as HTMLInputElement;
+  const element = target;
   if (element.id === 'reader-size') {
+    if (apiEnabled && !await saveApiProfile({ ...state, readerSize: Number(element.value) })) return;
     state.readerSize = Number(element.value);
     save();
     render();
@@ -414,25 +452,34 @@ document.addEventListener('change', (event) => {
     paperYear = element.value;
     render();
   } else if (element.id === 'affairs-month') {
+    if (apiEnabled) {
+      try { await loadApiAffairs(element.value); } catch (error) { apiFailure(error); return; }
+    }
     affairsMonth = element.value;
     render();
   } else if (element.id === 'preparation-exam') {
+    if (apiEnabled && !await saveApiProfile({ ...state, profile: { ...state.profile, exam: element.value } })) return;
     state.profile.exam = element.value;
     save();
     render();
   }
 });
 document.addEventListener('submit', (event) => {
-  if (event.target.id === 'custom-practice-form') {
+  const target = event.target as HTMLFormElement;
+  if (target.id === 'custom-practice-form') {
     event.preventDefault();
     const ids = practicePool()
       .slice(0, practiceOptions.count)
       .map((q) => q.id);
     if (ids.length) start(ids, 'Custom practice');
-  } else if (event.target.id === 'mock-form') {
+  } else if (target.id === 'mock-form') {
     event.preventDefault();
     if (state.session) return navigate('practice');
-    const form = new FormData(event.target);
+    if (apiEnabled) {
+      toast('Custom mock timing and marking rules are not supported by the API yet.');
+      return;
+    }
+    const form = new FormData(target);
     const subject = form.get('subject');
     const ids = originalQuestions
       .filter((q) => subject === '' || q.subject === Number(subject))
@@ -461,10 +508,14 @@ window.addEventListener(
     const position = window.scrollY;
     clearTimeout(readingScrollTimer);
     readingScrollTimer = setTimeout(() => {
+      if (apiEnabled) {
+        void saveApiReadingPosition(id, position);
+        return;
+      }
       state.reading[id] ||= {};
       state.reading[id].position = position;
       save();
-    }, 150);
+    }, apiEnabled ? 1000 : 150);
   },
   { passive: true },
 );
@@ -541,7 +592,7 @@ function validateBackup(value) {
   const reviews = {};
   if (!backup.reviews || typeof backup.reviews !== 'object')
     throw new Error('Invalid revision progress.');
-  for (const [id, review] of Object.entries(backup.reviews)) {
+  for (const [id, review] of Object.entries(backup.reviews as StudentState['reviews'])) {
     if (
       !validId(Number(id)) ||
       !Number.isFinite(review?.due) ||
@@ -588,8 +639,9 @@ function restoreScreen() {
   return `${learningHeader('Restore backup', 'backup')}<section class="panel learning-panel"><h2>Review before restoring</h2><p>${pendingBackup.attempts.length} attempts · ${pendingBackup.history.length} results · ${Object.keys(pendingBackup.reading).length} reading records</p><p>This replaces question and reading progress, revision schedules, bookmarks and result history. Your profile, settings and routine stay unchanged. Any active practice session will be cleared.</p><button class="primary" data-action="confirm-restore">Replace local progress</button><a class="secondary" href="#backup">Cancel</a></section>`;
 }
 document.addEventListener('change', async (event) => {
-  if (event.target.id !== 'learning-restore') return;
-  const file = event.target.files[0];
+  const target = event.target as HTMLInputElement;
+  if (target.id !== 'learning-restore') return;
+  const file = target.files[0];
   if (!file) return;
   try {
     if (file.size > 10 * 1024 * 1024)
@@ -603,7 +655,8 @@ document.addEventListener('change', async (event) => {
   }
 });
 document.addEventListener('click', async (event) => {
-  const action = event.target.closest('[data-action]')?.dataset.action;
+  const target = event.target as Element;
+  const action = target.closest<HTMLElement>('[data-action]')?.dataset.action;
   if (action === 'confirm-restore' && pendingBackup) {
     Object.assign(state, pendingBackup);
     state.session = null;
@@ -626,7 +679,7 @@ document.addEventListener('click', async (event) => {
         './offline-worker.js',
       );
       if (!registration.active) {
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const worker = registration.installing || registration.waiting;
           if (!worker) return reject(new Error('No offline worker available.'));
           worker.addEventListener('statechange', () => {

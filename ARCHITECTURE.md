@@ -9,15 +9,22 @@
 
 ```text
 it-prostuti/
-├── index.html                    # মূল Prosthuti app entry point
-├── .openai/hosting.json          # Static hosting configuration
+├── app/                          # Next.js App Router shell
+│   ├── layout.tsx                # Metadata, existing CSS and runtime loading
+│   └── page.tsx                  # Existing Student Web DOM shell
+├── public/                       # Generated browser runtime and offline worker
+├── package.json                  # Local development and production commands
 ├── examples/
 │   └── ui-kit.html               # UI kit demo ও showcase
 ├── src/
-│   ├── app/                      # App-specific scripts and styles
-│   │   ├── app.js                # Main application
-│   │   ├── study.js              # Study flows (loads after app.js)
-│   │   └── style.css             # Application styles
+│   ├── app/
+│   │   └── style.css             # Existing application CSS, unchanged
+│   ├── student/                  # TypeScript browser runtime
+│   │   ├── app.ts                # Main application and screen templates
+│   │   ├── demo-content.ts       # Existing local demo data
+│   │   ├── learning.ts           # Reading, papers, practice and backup
+│   │   ├── study.ts              # Preferences, routine and startup
+│   │   └── types.d.ts            # Shared runtime types
 │   │
 │   ├── index.js                  # Master Barrel Export (এক জায়গা থেকে সহজে ব্যবহারের জন্য)
 │   ├── styles.css                # একীভূত স্টাইলশিট বান্ডেল
@@ -64,16 +71,19 @@ it-prostuti/
 
 ## Running locally
 
-Serve the repository root with `python3 -m http.server 8000`.
-Open `http://localhost:8000/` for the app and
-`http://localhost:8000/examples/ui-kit.html` for the UI kit showcase.
+Use `npm ci` and `npm run dev` to run Student Web at `http://localhost:3000`.
+Use `npm run build` and `npm start` for production. See [README.md](README.md)
+for checks and migration details.
 
-This project uses plain browser JavaScript and CSS with no build step.
-`src/app/` owns application code; the other existing `src/` folders own the
-reusable UI kit. The app currently uses its own styles and does not import the
-UI kit. Keep `app.js` before `study.js`: they share classic-script globals.
-The hosting configuration serves the repository root. Do not place secrets or
-private files in the static serving directory.
+`app/` owns the Next.js shell. `src/student/` owns the existing browser-rendered
+screens, now compiled from TypeScript in their original execution order.
+`src/app/style.css` remains the application stylesheet. Browser storage and
+hash navigation retain their previous formats.
+
+The reusable UI kit remains in the other `src/` folders and is not imported by
+Student Web. Its standalone example can still be served separately for local
+inspection. The old `.openai/hosting.json` static-root configuration does not
+build or serve the Next.js application.
 
 ## 🚀 2. Quick Usage Guide (সহজ ব্যবহারের নিয়মাবলী)
 

@@ -8,7 +8,7 @@ const icons = {
 };
 const icon = (n) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[n] || icons.bank}</svg>`;
-const subjects = [
+const subjects: Subject[] = [
   {
     name: 'Bangla Language & Literature',
     bengali: 'বাংলা ভাষা ও সাহিত্য',
@@ -203,7 +203,7 @@ subjects.forEach((s) => {
   s.topics = s.chapters.flatMap((c) => c.topics.map((t) => t.name));
 });
 
-const questions = [
+const questions: Question[] = ([
   // Bangla
   [
     0,
@@ -569,7 +569,7 @@ const questions = [
     0,
     'CPU (Central Processing Unit) কম্পিউটারের সকল নির্দেশনা প্রক্রিয়াকরণ ও নিয়ন্ত্রণ করে।',
   ],
-].map((q, id) => ({
+] as QuestionRow[]).map((q, id) => ({
   id,
   subject: q[0],
   chapter: q[1],
@@ -580,9 +580,9 @@ const questions = [
   explanation: q[6],
 }));
 const KEY = 'prosthuti-mvp-v1';
-let state;
+let state: StudentState;
 try {
-  state = JSON.parse(localStorage.getItem(KEY));
+  state = apiEnabled ? null : JSON.parse(localStorage.getItem(KEY));
 } catch {}
 if (!state || !Array.isArray(state.attempts))
   state = {
@@ -594,9 +594,9 @@ if (!state || !Array.isArray(state.attempts))
     session: null,
   };
 if (
-  !state.reviews ||
+  !apiEnabled && (!state.reviews ||
   (Object.keys(state.reviews).length === 0 &&
-    (!state.attempts || state.attempts.length === 0))
+    (!state.attempts || state.attempts.length === 0)))
 ) {
   state.reviews = {
     7: { due: Date.now() - 3600000, level: 0 },
@@ -635,6 +635,7 @@ const $ = (s) => document.querySelector(s),
         })[c],
     );
 function save() {
+  if (apiEnabled) return;
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
   } catch {
@@ -655,7 +656,7 @@ function toast(t) {
     3000,
   );
 }
-const dayKey = (date = new Date()) => date.toLocaleDateString('en-CA');
+const dayKey = (date = new Date()) => date.toLocaleDateString('en-CA', apiEnabled ? { timeZone: apiTimezone } : undefined);
 const todayAttempts = () => state.attempts.filter((a) => a.day === dayKey());
 const due = () =>
   Object.keys(state.reviews)
@@ -765,10 +766,10 @@ function nav() {
           : '';
       const userName = state.profile.name || 'User name';
       const streakCount = streak();
-      const acc = state.attempts.length ? accuracy() : 33;
-      const solvedCount = state.attempts.length || 3;
+      const acc = apiEnabled && apiReady ? accuracy() : state.attempts.length ? accuracy() : 33;
+      const solvedCount = apiEnabled && apiReady ? state.attempts.length : state.attempts.length || 3;
       if (page === 'home') {
-        deskHeader.innerHTML = `<div class="desktop-header-inner"><div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="appbar-user-wrap"><h1 class="appbar-user-name">${esc(userName)}</h1><div class="appbar-user-stats"><b>${formatNumber(streakCount || 1)}</b> day streak · <b>${formatNumber(acc)}%</b> accuracy · <b>${formatNumber(solvedCount)}</b> solved</div></div></div></div>`;
+        deskHeader.innerHTML = `<div class="desktop-header-inner"><div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="appbar-user-wrap"><h1 class="appbar-user-name">${esc(userName)}</h1><div class="appbar-user-stats"><b>${formatNumber(apiEnabled && apiReady ? streakCount : streakCount || 1)}</b> day streak · <b>${formatNumber(acc)}%</b> accuracy · <b>${formatNumber(solvedCount)}</b> solved</div></div></div></div>`;
       } else {
         deskHeader.innerHTML = `<div class="desktop-header-inner"><div class="desktop-header-left">${sidebarHidden ? `<button class="icon-button sidebar-unhide-btn" data-action="toggle-sidebar" aria-label="Show sidebar" title="Show sidebar">☰</button>` : ''}<div class="breadcrumbs"><b class="active-crumb">${titles[page] || 'Today'}</b>${page === 'settings' && curSub ? `<span class="sep">/</span><span class="active-crumb-sub">${curSub}</span>` : ''}${page === 'bank' && selectedSubject !== null ? `<span class="sep">/</span><span class="active-crumb-sub">${esc(subjects[selectedSubject].short)}</span>` : ''}</div></div></div>`;
       }
@@ -776,7 +777,7 @@ function nav() {
   }
 }
 function heading(title) {
-  return `<div class="page-heading row sp"><div><h1>${title}</h1></div></div>`;
+  return `<div class="page-heading row sp"><div><h1>${esc(title)}</h1></div></div>`;
 }
 // Shared tab markup for routine and settings screens.
 function renderTabs(items, activeTab, action, extraClass = '') {
@@ -1736,8 +1737,8 @@ function searchView(qStr) {
           (q) => `
         <div class="review-row row between">
           <div>
-            <span class="tag">${subjects[q.subject].short} · ${subjects[q.subject].chapters[q.chapter]?.title || ''} › ${q.topic}</span>
-            <h3 style="margin-top:9px">${q.text}</h3>
+            <span class="tag">${esc(subjects[q.subject].short)} · ${esc(subjects[q.subject].chapters[q.chapter]?.title || '')} › ${esc(q.topic)}</span>
+            <h3 style="margin-top:9px">${esc(q.text)}</h3>
           </div>
           <button class="secondary" data-action="single" data-id="${q.id}">Practice</button>
         </div>
@@ -1750,7 +1751,7 @@ function searchView(qStr) {
   }`;
 }
 function getWeakPoints(all = false) {
-  const topicStats = {};
+  const topicStats: Record<string, WeakPoint> = {};
   state.attempts.forEach((a) => {
     const q = questions[a.id];
     if (!q) return;
@@ -1772,6 +1773,7 @@ function getWeakPoints(all = false) {
   });
   const weak = Object.values(topicStats).filter((t) => t.correct < t.total);
   if (weak.length) return all ? weak : weak.slice(0, 2);
+  if (apiEnabled && apiReady) return [];
   const sample = [
     {
       subjectId: 0,
@@ -2317,6 +2319,10 @@ const INSTITUTES = [
 ];
 
 function openInstituteModal(instId) {
+  if (apiEnabled) {
+    toast("This institution card is not linked to the API catalogue yet. Use Previous Questions filters.");
+    return;
+  }
   paperInstitute = instId;
   paperPost = '';
   paperYear = '';
@@ -2329,7 +2335,7 @@ function home() {
   const weakList = getWeakPoints(showMoreWeak);
   const dueCount = due().length;
 
-  const affairsList = [
+  const affairsList = apiEnabled && apiReady ? apiAffairHeadlines : [
     {
       title: 'Sample headline: national budget highlights',
       meta: 'Today · Economy',
@@ -2359,7 +2365,7 @@ function home() {
     ? affairsList
     : affairsList.slice(0, 3);
 
-  const noticesList = [
+  const noticesList = apiEnabled && apiReady ? apiNotices : [
     { title: 'Mock test this Friday', meta: 'Bangla & English · 10:00 AM' },
     { title: 'New questions added', meta: 'General Knowledge · 8 questions' },
     { title: 'Revision reminder', meta: '2 questions are due today' },
@@ -2407,7 +2413,7 @@ function home() {
         <div class="home-section-title">Revision and routine</div>
         <div class="card home-task-card">
           <div>
-            <h3>${formatNumber(dueCount || 2)} questions due for review</h3>
+            <h3>${formatNumber(apiEnabled && apiReady ? dueCount : dueCount || 2)} questions due for review</h3>
             <p class="muted" style="margin:2px 0 0">Strengthen your concepts</p>
           </div>
           <button class="link-action-btn" data-action="navigate" data-page="review">Open revision</button>
@@ -2484,7 +2490,7 @@ function bank() {
         <div class="bank-select-wrap">
           <select class="bank-select" id="subject-filter" aria-label="Choose a subject">
             <option value="all">All subjects</option>
-            ${subjects.map((s, i) => `<option value="${i}" ${filter == i ? 'selected' : ''}>${s.short}</option>`).join('')}
+            ${subjects.map((s, i) => `<option value="${i}" ${Number(filter) === i ? 'selected' : ''}>${esc(s.short)}</option>`).join('')}
           </select>
           <span class="bank-select-arrow">⌵</span>
         </div>
@@ -2516,7 +2522,7 @@ function bank() {
         <div class="bank-select-wrap">
           <select class="bank-select" id="subject-filter" aria-label="Choose a subject">
             <option value="all">All subjects</option>
-            ${subjects.map((s, i) => `<option value="${i}" ${filter == i ? 'selected' : ''}>${s.short}</option>`).join('')}
+            ${subjects.map((s, i) => `<option value="${i}" ${Number(filter) === i ? 'selected' : ''}>${esc(s.short)}</option>`).join('')}
           </select>
           <span class="bank-select-arrow">⌵</span>
         </div>
@@ -2653,7 +2659,7 @@ function progress() {
     `<div class="progress-grid"><div class="panel"><h2>Practice this week</h2><p class="fine">Questions answered each day</p><div class="chart">${days.map((d) => `<div class="chart-col"><b>${formatNumber(d.count)}</b><i style="height:${(d.count / max) * 120}px"></i><span>${d.label}</span></div>`).join('')}</div></div><div class="panel"><h2>Accuracy by subject</h2>${subjects
       .map((s, i) => {
         let a = state.attempts.filter((a) => questions[a.id].subject === i);
-        return `<div class="progress-topic"><div class="row between"><span>${s.short}</span><b>${a.length ? formatNumber(accuracy(a)) + '%' : '—'}</b></div><div class="bar" style="margin-top:8px"><i style="width:${accuracy(a)}%"></i></div><span class="fine">${formatNumber(a.length)} answers${a.length < 5 ? ' · More practice needed' : ''}</span></div>`;
+        return `<div class="progress-topic"><div class="row between"><span>${esc(s.short)}</span><b>${a.length ? formatNumber(accuracy(a)) + '%' : '—'}</b></div><div class="bar" style="margin-top:8px"><i style="width:${accuracy(a)}%"></i></div><span class="fine">${formatNumber(a.length)} answers${a.length < 5 ? ' · More practice needed' : ''}</span></div>`;
       })
       .join(
         '',
@@ -2664,7 +2670,7 @@ function progress() {
             .reverse()
             .map(
               (a) =>
-                `<div class="review-row row between"><div><h3>${questions[a.id].text}</h3><span class="fine">${subjects[questions[a.id].subject].short} · ${new Date(a.at).toLocaleDateString('en-GB')}</span></div><span class="tag ${a.correct ? '' : 'amber'}">${a.correct ? 'Correct' : a.choice === null ? 'Skipped' : 'Review again'}</span></div>`,
+                `<div class="review-row row between"><div><h3>${esc(questions[a.id].text)}</h3><span class="fine">${esc(subjects[questions[a.id].subject].short)} · ${new Date(a.at).toLocaleDateString('en-GB')}</span></div><span class="tag ${a.correct ? '' : 'amber'}">${a.correct ? 'Correct' : a.choice === null ? 'Skipped' : 'Review again'}</span></div>`,
             )
             .join('')}</div>`
         : '<div class="empty"><h3>Your first chapter starts here</h3><p>Complete a practice session to see your results here.</p><button class="primary" data-action="daily">Start your first session</button></div>'
@@ -2678,6 +2684,7 @@ function getAnswer(qId) {
   return ans[qId] || null;
 }
 function answerQuestion(qId, choice) {
+  if (apiEnabled) return answerApiQuestion(qId, choice);
   const s = state.session;
   if (!s) return;
   if (!s.answers || Array.isArray(s.answers)) {
@@ -2701,7 +2708,8 @@ function answerQuestion(qId, choice) {
   save();
   render();
 }
-function start(ids, title, mode = 'practice') {
+function start(ids, title, mode = 'practice', options: ApiStartOptions = {}): void | Promise<boolean> {
+  if (apiEnabled) return startApiSession(ids, title, mode, options);
   if (!ids.length) return toast('No questions available.');
   if (state.session) {
     toast(
@@ -2798,12 +2806,12 @@ function practice() {
     <div class="multi-questions-list">
       ${pageIds
         .map((qId, localIdx) => {
-          const q = questions[qId];
+          const q = s.snapshots?.[qId] || questions[qId];
           const a = getAnswer(qId);
           const reveal = a && s.mode !== 'exam';
 
           return `<section class="card question-card-v3" id="q-card-${q.id}">
-          <h2 class="question-title-v3">${q.text}</h2>${questionIdentity(q)}
+          <h2 class="question-title-v3">${esc(q.text)}</h2>${questionIdentity(q)}
 
           <div class="options-v3">
             ${q.options
@@ -2895,6 +2903,7 @@ function record(a) {
   }
 }
 function finish() {
+  if (apiEnabled) return finishApiSession();
   let s = state.session;
   if (!s) return;
   const finalAnswers = s.ids.map((id) => {
@@ -2934,8 +2943,8 @@ function result() {
     p = Math.round((correct / r.ids.length) * 100);
   return `<div class="result"><p>${sessionScore(r)} marks · ${Math.round((r.endedAt - r.startedAt) / 1000)} seconds</p><a href="#history">Result history</a><span class="tag">${r.mode === 'exam' ? 'Mock test' : 'Practice'} complete</span><h1 style="margin-top:16px">One more step forward!</h1><p class="muted">${esc(sessionTitle(r.title))} · ${formatNumber(r.ids.length)} questions</p><div class="panel"><div class="circle-progress" style="--angle:${p * 3.6}deg"><div><b>${formatNumber(p)}%</b><small>Correct answers</small></div></div><div class="stats"><div><h2>${formatNumber(correct)}</h2><span class="muted">Correct</span></div><div><h2>${formatNumber(wrong)}</h2><span class="muted">Incorrect</span></div><div><h2>${formatNumber(skip)}</h2><span class="muted">Skipped</span></div></div><p class="muted">${wrong + skip ? 'Missed and skipped questions have been added to revision.' : 'Great work! Keep practicing regularly.'}</p><div class="result-actions"><a class="primary" href="#review">View revision</a><a class="secondary" href="#home">Back to today</a></div></div></div><div class="practice-wrap"><h2>Answers & explanations</h2>${r.answers
     .map((a) => {
-      let q = questions[a.id];
-      return `<div class="panel" style="margin-bottom:12px"><span class="tag ${a.correct ? '' : 'amber'}">${a.correct ? 'Correct' : a.choice === null ? 'Skipped' : 'Incorrect answer'}</span><h3 style="margin-top:13px">${q.text}</h3><p class="fine">Your answer: ${a.choice === null ? 'Not answered' : q.options[a.choice]}</p><p style="margin-bottom:0">${q.explanation}</p></div>`;
+      let q = r.snapshots?.[a.id] || questions[a.id];
+      return `<div class="panel" style="margin-bottom:12px"><span class="tag ${a.correct ? '' : 'amber'}">${a.correct ? 'Correct' : a.choice === null ? 'Skipped' : 'Incorrect answer'}</span><h3 style="margin-top:13px">${esc(q.text)}</h3><p class="fine">Your answer: ${a.choice === null ? 'Not answered' : esc(q.options[a.choice])}</p><p style="margin-bottom:0">${esc(q.explanation)}</p></div>`;
     })
     .join('')}</div>`;
 }
@@ -3013,9 +3022,14 @@ window.addEventListener('hashchange', () => {
   render();
   window.scrollTo(0, 0);
 });
-document.addEventListener('click', (e) => {
-  let b = e.target.closest('[data-action]');
+document.addEventListener('click', async (e) => {
+  const target = e.target as Element;
+  let b = target.closest<HTMLElement>('[data-action]');
   if (!b) return;
+  if (apiEnabled && b.closest('.syllabus-view-wrap') && b.dataset.action === 'practice-subject') {
+    toast('This sample syllabus has no matching API subject mapping yet.');
+    return;
+  }
   let act = b.dataset.action,
     id = Number(b.dataset.id);
   if (act === 'navigate') {
@@ -3065,6 +3079,7 @@ document.addEventListener('click', (e) => {
     answerQuestion(Number(b.dataset.qid), Number(b.dataset.opt));
   } else if (act === 'practice-page') {
     if (state.session) {
+      if (apiEnabled && !await saveApiPosition(Number(b.dataset.page))) return;
       state.session.page = Number(b.dataset.page);
       save();
       render();
@@ -3074,6 +3089,7 @@ document.addEventListener('click', (e) => {
     finish();
   } else if (act === 'toggle-q-bookmark') {
     const qId = Number(b.dataset.id);
+    if (apiEnabled) return bookmarkApiQuestion(qId);
     state.saved = state.saved.includes(qId)
       ? state.saved.filter((x) => x !== qId)
       : [...state.saved, qId];
@@ -3114,6 +3130,7 @@ document.addEventListener('click', (e) => {
     render();
   } else if (act === 'resume') navigate('practice');
   else if (act === 'pause') {
+    if (apiEnabled && !await saveApiPosition()) return;
     save();
     navigate('home');
     toast('Your place is saved. Pick up where you left off.');
@@ -3143,6 +3160,7 @@ document.addEventListener('click', (e) => {
   else if (act === 'next') {
     if (state.session.index + 1 >= state.session.ids.length) finish();
     else {
+      if (apiEnabled && !await saveApiPosition(state.session.page || 0, state.session.index + 1)) return;
       state.session.index++;
       selection = null;
       guess = false;
@@ -3152,6 +3170,7 @@ document.addEventListener('click', (e) => {
     }
   } else if (act === 'bookmark') {
     let q = state.session.ids[state.session.index];
+    if (apiEnabled) return bookmarkApiQuestion(q);
     state.saved = state.saved.includes(q)
       ? state.saved.filter((x) => x !== q)
       : [...state.saved, q];
@@ -3201,29 +3220,43 @@ document.addEventListener('click', (e) => {
   else if (act === 'close-report') $('#report-dialog').close();
 });
 document.addEventListener('input', (e) => {
-  if (e.target.id === 'search') {
-    let pos = e.target.selectionStart;
-    search = e.target.value;
+  const target = e.target as HTMLInputElement;
+  if (target.id === 'search') {
+    let pos = target.selectionStart;
+    search = target.value;
     render();
     $('#search').focus();
     $('#search').setSelectionRange(pos, pos);
   }
 });
 document.addEventListener('change', (e) => {
-  if (e.target.id === 'subject-filter') {
-    filter = e.target.value;
+  const target = e.target as HTMLInputElement;
+  if (target.id === 'subject-filter') {
+    filter = target.value;
     render();
   }
-  if (e.target.id === 'syllabus-inst-filter') {
-    selectedInstSyllabus = e.target.value;
+  if (target.id === 'syllabus-inst-filter') {
+    selectedInstSyllabus = target.value;
     render();
   }
-  if (e.target.id === 'guess') guess = e.target.checked;
+  if (target.id === 'guess') guess = target.checked;
 });
-$('#report-form').addEventListener('submit', (e) => {
+$('#report-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!state.session) return;
   let f = new FormData(e.target);
+  if (apiEnabled) {
+    const id = state.session.ids[state.session.index || 0];
+    const saved = await apiWrite(async () => {
+      const response = await apiRequest<{ data: { created_at: string } }>(`/questions/${questions[id].serverId}/reports`, 'POST', { type: f.get('type'), detail: f.get('detail') });
+      state.reports.push({ id, type: f.get('type'), detail: f.get('detail'), at: apiTime(response.data.created_at) });
+    });
+    if (!saved) return;
+    $('#report-dialog').close();
+    e.target.reset();
+    toast('Report saved.');
+    return;
+  }
   state.reports.push({
     id: state.session.ids[state.session.index],
     type: f.get('type'),
@@ -3235,13 +3268,18 @@ $('#report-form').addEventListener('submit', (e) => {
   e.target.reset();
   toast('Demo report saved in this browser');
 });
+let expiredApiAttempt: string | null = null;
 function updateTimer() {
   let s = state.session;
   if (!s || s.mode !== 'exam') return;
   let remaining = Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000));
   if (!remaining) {
+    if (apiEnabled) {
+      if (apiMutationPending || expiredApiAttempt === s.serverId) return;
+      expiredApiAttempt = s.serverId;
+    }
     finish();
-    toast('Time is up. Your test has been submitted.');
+    if (!apiEnabled) toast('Time is up. Your test has been submitted.');
     return;
   }
   let el = $('#session-time');
@@ -3255,7 +3293,7 @@ if (document.modelContext?.registerTool) {
       document.modelContext.registerTool({
         name: 'get_study_progress',
         description:
-          'Read actual browser-local study progress and revision counts.',
+          'Read loaded study progress and revision counts.',
         inputSchema: {
           type: 'object',
           properties: {},

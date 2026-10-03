@@ -54,9 +54,10 @@ function taskKey(date, id) {
   return `${date}:${id}`;
 }
 function generatedPlan(date) {
-  const focus = state.profile.focus.length ? state.profile.focus : [0, 1, 2, 3];
+  const focus = state.profile.focus.length ? state.profile.focus : subjects.map((_, index) => index);
+  if (!focus.length) return { goal: goal(), minutes: state.profile.minutes, tasks: [] };
   const dayIndex = Math.floor(
-    (dateFromKey(date) - new Date(2026, 0, 1, 12)) / 86400000,
+    (dateFromKey(date).getTime() - new Date(2026, 0, 1, 12).getTime()) / 86400000,
   );
   const subject =
     focus[((dayIndex % focus.length) + focus.length) % focus.length];
@@ -168,7 +169,7 @@ function routine() {
     ? Math.max(
         0,
         Math.ceil(
-          (dateFromKey(state.profile.date) - dateFromKey(dayKey())) / 86400000,
+          (dateFromKey(state.profile.date).getTime() - dateFromKey(dayKey()).getTime()) / 86400000,
         ),
       )
     : null;
@@ -238,13 +239,13 @@ function settings() {
     ]
       .map(
         ([v, l]) =>
-          `<option value="${v}" ${p.fontSize === v ? 'selected' : ''}>${l}</option>`,
+          `<option value="${v}" ${p.fontSize === v ? 'selected' : ''}>${esc(l)}</option>`,
       )
       .join(
         '',
       )}</select></label><label class="setting-row"><span><b>Language</b><small>English is the default. Bangla UI is planned.</small></span><select name="language" aria-label="Interface language"><option value="en">English</option><option disabled>বাংলা — coming later</option></select></label><label class="setting-row"><span><b>Low-data mode</b><small>Use device fonts and reduce motion.</small></span><input name="lowData" type="checkbox" role="switch" ${p.lowData ? 'checked' : ''}></label></section><div class="settings-save"><span class="fine">Changes apply immediately.</span><button class="primary" type="submit">Save preferences</button></div></form>`;
   } else if (settingsTab === 'plan') {
-    content = `<form id="plan-form"><section class="panel settings-section"><h2>Study plan</h2><label>Your name<input name="name" maxlength="30" value="${esc(profile.name)}" placeholder="Your name"></label><div class="field-grid"><label>Target exam<select name="exam">${['BCS Preliminary', 'Bank', 'Primary', 'NTRCA'].map((v) => `<option ${profile.exam === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label><label>Exam date<input name="date" type="date" value="${esc(profile.date)}"></label><label>Daily study time<select name="minutes">${[15, 30, 60, 120].map((n) => `<option value="${profile.minutes === n ? 'selected' : ''}>${n} minutes</option>`).join('')}</select></label><label>Daily question goal<input name="dailyGoal" type="number" min="3" max="${questions.length}" required value="${goal()}"></label></div><p class="fine">Daily goal can be set from 3 to ${questions.length} questions.</p><fieldset><legend>Focus subjects</legend><p class="fine">Prioritized in daily practice. Leave unchecked to include all subjects.</p><div class="focus-options">${subjects.map((s, i) => `<label><input type="checkbox" name="focus" value="${i}" ${profile.focus.includes(i) ? 'checked' : ''}>${s.short}</label>`).join('')}</div></fieldset></section><div class="settings-save"><span class="fine">Existing practice progress is preserved.</span><button class="primary" type="submit">Save study plan</button></div></form>`;
+    content = `<form id="plan-form"><section class="panel settings-section"><h2>Study plan</h2><label>Your name<input name="name" maxlength="30" value="${esc(profile.name)}" placeholder="Your name"></label><div class="field-grid"><label>Target exam<select name="exam">${(apiEnabled && apiReady ? demoExams.map((exam) => exam.name) : ['BCS Preliminary', 'Bank', 'Primary', 'NTRCA']).map((v) => `<option ${profile.exam === v ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></label><label>Exam date<input name="date" type="date" value="${esc(profile.date)}"></label><label>Daily study time<select name="minutes">${[15, 30, 60, 120].map((n) => `<option value="${n}" ${profile.minutes === n ? 'selected' : ''}>${n} minutes</option>`).join('')}</select></label><label>Daily question goal<input name="dailyGoal" type="number" min="3" max="${questions.length}" required value="${goal()}"></label></div><p class="fine">Daily goal can be set from 3 to ${questions.length} questions.</p><fieldset><legend>Focus subjects</legend><p class="fine">Prioritized in daily practice. Leave unchecked to include all subjects.</p><div class="focus-options">${subjects.map((s, i) => `<label><input type="checkbox" name="focus" value="${i}" ${profile.focus.includes(i) ? 'checked' : ''}>${esc(s.short)}</label>`).join('')}</div></fieldset></section><div class="settings-save"><span class="fine">Existing practice progress is preserved.</span><button class="primary" type="submit">Save study plan</button></div></form>`;
   } else if (settingsTab === 'reminders') {
     content = `<form id="reminders-form"><section class="panel settings-section"><h2>Reminders</h2><label class="setting-row"><span><b>Daily reminder</b><small>Show a reminder while the app is open.</small></span><input type="checkbox" role="switch" name="reminder" ${p.reminder ? 'checked' : ''}></label><label class="setting-row"><span><b>Reminder time</b><small>Your device’s local time.</small></span><input name="reminderTime" type="time" required value="${p.reminderTime}"></label><label class="setting-row"><span><b>Streak reminder</b><small>Include your streak when today’s goal is unfinished.</small></span><input type="checkbox" role="switch" name="streakAlert" ${p.streakAlert ? 'checked' : ''}></label><div class="setting-row"><span><b>Report status updates</b><small>Unavailable in this demo: reports stay on this device.</small></span><input type="checkbox" role="switch" aria-label="Report status updates unavailable" disabled></div><p class="demo-note">Reminders work only while this app is open. Background push notifications need the full app.</p></section><div class="settings-save"><button class="primary" type="submit">Save reminders</button></div></form>`;
   } else if (settingsTab === 'data') {
@@ -266,7 +267,7 @@ function applyPreferences() {
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   document.documentElement.style.setProperty(
     '--font-scale',
-    { standard: 1, large: 1.125, extra: 1.25 }[p.fontSize] || 1,
+    String({ standard: 1, large: 1.125, extra: 1.25 }[p.fontSize] || 1),
   );
   document.documentElement.classList.toggle('low-data', p.lowData);
   const fonts = $('#web-fonts');
@@ -304,9 +305,9 @@ function routineEditorScreen() {
 }
 
 function taskEditorRow(task) {
-  return `<fieldset class="task-edit" data-id="${esc(task.id)}"><label>Task title<input name="task-title" required maxlength="80" value="${esc(task.title)}"></label><div class="field-grid"><label>Practice source<select name="task-kind">${[['review', 'Due revision'], ['mixed', 'Mixed questions'], ...subjects.map((s, i) => [String(i), s.short])].map(([v, l]) => `<option value="${v}" ${task.kind === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label><label>Questions<input name="task-questions" type="number" min="1" max="16" required value="${task.questions}"></label><label>Minutes<input name="task-minutes" type="number" min="1" max="180" required value="${task.minutes}"></label></div><button type="button" class="text-button" data-action="remove-task">Remove task</button></fieldset>`;
+  return `<fieldset class="task-edit" data-id="${esc(task.id)}"><label>Task title<input name="task-title" required maxlength="80" value="${esc(task.title)}"></label><div class="field-grid"><label>Practice source<select name="task-kind">${[['review', 'Due revision'], ['mixed', 'Mixed questions'], ...subjects.map((s, i) => [String(i), s.short])].map(([v, l]) => `<option value="${v}" ${task.kind === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label><label>Questions<input name="task-questions" type="number" min="1" max="16" required value="${task.questions}"></label><label>Minutes<input name="task-minutes" type="number" min="1" max="180" required value="${task.minutes}"></label></div><button type="button" class="text-button" data-action="remove-task">Remove task</button></fieldset>`;
 }
-function startRoutineTask(index) {
+async function startRoutineTask(index) {
   const date = dayKey(),
     task = planFor(date).tasks[index];
   if (!task) return;
@@ -330,14 +331,19 @@ function startRoutineTask(index) {
     return;
   }
   ids = ids.slice(0, task.questions);
+  if (apiEnabled) {
+    await startApiSession(ids, task.title, 'practice', { routineKey: taskKey(date, task.id) });
+    return;
+  }
   start(ids, task.title);
   state.session.routineTask = taskKey(date, task.id);
   save();
   if (ids.length < task.questions)
     toast(`Only ${ids.length} matching demo questions are available.`);
 }
-document.addEventListener('click', (e) => {
-  const button = e.target.closest('[data-action]');
+document.addEventListener('click', async (e) => {
+  const target = e.target as Element;
+  const button = target.closest<HTMLElement>('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'heat-day') {
@@ -346,14 +352,24 @@ document.addEventListener('click', (e) => {
     render();
     window.scrollTo(0, y);
   } else if (action === 'routine-tab') {
+    if (apiEnabled && apiReady) {
+      try { await loadApiRoutineWeek(routineDate); } catch (error) { apiFailure(error); return; }
+    }
     routineTab = button.dataset.id;
     render();
   } else if (action === 'routine-day') {
+    if (apiEnabled && apiReady) {
+      try { await loadApiRoutineMonth(button.dataset.date.slice(0, 7)); } catch (error) { apiFailure(error); return; }
+    }
     routineDate = button.dataset.date;
     routineTab = 'daily';
     render();
   } else if (action === 'week-shift') {
-    routineDate = dateShift(routineDate, Number(button.dataset.id));
+    const nextDate = dateShift(routineDate, Number(button.dataset.id));
+    if (apiEnabled && apiReady) {
+      try { await loadApiRoutineWeek(nextDate); } catch (error) { apiFailure(error); return; }
+    }
+    routineDate = nextDate;
     render();
   } else if (action === 'settings-tab') {
     settingsTab = button.dataset.id;
@@ -361,7 +377,7 @@ document.addEventListener('click', (e) => {
   } else if (action === 'edit-routine') editRoutine();
   else if (action === 'close-routine') navigate('routine');
   else if (action === 'add-task') {
-    if (document.querySelectorAll('.task-edit').length >= 6) {
+    if (document.querySelectorAll<HTMLElement>('.task-edit').length >= 6) {
       toast('Keep your day focused: up to 6 tasks.');
       return;
     }
@@ -376,7 +392,7 @@ document.addEventListener('click', (e) => {
       }),
     );
   } else if (action === 'remove-task') {
-    if (document.querySelectorAll('.task-edit').length === 1) {
+    if (document.querySelectorAll<HTMLElement>('.task-edit').length === 1) {
       toast('Keep at least one task in your day.');
       return;
     }
@@ -395,20 +411,33 @@ document.addEventListener('click', (e) => {
     );
   else if (action === 'download-questions') downloadQuestions();
 });
-document.addEventListener('change', (e) => {
-  const el = e.target;
+document.addEventListener('change', async (e) => {
+  const target = e.target as HTMLInputElement;
+  const el = target;
   if (el.id === 'heat-range') {
     heatWeeks = Number(el.value);
     render();
   } else if (el.id === 'routine-date' && el.value) {
+    if (apiEnabled) {
+      try { await loadApiRoutineMonth(el.value.slice(0, 7)); } catch (error) { apiFailure(error); return; }
+    }
     routineDate = el.value;
     render();
   } else if (el.id === 'routine-month' && el.value) {
+    if (apiEnabled) {
+      try { await loadApiRoutineMonth(el.value); } catch (error) { apiFailure(error); return; }
+    }
     routineMonth = el.value;
     render();
   } else if (el.dataset.taskId) {
     const date = el.dataset.taskDate;
     if (date > dayKey()) return;
+    if (apiEnabled) {
+      const completed = { ...state.completedTasks, [taskKey(date, el.dataset.taskId)]: el.checked };
+      if (!await saveApiPlan(date, planFor(date), completed)) el.checked = !el.checked;
+      render();
+      return;
+    }
     if (!state.routinePlans[date])
       state.routinePlans[date] = generatedPlan(date);
     state.completedTasks[taskKey(date, el.dataset.taskId)] = el.checked;
@@ -418,35 +447,41 @@ document.addEventListener('change', (e) => {
     window.scrollTo(0, y);
   }
 });
-document.addEventListener('submit', (e) => {
-  if (e.target.id === 'preferences-form') {
+document.addEventListener('submit', async (e) => {
+  const target = e.target as HTMLFormElement;
+  if (target.id === 'preferences-form') {
     e.preventDefault();
-    const f = new FormData(e.target);
-    state.preferences = {
+    const f = new FormData(target);
+    const preferences = {
       ...state.preferences,
-      theme: f.get('theme'),
+      theme: f.get('theme') as string,
       themeChosen: true,
-      fontSize: f.get('fontSize'),
+      fontSize: f.get('fontSize') as string,
       lowData: f.has('lowData'),
     };
+    if (apiEnabled && !await saveApiProfile({ ...state, preferences })) return;
+    state.preferences = preferences;
     save();
     applyPreferences();
     render();
     toast('Preferences saved.');
-  } else if (e.target.id === 'plan-form') {
+  } else if (target.id === 'plan-form') {
     e.preventDefault();
-    const f = new FormData(e.target);
-    state.profile = {
+    const f = new FormData(target);
+    const profile = {
       ...state.profile,
-      name: f.get('name').trim(),
-      exam: f.get('exam'),
+      name: (f.get('name') as string).trim(),
+      exam: f.get('exam') as string,
       minutes: Number(f.get('minutes')),
-      date: f.get('date'),
+      date: f.get('date') as string,
       dailyGoal: Number(f.get('dailyGoal')),
       focus: f.getAll('focus').map(Number),
     };
+    if (apiEnabled && !await saveApiProfile({ ...state, profile })) return;
+    state.profile = profile;
     const today = dayKey();
     if (
+      !apiEnabled &&
       state.routinePlans[today] &&
       !state.routinePlans[today].custom &&
       !Object.keys(state.completedTasks).some(
@@ -457,37 +492,41 @@ document.addEventListener('submit', (e) => {
     save();
     render();
     toast('Study plan saved.');
-  } else if (e.target.id === 'reminders-form') {
+  } else if (target.id === 'reminders-form') {
     e.preventDefault();
-    const f = new FormData(e.target);
-    state.preferences = {
+    const f = new FormData(target);
+    const preferences = {
       ...state.preferences,
       reminder: f.has('reminder'),
-      reminderTime: f.get('reminderTime'),
+      reminderTime: f.get('reminderTime') as string,
       streakAlert: f.has('streakAlert'),
     };
+    if (apiEnabled && !await saveApiProfile({ ...state, preferences })) return;
+    state.preferences = preferences;
     save();
     render();
     toast('Reminders saved.');
-  } else if (e.target.id === 'routine-edit-form') {
+  } else if (target.id === 'routine-edit-form') {
     e.preventDefault();
-    const tasks = [...document.querySelectorAll('.task-edit')].map((row) => ({
+    const tasks = [...document.querySelectorAll<HTMLElement>('.task-edit')].map((row) => ({
       id: row.dataset.id,
-      title: row.querySelector('[name="task-title"]').value.trim(),
-      kind: row.querySelector('[name="task-kind"]').value,
-      questions: Number(row.querySelector('[name="task-questions"]').value),
-      minutes: Number(row.querySelector('[name="task-minutes"]').value),
+      title: row.querySelector<HTMLInputElement>('[name="task-title"]').value.trim(),
+      kind: row.querySelector<HTMLInputElement>('[name="task-kind"]').value,
+      questions: Number(row.querySelector<HTMLInputElement>('[name="task-questions"]').value),
+      minutes: Number(row.querySelector<HTMLInputElement>('[name="task-minutes"]').value),
     }));
     if (tasks.some((t) => !t.title)) {
       toast('Give each task a title.');
       return;
     }
-    state.routinePlans[routineDate] = {
+    const plan: RoutinePlan = {
       custom: true,
       tasks,
       goal: tasks.reduce((n, t) => n + t.questions, 0),
       minutes: tasks.reduce((n, t) => n + t.minutes, 0),
     };
+    if (apiEnabled && !await saveApiPlan(routineDate, plan)) return;
+    if (!apiEnabled) state.routinePlans[routineDate] = plan;
     save();
     navigate('routine');
     toast('Routine saved for ' + dateLabel(routineDate));
@@ -517,9 +556,9 @@ function checkReminder() {
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
   if (state.preferences.theme === 'system') applyPreferences();
 });
-ensureTodayPlan();
+if (!apiEnabled) ensureTodayPlan();
 applyPreferences();
 page = location.hash.slice(1) || 'home';
-render();
+if (!apiEnabled) render();
 setInterval(updateTimer, 1000);
 setInterval(checkReminder, 30000);

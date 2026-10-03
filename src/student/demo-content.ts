@@ -72,7 +72,7 @@ for (const question of originalQuestions) {
   question.source = 'Existing local practice set';
   question.verified = false;
 }
-const demoAffairs = [
+const demoAffairs: Affair[] = [
   {
     id: 'demo-affairs-1',
     month: '2026-10',
@@ -121,7 +121,7 @@ for (const article of demoAffairs) {
 }
 
 // Every topic can exercise the reading flow. Existing notes are kept intact.
-const demoLessons = {};
+const demoLessons: Record<string, LessonNote> = {};
 subjects.forEach((subject, subjectIndex) => {
   subject.chapters.forEach((chapter, chapterIndex) => {
     chapter.topics.forEach((topic) => {

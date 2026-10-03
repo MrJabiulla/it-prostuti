@@ -1,0 +1,27 @@
+{
+  "name": "it-prostuti-student",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build:student": "tsc -p tsconfig.student.json",
+    "build": "npm run build:student && next build --webpack",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit && tsc -p tsconfig.student.json --noEmit",
+    "test": "npm run build:student && node --test tests/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

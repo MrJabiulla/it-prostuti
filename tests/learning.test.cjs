@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
-function app() {
+function app(initialState = null) {
   const elements = new Map();
   const handlers = {};
   const element = () => ({
@@ -25,7 +25,7 @@ function app() {
     location: { hash: '' },
     localStorage: {
       getItem() {
-        return null;
+        return initialState ? JSON.stringify(initialState) : null;
       },
       setItem() {},
     },
@@ -49,12 +49,11 @@ function app() {
     window: { addEventListener() {}, scrollTo() {} },
   };
   vm.createContext(sandbox);
-  for (const file of ['app.js', 'demo-content.js', 'learning.js', 'study.js'])
-    vm.runInContext(
-      fs.readFileSync(path.join(__dirname, '../src/app', file), 'utf8'),
-      sandbox,
-      { filename: file },
-    );
+  vm.runInContext(
+    fs.readFileSync(path.join(__dirname, '../public/student.js'), 'utf8'),
+    sandbox,
+    { filename: 'student.js' },
+  );
   return { run: (source) => vm.runInContext(source, sandbox), handlers };
 }
 test('all screens render; old storage is extended and every lesson is reachable', () => {
@@ -193,4 +192,59 @@ test('chapter tests unlock only after every topic is read', () => {
     ),
     true,
   );
+});
+
+test('TypeScript runtime preserves existing browser progress during startup', () => {
+  const saved = {
+    profile: { name: 'Existing student', exam: 'Bank', minutes: 15, date: '' },
+    attempts: [
+      {
+        id: 0,
+        choice: 0,
+        correct: true,
+        guess: false,
+        at: 1,
+        day: '2026-09-30',
+      },
+    ],
+    saved: [0, 2],
+    reviews: { 2: { due: 1, level: 2 } },
+    reports: [],
+    session: {
+      ids: [0, 2],
+      title: 'Existing practice',
+      mode: 'practice',
+      index: 0,
+      page: 0,
+      answers: {},
+      startedAt: 1,
+      deadline: null,
+    },
+    reading: {
+      'bn-c1-0': {
+        done: true,
+        saved: true,
+        note: 'Keep this note',
+        position: 120,
+      },
+    },
+    preferences: {
+      theme: 'dark',
+      themeChosen: true,
+      fontSize: 'large',
+      lowData: true,
+    },
+  };
+  const { run } = app(saved);
+  for (const key of ['attempts', 'saved', 'reviews', 'session', 'reading']) {
+    assert.deepEqual(
+      JSON.parse(run(`JSON.stringify(state.${key})`)),
+      saved[key],
+      key,
+    );
+  }
+  assert.equal(run('state.profile.name'), saved.profile.name);
+  assert.equal(run('state.preferences.theme'), 'dark');
+  assert.equal(run('state.preferences.fontSize'), 'large');
+  assert.equal(run('state.preferences.lowData'), true);
 });

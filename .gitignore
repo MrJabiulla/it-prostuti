@@ -4,3 +4,8 @@ node_modules/
 *.log
 .env
 .env.local
+
+.next/
+out/
+*.tsbuildinfo
+public/student.js

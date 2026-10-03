@@ -16,6 +16,6 @@
 - **Accessibility:** Provide visible keyboard focus, labeled controls, readable contrast and comfortable touch targets. Do not communicate status through color alone.
 - **Implementation:** Reuse existing widgets. Work on one widget at a time; avoid unnecessary abstractions, dependencies or a new design system.
 - **Validation:** Compare mobile and desktop rendering and run relevant technical checks. Passing tests alone does not prove visual parity.
-- **Stack direction:** Next.js + TypeScript with Vercel hosting. Migration is a separate task; this document does not implement it.
+- **Stack direction:** Next.js + TypeScript with Vercel hosting. Student Web uses this stack while preserving the existing CSS.
 
-**Source:** `src/app/app.js` → `home()`, `bank()` and subject/chapter/topic widgets; `src/app/style.css` → their styles. The UI kit showcase is a secondary reference.
+**Source:** `src/student/app.ts` → `home()`, `bank()` and subject/chapter/topic widgets; `src/app/style.css` → their styles. The UI kit showcase is a secondary reference.
