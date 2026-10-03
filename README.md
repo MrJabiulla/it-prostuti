@@ -48,3 +48,31 @@ installed, re-enable it online so the matching worker replaces the newer cache.
 ## API integration
 
 See [implementation and UI/API mismatch list](docs/WEB-API-INTEGRATION.md). Start the local Laravel API on port 8000 alongside Next.js. Configure `API_SERVER_URL` to use another backend. Use Log in or Create account to request an email OTP. Registration collects a name; verification creates or signs into the account. Log out revokes the current session. Configure Laravel mail delivery before using real email addresses. See [remaining work](docs/REMAINING-WORK.md).
+
+## Admin panel
+
+Open `/admin` on the same local Next.js server. The Laravel API must be running
+on port 8000 (or the configured `API_SERVER_URL`). Sign in using the existing
+email OTP flow and an active administrator account. Student accounts see an
+access-denied screen; Laravel also enforces the role on every admin request.
+To grant access to an existing verified account, use the trusted terminal
+command documented in [backend setup](backend/README.md#email-otp-and-google-authentication).
+
+The panel manages subjects, chapters, topics, lessons and their ordered sections,
+questions and answer options, exams and syllabuses, institutes, posts, papers and
+ordered question links, current affairs, notices, and media uploads/publication.
+Catalogue deletion asks for confirmation; referenced records remain protected
+by the API. Content can be unpublished using its editor. Media starts as a draft
+and must be published before attaching it to lesson sections.
+
+Lists and related-record selectors are paginated. The list filter searches only
+the currently displayed page. Form errors preserve unsaved values; Save/Cancel
+closes an editor before switching sections. Notice times are entered in the
+browser's local timezone and sent as absolute timestamps. No backend schema,
+admin-role assignment UI, or new API endpoint is added.
+
+Admin components live under `app/admin/` and reuse the shared design tokens.
+The original student runtime loads only on `/`. Run `npm run typecheck`,
+`npm test` and `npm run build` for frontend validation, and `php artisan test`
+from `backend/` for existing API contracts. Real inbox delivery still requires
+configured mail transport.

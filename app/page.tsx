@@ -1,6 +1,9 @@
+import Script from 'next/script';
+
 export default function StudentPage() {
   return (
     <>
+      <Script src="/student.js" strategy="afterInteractive" />
       <div id="app">
         <aside id="sidebar-nav" aria-label="Desktop navigation"></aside>
         <div id="app-body">
