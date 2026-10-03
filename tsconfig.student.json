@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022"
+    ],
+    "module": "none",
+    "moduleDetection": "legacy",
+    "outFile": "public/student.js",
+    "strict": false,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "files": [
+    "src/student/types.d.ts",
+    "src/student/api-client.ts",
+    "src/student/app.ts",
+    "src/student/demo-content.ts",
+    "src/student/learning.ts",
+    "src/student/study.ts",
+    "src/student/api-data.ts",
+    "src/student/auth.ts",
+    "src/student/api-actions.ts"
+  ]
+}

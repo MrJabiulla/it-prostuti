@@ -8,9 +8,24 @@
 ## 📁 1. Directory Structure (ক্যাটাগরি ভিত্তিক ডিরেক্টরি কাঠামো)
 
 ```text
-web/
-├── index.html                    # ইন্টারঅ্যাক্টিভ লাইভ ডেমো ও শোকেস
+it-prostuti/
+├── app/                          # Next.js App Router shell
+│   ├── layout.tsx                # Metadata, existing CSS and runtime loading
+│   └── page.tsx                  # Existing Student Web DOM shell
+├── public/                       # Generated browser runtime and offline worker
+├── package.json                  # Local development and production commands
+├── examples/
+│   └── ui-kit.html               # UI kit demo ও showcase
 ├── src/
+│   ├── app/
+│   │   └── style.css             # Existing application CSS, unchanged
+│   ├── student/                  # TypeScript browser runtime
+│   │   ├── app.ts                # Main application and screen templates
+│   │   ├── demo-content.ts       # Existing local demo data
+│   │   ├── learning.ts           # Reading, papers, practice and backup
+│   │   ├── study.ts              # Preferences, routine and startup
+│   │   └── types.d.ts            # Shared runtime types
+│   │
 │   ├── index.js                  # Master Barrel Export (এক জায়গা থেকে সহজে ব্যবহারের জন্য)
 │   ├── styles.css                # একীভূত স্টাইলশিট বান্ডেল
 │   │
@@ -53,6 +68,22 @@ web/
 ```
 
 ---
+
+## Running locally
+
+Use `npm ci` and `npm run dev` to run Student Web at `http://localhost:3000`.
+Use `npm run build` and `npm start` for production. See [README.md](README.md)
+for checks and migration details.
+
+`app/` owns the Next.js shell. `src/student/` owns the existing browser-rendered
+screens, now compiled from TypeScript in their original execution order.
+`src/app/style.css` remains the application stylesheet. Browser storage and
+hash navigation retain their previous formats.
+
+The reusable UI kit remains in the other `src/` folders and is not imported by
+Student Web. Its standalone example can still be served separately for local
+inspection. The old `.openai/hosting.json` static-root configuration does not
+build or serve the Next.js application.
 
 ## 🚀 2. Quick Usage Guide (সহজ ব্যবহারের নিয়মাবলী)
 

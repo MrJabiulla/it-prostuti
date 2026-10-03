@@ -1,0 +1,378 @@
+{
+  "chapters": [
+    {
+      "title": "Computer Fundamentals",
+      "topic": "Hardware and Memory",
+      "questions": [
+        {
+          "text": "Which memory loses its contents when power is turned off?",
+          "options": [
+            "RAM",
+            "ROM",
+            "SSD",
+            "DVD"
+          ],
+          "explanation": "RAM is volatile memory and requires power to retain data."
+        },
+        {
+          "text": "Which component executes program instructions?",
+          "options": [
+            "CPU",
+            "Monitor",
+            "Keyboard",
+            "Printer"
+          ],
+          "explanation": "The CPU fetches, decodes and executes instructions."
+        },
+        {
+          "text": "How many bits make one byte?",
+          "options": [
+            "8",
+            "4",
+            "16",
+            "32"
+          ],
+          "explanation": "One byte consists of eight bits."
+        },
+        {
+          "text": "Which device is used for persistent storage?",
+          "options": [
+            "SSD",
+            "CPU register",
+            "RAM",
+            "CPU cache"
+          ],
+          "explanation": "An SSD retains stored data without power."
+        },
+        {
+          "text": "What is the decimal value of binary 1010?",
+          "options": [
+            "10",
+            "8",
+            "12",
+            "14"
+          ],
+          "explanation": "1010 equals 8 + 2 = 10."
+        },
+        {
+          "text": "Which device is an input device?",
+          "options": [
+            "Keyboard",
+            "Monitor",
+            "Speaker",
+            "Projector"
+          ],
+          "explanation": "A keyboard sends user input to the computer."
+        }
+      ]
+    },
+    {
+      "title": "Programming",
+      "topic": "Algorithms and Data Structures",
+      "questions": [
+        {
+          "text": "Which data structure follows FIFO?",
+          "options": [
+            "Queue",
+            "Stack",
+            "Binary search tree",
+            "Set"
+          ],
+          "explanation": "A queue removes the first item inserted: first in, first out."
+        },
+        {
+          "text": "Which data structure follows LIFO?",
+          "options": [
+            "Stack",
+            "Queue",
+            "Graph",
+            "Hash table"
+          ],
+          "explanation": "A stack removes the last item inserted first."
+        },
+        {
+          "text": "What does binary search require?",
+          "options": [
+            "Sorted data",
+            "Random data",
+            "Duplicate values",
+            "A linked list"
+          ],
+          "explanation": "Binary search eliminates half of a sorted search range at each step."
+        },
+        {
+          "text": "What is the worst-case time complexity of linear search?",
+          "options": [
+            "O(n)",
+            "O(1)",
+            "O(log n)",
+            "O(n log n)"
+          ],
+          "explanation": "Linear search may inspect all n items."
+        },
+        {
+          "text": "What is a function calling itself called?",
+          "options": [
+            "Recursion",
+            "Compilation",
+            "Iteration only",
+            "Indexing"
+          ],
+          "explanation": "Recursion solves a problem by calling the same function on a smaller case."
+        },
+        {
+          "text": "Which traversal uses a queue?",
+          "options": [
+            "Breadth-first search",
+            "Depth-first search with a stack",
+            "Inorder recursion",
+            "Postorder recursion"
+          ],
+          "explanation": "Breadth-first search uses a queue to process nodes level by level."
+        }
+      ]
+    },
+    {
+      "title": "Databases",
+      "topic": "Relational Database Basics",
+      "questions": [
+        {
+          "text": "Which SQL statement reads rows?",
+          "options": [
+            "SELECT",
+            "DELETE",
+            "DROP",
+            "INSERT"
+          ],
+          "explanation": "SELECT retrieves rows from a table."
+        },
+        {
+          "text": "What uniquely identifies a row?",
+          "options": [
+            "Primary key",
+            "Column alias",
+            "ORDER BY",
+            "View name"
+          ],
+          "explanation": "A primary key uniquely identifies each row and cannot be null."
+        },
+        {
+          "text": "Which clause filters rows before grouping?",
+          "options": [
+            "WHERE",
+            "ORDER BY",
+            "HAVING",
+            "LIMIT"
+          ],
+          "explanation": "WHERE filters input rows before GROUP BY aggregation."
+        },
+        {
+          "text": "What does a foreign key enforce?",
+          "options": [
+            "Referential integrity",
+            "Alphabetical sorting",
+            "Data encryption",
+            "Automatic backups"
+          ],
+          "explanation": "A foreign key links a row to an existing referenced record."
+        },
+        {
+          "text": "Which SQL aggregate counts rows with COUNT(*)?",
+          "options": [
+            "COUNT",
+            "SUM",
+            "AVG",
+            "MAX"
+          ],
+          "explanation": "COUNT(*) returns the number of rows in the selected group."
+        },
+        {
+          "text": "Which operation undoes an uncommitted transaction?",
+          "options": [
+            "ROLLBACK",
+            "COMMIT",
+            "SELECT",
+            "GRANT"
+          ],
+          "explanation": "ROLLBACK cancels changes made in the current uncommitted transaction."
+        }
+      ]
+    },
+    {
+      "title": "Networking",
+      "topic": "Internet and Security Basics",
+      "questions": [
+        {
+          "text": "What does DNS resolve?",
+          "options": [
+            "Domain names to IP addresses",
+            "Passwords to hashes",
+            "Files to folders",
+            "Ports to cables"
+          ],
+          "explanation": "DNS resolves domain names to IP addresses."
+        },
+        {
+          "text": "Which protocol provides reliable ordered transport?",
+          "options": [
+            "TCP",
+            "UDP",
+            "IP alone",
+            "ARP"
+          ],
+          "explanation": "TCP provides ordered delivery with retransmission for missing data."
+        },
+        {
+          "text": "What protects HTTPS traffic in transit?",
+          "options": [
+            "TLS",
+            "HTML",
+            "DNS alone",
+            "A file extension"
+          ],
+          "explanation": "HTTPS uses TLS to protect traffic in transit."
+        },
+        {
+          "text": "Which IPv4 address is a loopback address?",
+          "options": [
+            "127.0.0.1",
+            "8.8.8.8",
+            "1.1.1.1",
+            "192.0.2.1"
+          ],
+          "explanation": "127.0.0.1 refers to the local host through the loopback interface."
+        },
+        {
+          "text": "Which device forwards packets between networks?",
+          "options": [
+            "Router",
+            "Keyboard",
+            "Scanner",
+            "Display"
+          ],
+          "explanation": "A router forwards IP packets between networks."
+        },
+        {
+          "text": "Which practice adds a second authentication factor?",
+          "options": [
+            "Password plus authenticator code",
+            "Entering the password twice",
+            "Using a shorter password",
+            "Sharing an account"
+          ],
+          "explanation": "An authenticator code provides a possession factor in addition to a password."
+        }
+      ]
+    }
+  ],
+  "institutes": [
+    [
+      "bank",
+      "Bank",
+      "Bank Recruitment",
+      "Officer"
+    ],
+    [
+      "bpsc",
+      "BPSC",
+      "BCS Preliminary",
+      "General cadre"
+    ],
+    [
+      "primary",
+      "Primary",
+      "Primary Recruitment",
+      "Assistant teacher"
+    ],
+    [
+      "ntrc",
+      "NTRC",
+      "Teacher Registration",
+      "Assistant teacher"
+    ],
+    [
+      "power",
+      "Power Sector",
+      "Power Sector Recruitment",
+      "Assistant engineer"
+    ],
+    [
+      "wasa",
+      "WASA",
+      "WASA Recruitment",
+      "Assistant engineer"
+    ],
+    [
+      "petrobangla",
+      "Petro Bangla",
+      "Petrobangla Recruitment",
+      "Assistant manager"
+    ],
+    [
+      "gas",
+      "GAS Sector",
+      "Gas Sector Recruitment",
+      "Technical officer"
+    ],
+    [
+      "it",
+      "Others IT",
+      "IT Recruitment",
+      "Programmer"
+    ]
+  ],
+  "affairs": [
+    [
+      "Economy",
+      "Sample briefing: digital payments",
+      "This fictional briefing describes a town testing digital payments for public services. Practice identifying the purpose, stakeholders and implementation challenges."
+    ],
+    [
+      "Environment",
+      "Sample briefing: river conservation",
+      "This fictional briefing describes a river clean-up programme with water-quality monitoring and community participation."
+    ],
+    [
+      "Science",
+      "Sample briefing: renewable energy research",
+      "This fictional briefing describes a university comparing solar energy storage methods. It is a reading exercise, not a report of an actual event."
+    ],
+    [
+      "International",
+      "Sample briefing: regional education exchange",
+      "This fictional briefing describes a proposed student exchange programme between neighbouring countries."
+    ]
+  ],
+  "notices": [
+    [
+      "Sample notice: weekly practice session",
+      "Bangla and English · Practice",
+      "Try a short practice session covering grammar and vocabulary. This is a demo notice, not a scheduled event."
+    ],
+    [
+      "Sample notice: technical question collection",
+      "ICT · New sample content",
+      "Computer fundamentals, programming, databases and networking practice questions are available."
+    ],
+    [
+      "Sample notice: revision reminder",
+      "Study · Revision",
+      "Review explanations after practice and revisit topics that need attention."
+    ],
+    [
+      "Sample notice: institution papers",
+      "Previous Questions · Sample papers",
+      "Browse institution filters to explore synthetic sample papers with linked questions."
+    ],
+    [
+      "Sample notice: study planning",
+      "Routine · Planning",
+      "Choose a manageable daily study target and use the routine screen to plan your own work."
+    ],
+    [
+      "Sample notice: content feedback",
+      "Question Bank · Feedback",
+      "Use the question report action when you notice an issue in sample content."
+    ]
+  ]
+}
