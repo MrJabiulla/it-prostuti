@@ -11,9 +11,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\ActiveUser;
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ApiResponseHeaders;
+use App\Http\Middleware\TrackDeviceActivity;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class])->group(function () {
+Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class, TrackDeviceActivity::class])->group(function () {
     Route::get('auth/csrf', fn () => response()->json(['csrf_token' => csrf_token()])->header('Cache-Control', 'no-store'));
     Route::post('auth/otp/request', [AuthController::class, 'requestOtp'])->middleware('throttle:otp-send');
     Route::post('auth/otp/verify', [AuthController::class, 'verifyOtp'])->middleware('throttle:otp-verify');
@@ -39,6 +40,11 @@ Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class])
         Route::get('papers', [CatalogueController::class, 'papers']);
         Route::get('papers/{paper}', [CatalogueController::class, 'paper'])->whereNumber('paper');
         Route::get('current-affairs', [CatalogueController::class, 'affairs']);
+        Route::get('notices', [CatalogueController::class, 'notices']);
+        Route::get('reports', [PreparationController::class, 'reports']);
+        Route::post('questions/{question}/reports', [PreparationController::class, 'report'])->whereNumber('question');
+        Route::get('activity', [PreparationController::class, 'activity']);
+        Route::put('routine-plan', [PreparationController::class, 'savePlan']);
         Route::get('dashboard', [PreparationController::class, 'dashboard']);
         Route::get('revision', [PreparationController::class, 'revision']);
         Route::get('routine', [PreparationController::class, 'routine']);
@@ -49,6 +55,7 @@ Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class])
         Route::post('attempts', [AttemptController::class, 'store'])->middleware('throttle:attempt-start');
         Route::get('attempts/{attempt}', [AttemptController::class, 'show'])->whereUuid('attempt');
         Route::put('attempts/{attempt}/answers', [AttemptController::class, 'answers'])->whereUuid('attempt');
+        Route::put('attempts/{attempt}/progress', [AttemptController::class, 'progress'])->whereUuid('attempt');
         Route::post('attempts/{attempt}/submit', [AttemptController::class, 'submit'])->whereUuid('attempt');
         Route::get('media/{media}/download', [MediaController::class, 'download'])->whereNumber('media');
 
@@ -68,6 +75,8 @@ Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class])
             Route::put('papers/{id}', [AdminContentController::class, 'paper'])->whereNumber('id');
             Route::post('current-affairs', [AdminContentController::class, 'affair']);
             Route::put('current-affairs/{id}', [AdminContentController::class, 'affair'])->whereNumber('id');
+            Route::post('notices', [AdminContentController::class, 'notice']);
+            Route::put('notices/{id}', [AdminContentController::class, 'notice'])->whereNumber('id');
             Route::get('media', [MediaController::class, 'index']);
             Route::post('media', [MediaController::class, 'store'])->middleware('throttle:uploads');
             Route::put('media/{media}', [MediaController::class, 'publish'])->whereNumber('media');

@@ -1,16 +1,16 @@
 # Database schema and relationships
 
-Verified against the local MySQL 8.4 schema and all five migrations on 2026-10-01. **36 tables total: 28 application tables and 8 framework/infrastructure tables.** This document describes the current implementation, not a proposed schema. No application records or credentials are included.
+The original schema was verified against local MySQL 8.4 on 2026-10-01. The additive device-tracking migration adds two tables on 2026-10-03: **42 tables total: 34 application tables and 8 framework/infrastructure tables**, including the four frontend-coverage tables. This document describes the current implementation, not a proposed schema. No application records or credentials are included.
 
 ## Table inventory
 
 | Area | Count | Tables |
 | --- | ---: | --- |
-| Identity and authentication | 4 | [users](#users), [email_otps](#email-otps), [social_accounts](#social-accounts), [user_preferences](#user-preferences) |
+| Identity and authentication | 6 | [users](#users), [email_otps](#email-otps), [social_accounts](#social-accounts), [user_preferences](#user-preferences), user_devices, device_sessions |
 | Study catalogue and files | 6 | [subjects](#subjects), [chapters](#chapters), [topics](#topics), [lessons](#lessons), [lesson_sections](#lesson-sections), [media_files](#media-files) |
 | Exams and question bank | 8 | [exams](#exams), [institutes](#institutes), [posts](#posts), [exam_subject](#exam-subject), [papers](#papers), [questions](#questions), [question_options](#question-options), [paper_question](#paper-question) |
-| Personal preparation and assessment | 8 | [reading_progress](#reading-progress), [lesson_notes](#lesson-notes), [lesson_bookmarks](#lesson-bookmarks), [question_bookmarks](#question-bookmarks), [attempts](#attempts), [attempt_items](#attempt-items), [question_progress](#question-progress), [routine_tasks](#routine-tasks) |
-| Current affairs | 2 | [current_affairs](#current-affairs), [affair_question](#affair-question) |
+| Personal preparation and assessment | 11 | [reading_progress](#reading-progress), [lesson_notes](#lesson-notes), [lesson_bookmarks](#lesson-bookmarks), [question_bookmarks](#question-bookmarks), [attempts](#attempts), [attempt_items](#attempt-items), [question_progress](#question-progress), [routine_tasks](#routine-tasks), routine_plans, question_reviews, question_reports |
+| Current affairs and notices | 3 | [current_affairs](#current-affairs), [affair_question](#affair-question), notices |
 | Framework infrastructure | 8 | [sessions](#sessions), [password_reset_tokens](#password-reset-tokens), [cache](#cache), [cache_locks](#cache-locks), [jobs](#jobs), [job_batches](#job-batches), [failed_jobs](#failed-jobs), [migrations](#migrations) |
 
 ## How to read the schema
@@ -997,3 +997,32 @@ No declared foreign keys.
 - [Backend setup](../README.md) explains MySQL configuration and local development.
 
 When a migration changes columns, indexes or relations, update this document alongside it.
+
+## Device tracking tables
+
+`user_devices` belongs to a user (cascade delete), with a unique `(user_id, device_id)` installation UUID. It stores platform, nullable device name/OS/app version, first and last login, and timestamps.
+
+`device_sessions` has a UUID primary key and belongs to `user_devices` (cascade delete). It stores nullable IP and user agent, login time, last seen, indexed expiry, and nullable revoked time. The tracking UUID is stored in the authenticated Laravel session; it is not an authentication token. Multiple sessions can belong to one device. Count distinct devices with unrevoked, unexpired sessions when implementing a future device limit.
+
+## Frontend coverage schema additions (2026-10-03)
+
+The following extends the original column tables above. Migration: `2026_10_03_000002_complete_frontend_coverage.php`. See [field mappings and API contracts](FRONTEND-COVERAGE.md).
+
+| Table | Added columns and constraints |
+| --- | --- |
+| subjects/chapters/topics | Nullable english/bengali VARCHAR(255) |
+| subjects | Nullable short VARCHAR(80), symbol VARCHAR(40), color VARCHAR(30) |
+| user_preferences | Nullable JSON focus_subject_ids; low_data false, streak_alert true, theme_chosen false; unsigned tinyint reader_size default 18; nullable last_lesson_id and selected_paper_id FKs, SET NULL on deletion |
+| routine_tasks | Nullable client_id VARCHAR(80); kind VARCHAR(20) default mixed; nullable subject_id FK SET NULL; unsigned smallint questions/position default 0; UNIQUE(user_id,date,client_id) |
+| attempts | unsigned smallint current_index/current_page default 0; nullable routine_task_id FK SET NULL |
+| attempt_items | boolean guess default false |
+| current_affairs | Nullable category VARCHAR(100) |
+
+| New table | Columns, ownership and indexes |
+| --- | --- |
+| routine_plans | PK(user_id,date); user FK CASCADE; date DATE; goal/minutes unsigned smallint; custom boolean false; created_at/updated_at timestamps |
+| question_reviews | PK(user_id,question_id); both FKs CASCADE; due_at timestamp; level unsigned tinyint default 0; index(user_id,due_at) |
+| question_reports | id bigint PK; user FK CASCADE; question FK RESTRICT; type VARCHAR(100); detail TEXT; created_at/updated_at timestamps; index(user_id,id) |
+| notices | id bigint PK; title VARCHAR(255); nullable meta VARCHAR(255)/body TEXT/publication_at timestamp; published boolean false; created_at/updated_at timestamps; index(published,publication_at) |
+
+Routine plans and tasks share user/date as an application-level association, preserving compatibility with existing standalone task APIs. Focus subject IDs are validated on profile writes. Revision backfill copies existing wrong/skipped progress into due level-0 records without changing question_progress.

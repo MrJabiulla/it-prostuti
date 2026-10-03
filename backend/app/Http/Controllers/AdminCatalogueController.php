@@ -29,7 +29,12 @@ class AdminCatalogueController extends Controller
             $rules['slug'] = ['required', 'alpha_dash:ascii', 'max:100', Rule::unique($resource)->ignore($id)];
         }
         if (in_array($resource, ['subjects', 'chapters', 'topics'])) {
+            $rules['english'] = 'sometimes|nullable|string|max:255';
+            $rules['bengali'] = 'sometimes|nullable|string|max:255';
             $rules['position'] = 'required|integer|between:0,10000';
+        }
+        if ($resource === 'subjects') {
+            $rules += ['short' => 'sometimes|nullable|string|max:80', 'symbol' => 'sometimes|nullable|string|max:40', 'color' => ['sometimes', 'nullable', 'regex:/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/']];
         }
         if ($resource === 'chapters') {
             $rules += ['subject_id' => 'required|integer|exists:subjects,id', 'overview' => 'nullable|string|max:4000'];

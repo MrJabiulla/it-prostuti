@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\LoginOtp;
 use App\Models\User;
+use App\Services\DeviceTracking;
 use App\Services\GoogleIdentity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +20,9 @@ class AuthController extends Controller
     public function requestOtp(Request $request)
     {
         $email = $this->email($request);
+        $data = $request->validate(['name' => ['sometimes', 'required', 'string', 'max:80']]);
 
-        return Cache::lock('otp:'.hash('sha256', $email), 15)->block(3, function () use ($email) {
+        $response = Cache::lock('otp:'.hash('sha256', $email), 15)->block(3, function () use ($email) {
             $existing = DB::table('email_otps')->where('email', $email)->first();
             abort_if($existing && now()->diffInSeconds($existing->sent_at, true) < 60, 429, 'Please wait before requesting another code.');
             $code = (string) random_int(100000, 999999);
@@ -34,12 +36,30 @@ class AuthController extends Controller
 
             return response()->json(['message' => 'A sign-in code has been requested.', 'expires_in' => 600], 202);
         });
+
+        $registrationKey = 'otp_registration.'.hash('sha256', $email);
+        if (isset($data['name'])) {
+            $request->session()->put($registrationKey, [
+                'name' => $data['name'],
+                'expires_at' => now()->addMinutes(10)->timestamp,
+            ]);
+        } else {
+            $request->session()->forget($registrationKey);
+        }
+
+        return $response;
     }
 
     public function verifyOtp(Request $request)
     {
+        app(DeviceTracking::class)->validate($request);
         $email = $this->email($request);
         $data = $request->validate(['code' => ['required', 'digits:6'], 'name' => ['nullable', 'string', 'max:80']]);
+        $registrationKey = 'otp_registration.'.hash('sha256', $email);
+        $registration = $request->session()->get($registrationKey);
+        if ($registration && $registration['expires_at'] > now()->timestamp) {
+            $data['name'] ??= $registration['name'];
+        }
         $user = DB::transaction(function () use ($email, $data) {
             $otp = DB::table('email_otps')->where('email', $email)->lockForUpdate()->first();
             if (! $otp || now()->greaterThanOrEqualTo($otp->expires_at) || $otp->attempts >= 5) {
@@ -61,6 +81,8 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['code' => 'Invalid or expired code.']);
         }
 
+        $request->session()->forget($registrationKey);
+
         return $this->login($request, $user);
     }
 
@@ -75,24 +97,32 @@ class AuthController extends Controller
 
     public function google(Request $request, GoogleIdentity $google)
     {
+        app(DeviceTracking::class)->validate($request);
         $data = $request->validate(['credential' => ['required', 'string', 'max:10000']]);
         $nonce = $request->session()->pull('google_nonce');
         abort_unless($nonce && $nonce['expires_at'] > now()->timestamp, 422, 'Request a new Google login nonce.');
         $claims = $google->verify($data['credential'], $nonce['value']);
         $email = Str::lower($claims['email']);
-        $user = Cache::lock('google:'.hash('sha256', $claims['sub']), 10)->block(3, fn () => DB::transaction(function () use ($claims, $email) {
+        $user = Cache::lock('google:'.hash('sha256', $claims['sub']), 10)->block(3, fn () => DB::transaction(function () use ($claims, $email, $request) {
             $account = DB::table('social_accounts')->where('provider', 'google')->where('provider_id', $claims['sub'])->first();
             if ($account) {
                 return User::findOrFail($account->user_id);
             }
-            // An existing email does not prove permission to link a new identity.
-            if (User::where('email', $email)->exists()) {
-                throw ValidationException::withMessages(['credential' => 'This email already has an account. Sign in with email OTP.']);
-            }
-            if (! Str::endsWith($email, '@gmail.com') && empty($claims['hd'])) {
+            $user = User::where('email', $email)->lockForUpdate()->first();
+            $googleOwnsEmail = Str::endsWith($email, '@gmail.com') || ! empty($claims['hd']);
+            $emailAlreadyProven = $user && $request->user()?->id === $user->id && $user->email_verified_at;
+            if (! $googleOwnsEmail && ! $emailAlreadyProven) {
                 throw ValidationException::withMessages(['credential' => 'Verify this email using OTP first.']);
             }
-            $user = User::create(['email' => $email, 'name' => Str::limit($claims['name'] ?? Str::before($email, '@'), 80, ''), 'email_verified_at' => now()]);
+            if ($user) {
+                abort_unless($user->is_active, 403, 'Account unavailable.');
+                abort_if(DB::table('social_accounts')->where('user_id', $user->id)->where('provider', 'google')->exists(), 409, 'A different Google identity is already linked.');
+                if (! $user->email_verified_at) {
+                    $user->forceFill(['email_verified_at' => now()])->save();
+                }
+            } else {
+                $user = User::create(['email' => $email, 'name' => Str::limit($claims['name'] ?? Str::before($email, '@'), 80, ''), 'email_verified_at' => now()]);
+            }
             DB::table('social_accounts')->insert(['user_id' => $user->id, 'provider' => 'google', 'provider_id' => $claims['sub'], 'created_at' => now(), 'updated_at' => now()]);
 
             return $user;
@@ -125,6 +155,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        app(DeviceTracking::class)->revoke($request);
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -135,6 +166,7 @@ class AuthController extends Controller
     private function login(Request $request, User $user)
     {
         abort_unless($user->is_active, 403, 'Account unavailable.');
+        app(DeviceTracking::class)->login($request, $user);
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
 

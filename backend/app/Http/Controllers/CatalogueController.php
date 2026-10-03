@@ -19,7 +19,7 @@ class CatalogueController extends Controller
         $record = DB::table('subjects')->find($subject);
         abort_unless($record, 404);
         $chapters = DB::table('chapters as c')->leftJoin('topics as t', 't.chapter_id', '=', 'c.id')->where('c.subject_id', $subject)
-            ->select('c.id', 'c.title', 'c.overview', 'c.position')->selectRaw('COUNT(t.id) as topic_count')->groupBy('c.id', 'c.title', 'c.overview', 'c.position')->orderBy('c.position')->orderBy('c.id')->get();
+            ->select('c.id', 'c.title', 'c.english', 'c.bengali', 'c.overview', 'c.position')->selectRaw('COUNT(t.id) as topic_count')->groupBy('c.id', 'c.title', 'c.english', 'c.bengali', 'c.overview', 'c.position')->orderBy('c.position')->orderBy('c.id')->get();
 
         return ['data' => $record, 'chapters' => $chapters];
     }
@@ -31,7 +31,7 @@ class CatalogueController extends Controller
         $topics = DB::table('topics as t')->leftJoin('lessons as l', fn ($join) => $join->on('l.topic_id', '=', 't.id')->where('l.published', true))
             ->leftJoin('reading_progress as rp', fn ($join) => $join->on('rp.lesson_id', '=', 'l.id')->where('rp.user_id', $request->user()->id))
             ->where('t.chapter_id', $chapter)->orderBy('t.position')->orderBy('t.id')
-            ->get(['t.id', 't.title', 't.position', 'l.id as lesson_id', 'l.reading_minutes', 'l.is_demo', 'rp.completed_at', 'rp.position as reading_position']);
+            ->get(['t.id', 't.title', 't.english', 't.bengali', 't.position', 'l.id as lesson_id', 'l.reading_minutes', 'l.is_demo', 'rp.completed_at', 'rp.position as reading_position']);
 
         return ['data' => $record, 'topics' => $topics, 'progress' => ['total' => $topics->count(), 'completed' => $topics->whereNotNull('completed_at')->count(), 'reading_minutes' => $topics->sum('reading_minutes')]];
     }
@@ -54,9 +54,13 @@ class CatalogueController extends Controller
 
     public function questions(Request $request, QuestionCatalogue $catalogue)
     {
-        $filters = $request->validate(['subject_id' => 'sometimes|integer|min:1', 'chapter_id' => 'sometimes|integer|min:1', 'topic_id' => 'sometimes|integer|min:1', 'exam_id' => 'sometimes|integer|min:1', 'status' => 'sometimes|in:all,new,wrong,skipped', 'per_page' => 'sometimes|integer|min:1|max:50']);
-        $page = $catalogue->query($filters, $request->user()->id)->orderBy('q.id')->paginate($filters['per_page'] ?? 20, ['q.id', 'q.topic_id', 'q.text', 'q.source', 'q.verified', 'q.is_demo']);
-        $page->setCollection($catalogue->options($page->getCollection()));
+        $filters = $request->validate(['q' => 'sometimes|string|max:200', 'subject_id' => 'sometimes|integer|min:1', 'chapter_id' => 'sometimes|integer|min:1', 'topic_id' => 'sometimes|integer|min:1', 'exam_id' => 'sometimes|integer|min:1', 'status' => 'sometimes|in:all,new,wrong,skipped,due,saved,mistakes', 'current_affair_id' => 'sometimes|integer|min:1', 'solutions' => 'sometimes|boolean', 'per_page' => 'sometimes|integer|min:1|max:50']);
+        $columns = ['q.id', 'q.topic_id', 't.chapter_id', 'c.subject_id', 't.title as topic', 'q.text', 'q.source', 'q.verified', 'q.is_demo'];
+        if ($request->boolean('solutions')) {
+            $columns[] = 'q.explanation';
+        }
+        $page = $catalogue->query($filters, $request->user()->id)->orderBy('q.id')->paginate($filters['per_page'] ?? 20, $columns);
+        $page->setCollection($catalogue->metadata($catalogue->options($page->getCollection(), $request->boolean('solutions'))));
 
         return $page;
     }
@@ -116,11 +120,32 @@ class CatalogueController extends Controller
         return ['data' => $record, 'questions' => $page];
     }
 
-    public function affairs(Request $request)
+    public function affairs(Request $request, QuestionCatalogue $catalogue)
     {
-        $data = $request->validate(['month' => ['required', 'date_format:Y-m'], 'per_page' => 'sometimes|integer|between:1,50']);
+        $data = $request->validate(['month' => ['required', 'date_format:Y-m'], 'solutions' => 'sometimes|boolean', 'per_page' => 'sometimes|integer|between:1,50']);
         $start = Carbon::createFromFormat('Y-m-d', $data['month'].'-01')->startOfDay();
 
-        return DB::table('current_affairs')->where('published', true)->where('publication_date', '>=', $start)->where('publication_date', '<', $start->copy()->addMonth())->orderByDesc('publication_date')->orderBy('id')->paginate($data['per_page'] ?? 20);
+        $page = DB::table('current_affairs')->where('published', true)->where('publication_date', '>=', $start)->where('publication_date', '<', $start->copy()->addMonth())->orderByDesc('publication_date')->orderBy('id')->paginate($data['per_page'] ?? 20);
+        $columns = ['q.id', 'q.topic_id', 'q.text', 'q.source', 'q.verified', 'q.is_demo', 'aq.current_affair_id'];
+        if ($request->boolean('solutions')) {
+            $columns[] = 'q.explanation';
+        }
+        $questions = DB::table('affair_question as aq')->join('questions as q', 'q.id', '=', 'aq.question_id')
+            ->whereIn('aq.current_affair_id', $page->getCollection()->pluck('id'))->where('q.published', true)->orderBy('q.id')->get($columns);
+        $grouped = $catalogue->options($questions, $request->boolean('solutions'))->groupBy('current_affair_id');
+        foreach ($page->getCollection() as $article) {
+            $article->questions = $grouped->get($article->id, collect())->values();
+        }
+
+        return $page;
+    }
+
+    public function notices(Request $request)
+    {
+        $request->validate(['per_page' => 'sometimes|integer|between:1,50']);
+
+        return DB::table('notices')->where('published', true)
+            ->where(fn ($q) => $q->whereNull('publication_at')->orWhere('publication_at', '<=', now()))
+            ->orderByDesc('publication_at')->orderByDesc('id')->paginate($request->integer('per_page', 20));
     }
 }

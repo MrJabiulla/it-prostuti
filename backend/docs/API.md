@@ -31,15 +31,15 @@ async function mutate(path: string, method: string, body?: unknown) {
 }
 
 await refreshCsrf();
-await mutate('/auth/otp/request', 'POST', { email: 'student@example.com' });
+await mutate('/auth/otp/request', 'POST', { email: 'student@example.com', name: 'Student Name' });
 // Obtain the six-digit code from the user, then:
 // await mutate('/auth/otp/verify', 'POST', { email, code, name });
 // await refreshCsrf();
 ```
 
-OTP request returns 202. Verification uses `email`, six-digit `code`, and optional `name` (80 characters). The same flow registers and logs in. Codes last 10 minutes, have a 60-second resend cooldown and five guesses. There is no password endpoint. Keep OTPs out of analytics and browser storage.
+OTP request returns 202. Registration sends `email` and `name` (1–80 characters); login sends only `email`. The registration name is retained in the current session, scoped to that email, for 10 minutes. Verification uses `email` and six-digit `code`; the saved name is applied only to a newly created user. Optional verification `name` remains supported. Existing users keep their name and account data. The same passwordless flow registers and logs in. Codes last 10 minutes, have a 60-second resend cooldown and five guesses. There is no password endpoint. Keep OTPs out of analytics and browser storage.
 
-Google: GET `/auth/google/nonce`; pass its nonce and client_id to Google Identity Services, then POST `/auth/google` with `{ "credential": "<Google ID token>" }`. Existing email accounts must first authenticate with OTP and explicitly POST the credential to `/auth/google/link` using a fresh nonce. Refresh CSRF after login/logout. POST `/auth/logout` ends the session.
+Google: GET `/auth/google/nonce`; pass its nonce and client_id to Google Identity Services, then POST `/auth/google` with `{ "credential": "<Google ID token>" }`. Verified Gmail/Workspace identities automatically reuse the matching existing email account and attach Google without replacing its profile. An unlinked non-Google-hosted email must first sign in by OTP, then use the same Google action with a fresh credential; linking is automatic in that authenticated session. A conflicting Google subject returns 409. The explicit `/auth/google/link` route remains only for compatibility. Refresh CSRF after login/logout. POST `/auth/logout` ends the session. Sessions default to 30 days of inactivity (`SESSION_LIFETIME=43200`) with a persistent HttpOnly cookie, and renew with activity; OTP and nonce still expire after 10 minutes.
 
 ## Screen reads
 
@@ -50,7 +50,7 @@ Google: GET `/auth/google/nonce`; pass its nonce and client_id to Google Identit
 | GET `/subjects/{subject}` | Subject and chapters |
 | GET `/chapters/{chapter}` | Topics, lesson availability and user completion |
 | GET `/lessons/{lesson}` | Sections, reading progress, note, bookmark and navigation |
-| GET `/questions` | Optional subject_id, chapter_id, topic_id, exam_id, status=all/new/wrong/skipped |
+| GET `/questions` | Optional subject_id, chapter_id, topic_id, exam_id, status=all/new/wrong/skipped/due/saved/mistakes; optional q/current_affair_id/solutions |
 | GET `/exams`, `/exams/{exam}` | Exam tracks and subject syllabus |
 | GET `/papers/filters` | Optional institute_id and post_id; dependent filter options |
 | GET `/papers` | Optional institute_id, post_id, exam_id, year |
@@ -62,7 +62,7 @@ Google: GET `/auth/google/nonce`; pass its nonce and client_id to Google Identit
 | GET `/routine` | Required from/to=YYYY-MM-DD; at most 31 days apart |
 | GET `/me` | Current user and preferences |
 
-Paginated student lists accept `page` and `per_page` (1–50, default 20). Laravel pagination returns `data`, `current_page`, `last_page`, `total` and links. Read methods returning composite objects retain their named fields; do not assume every endpoint has the same envelope. Question catalogue never returns correct options. Paper solutions are an intentional study resource, not a secure proctoring boundary.
+Paginated student lists accept `page` and `per_page` (1–50, default 20). Laravel pagination returns `data`, `current_page`, `last_page`, `total` and links. Read methods returning composite objects retain their named fields; do not assume every endpoint has the same envelope. Question catalogue hides correct options by default; `solutions=1` explicitly includes study answers. Paper solutions are an intentional study resource, not a secure proctoring boundary.
 
 ## Study and attempts
 
@@ -93,7 +93,7 @@ PUT `/attempts/{attempt}/answers` accepts up to 100 entries:
 
 Use snapshot item IDs, not question IDs. Choices are zero-based; null means unanswered. The response includes only those items plus attempt metadata. Practice answers become immutable once revealed. POST `/attempts/{attempt}/submit` is idempotent and returns scored snapshots. Clients cannot set score, duration or penalty. Persist pending answer batches before submitting; do not rely on a browser unload request. Timed tests reject late saves and finalize from previously saved answers.
 
-PUT `/me` requires name, daily_minutes (5–480), daily_questions (1–500), theme (light/dark/system), font_size (standard/large), reminder boolean, reminder_time (HH:mm), timezone (IANA). Optional exam_id and target_date (YYYY-MM-DD) may be null. Email, role and verification cannot be changed here. Preferences store intended reminders; this API does not send scheduled reminder notifications.
+PUT `/me` requires name, daily_minutes (5–480), daily_questions (1–500), theme (light/dark/system), font_size (standard/large/extra), reminder boolean, reminder_time (HH:mm), timezone (IANA). Optional exam_id and target_date (YYYY-MM-DD) may be null. Email, role and verification cannot be changed here. Preferences store intended reminders; this API does not send scheduled reminder notifications.
 
 ## Admin content
 
@@ -117,3 +117,29 @@ GET/POST `/admin/media` lists/uploads files. Upload multipart `file` (JPEG/PNG/W
 ## Errors and retry behavior
 
 401 requires login, 403 denies role/account access, 404 hides unavailable/unowned resources, 409 indicates a state conflict, 419 requires a fresh CSRF session, 422 returns validation message/errors, 429 requires backing off, and Google without configuration returns 503. Do not blindly retry OTP requests or submissions with changed UUIDs. All API responses are private/no-store. Database timestamps use UTC; format them using user timezone.
+
+### Device metadata and session tracking
+
+OTP verification and Google login accept an optional `device` object:
+
+```json
+{
+  "device": {
+    "device_id": "06ccf486-b054-47f2-930c-a699ac08b393",
+    "platform": "android",
+    "device_name": "Pixel",
+    "os_version": "16",
+    "app_version": "1.0.0"
+  }
+}
+```
+
+Send this alongside `email`/`code` or `credential`. Persist a random UUID per installation; use `web`, `android`, or `ios` for platform. Device name, OS version, and app version are optional. Metadata is validated before consuming an OTP or Google nonce. Older clients without metadata remain compatible: the server assigns a session-scoped installation UUID with platform `web`; these clients cannot reliably identify an installation after logout.
+
+Successful login upserts a device per user and installation UUID, preserving first login and updating metadata and last login. Each login gets a separate server-side tracking reference stored inside the authenticated session. API activity updates IP, user agent, last seen and the 30-day idle expiry. Logout marks only that tracking session revoked. Expired rows remain as history; active tracking rows have `revoked_at IS NULL` and `expires_at > NOW()`. Tracking is observational: Laravel's existing session authentication remains authoritative. Existing sessions created before this migration are tracked after their next login.
+
+No device count limit or device-management endpoints are enabled. Client-supplied metadata is untrusted and is not proof of device identity. Browser storage reset or reinstall may produce a new installation UUID. The Student Web demo is not yet connected to backend authentication; this change does not alter its UI.
+
+## Complete frontend field mapping
+
+See [Frontend coverage](FRONTEND-COVERAGE.md) for all persisted frontend properties, additive payloads, new endpoints, derived values, and device-local boundaries.

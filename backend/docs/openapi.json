@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Prosthuti API",
-    "version": "1.0.0",
-    "description": "Local Laravel API. Cookie sessions; mutations require CSRF. See API.md for payloads and workflow constraints. Response schemas are intentionally not exhaustive."
+    "version": "1.1.0",
+    "description": "Local Laravel API. Cookie sessions; mutations require CSRF. See API.md for payloads and workflow constraints. Response schemas are intentionally not exhaustive. Frontend field mapping and additive contracts: FRONTEND-COVERAGE.md."
   },
   "servers": [
     {
@@ -1185,7 +1185,105 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "request_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "practice",
+                      "exam"
+                    ]
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "chapter_test": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "all",
+                      "new",
+                      "wrong",
+                      "skipped",
+                      "due",
+                      "saved",
+                      "mistakes"
+                    ]
+                  },
+                  "paper_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "subject_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "chapter_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "topic_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "exam_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "current_affair_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "routine_task_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "question_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "subject_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  }
+                },
+                "required": [
+                  "request_id",
+                  "mode"
+                ]
               }
             }
           }
@@ -1295,7 +1393,42 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "answers": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item_id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        },
+                        "choice": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ],
+                          "minimum": 0,
+                          "maximum": 9
+                        },
+                        "guess": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "item_id",
+                        "choice"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "answers"
+                ]
               }
             }
           }
@@ -1447,11 +1580,55 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "device": {
+                    "type": "object",
+                    "required": [
+                      "device_id",
+                      "platform"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "device_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "platform": {
+                        "type": "string",
+                        "enum": [
+                          "web",
+                          "android",
+                          "ios"
+                        ]
+                      },
+                      "device_name": {
+                        "type": "string",
+                        "maxLength": 120
+                      },
+                      "os_version": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "app_version": {
+                        "type": "string",
+                        "maxLength": 40
+                      }
+                    }
+                  },
+                  "credential": {
+                    "type": "string",
+                    "maxLength": 10000
+                  }
+                },
+                "required": [
+                  "credential"
+                ]
               }
             }
           }
-        }
+        },
+        "description": "Verified Gmail/Workspace email automatically reuses the existing account. Non-Google-hosted unlinked email needs a matching OTP-authenticated session first. Existing linked identities are resolved by Google subject. Session defaults to 30 idle days."
       }
     },
     "/auth/google/link": {
@@ -1653,11 +1830,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "description": "Registration name; optional for login."
+                  }
+                }
               }
             }
           }
-        }
+        },
+        "description": "Passwordless registration (email and name) or login (email only). Name is kept in the current cookie session until OTP verification. Existing accounts are reused."
       }
     },
     "/auth/otp/verify": {
@@ -1708,11 +1902,68 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "required": [
+                  "email",
+                  "code"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "code": {
+                    "type": "string",
+                    "pattern": "^[0-9]{6}$"
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 80,
+                    "description": "Optional legacy override; otherwise uses the name saved during registration."
+                  },
+                  "device": {
+                    "type": "object",
+                    "required": [
+                      "device_id",
+                      "platform"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "device_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "platform": {
+                        "type": "string",
+                        "enum": [
+                          "web",
+                          "android",
+                          "ios"
+                        ]
+                      },
+                      "device_name": {
+                        "type": "string",
+                        "maxLength": 120
+                      },
+                      "os_version": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "app_version": {
+                        "type": "string",
+                        "maxLength": 40
+                      }
+                    }
+                  }
+                }
               }
             }
           }
-        }
+        },
+        "description": "Verifies the OTP, applies the saved registration name only for new users and opens the existing account otherwise. Login session defaults to 30 idle days."
       }
     },
     "/chapters/{chapter}": {
@@ -1789,7 +2040,16 @@
             "description": "Rate limit exceeded"
           }
         },
-        "parameters": []
+        "parameters": [
+          {
+            "name": "solutions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ]
       }
     },
     "/dashboard": {
@@ -2231,7 +2491,113 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "focus_subject_ids": {
+                    "type": "array",
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "low_data": {
+                    "type": "boolean"
+                  },
+                  "streak_alert": {
+                    "type": "boolean"
+                  },
+                  "theme_chosen": {
+                    "type": "boolean"
+                  },
+                  "reader_size": {
+                    "type": "integer",
+                    "enum": [
+                      16,
+                      18,
+                      20,
+                      24
+                    ]
+                  },
+                  "last_lesson_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "selected_paper_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "font_size": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "large",
+                      "extra"
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "exam_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "daily_minutes": {
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 480
+                  },
+                  "daily_questions": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 500
+                  },
+                  "target_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "theme": {
+                    "type": "string",
+                    "enum": [
+                      "light",
+                      "dark",
+                      "system"
+                    ]
+                  },
+                  "reminder": {
+                    "type": "boolean"
+                  },
+                  "reminder_time": {
+                    "type": "string",
+                    "pattern": "^\\d{2}:\\d{2}$"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "maxLength": 80
+                  }
+                },
+                "required": [
+                  "name",
+                  "daily_minutes",
+                  "daily_questions",
+                  "theme",
+                  "font_size",
+                  "reminder",
+                  "reminder_time",
+                  "timezone"
+                ]
               }
             }
           }
@@ -2423,7 +2789,52 @@
             "description": "Rate limit exceeded"
           }
         },
-        "parameters": []
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "new",
+                "wrong",
+                "skipped",
+                "due",
+                "saved",
+                "mistakes"
+              ]
+            }
+          },
+          {
+            "name": "current_affair_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          },
+          {
+            "name": "solutions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ]
       }
     },
     "/questions/{question}/bookmark": {
@@ -2524,7 +2935,22 @@
             "description": "Rate limit exceeded"
           }
         },
-        "parameters": []
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "due",
+                "saved",
+                "mistakes"
+              ]
+            }
+          }
+        ]
       }
     },
     "/routine": {
@@ -2611,7 +3037,62 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160
+                  },
+                  "minutes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 480
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "client_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 80
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "review",
+                      "mixed",
+                      "subject"
+                    ]
+                  },
+                  "questions": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 500
+                  },
+                  "subject_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "position": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 19
+                  }
+                },
+                "required": [
+                  "date",
+                  "title",
+                  "minutes",
+                  "completed"
+                ]
               }
             }
           }
@@ -2678,7 +3159,62 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 160
+                  },
+                  "minutes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 480
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "client_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 80
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "review",
+                      "mixed",
+                      "subject"
+                    ]
+                  },
+                  "questions": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 500
+                  },
+                  "subject_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "position": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 19
+                  }
+                },
+                "required": [
+                  "date",
+                  "title",
+                  "minutes",
+                  "completed"
+                ]
               }
             }
           }
@@ -2815,6 +3351,665 @@
             }
           }
         ]
+      }
+    },
+    "/activity": {
+      "get": {
+        "operationId": "PreparationController_activity_get",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      }
+    },
+    "/admin/notices": {
+      "post": {
+        "operationId": "AdminContentController_notice_post",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "meta": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 255
+                  },
+                  "body": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 10000
+                  },
+                  "published": {
+                    "type": "boolean"
+                  },
+                  "publication_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "title",
+                  "published"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/notices/{id}": {
+      "put": {
+        "operationId": "AdminContentController_notice_put",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "meta": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 255
+                  },
+                  "body": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 10000
+                  },
+                  "published": {
+                    "type": "boolean"
+                  },
+                  "publication_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "title",
+                  "published"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attempts/{attempt}/progress": {
+      "put": {
+        "operationId": "AttemptController_progress_put",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attempt",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "current_index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 499
+                  },
+                  "current_page": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 499
+                  }
+                },
+                "required": [
+                  "current_index",
+                  "current_page"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notices": {
+      "get": {
+        "operationId": "CatalogueController_notices_get",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ]
+      }
+    },
+    "/questions/{question}/reports": {
+      "post": {
+        "operationId": "PreparationController_report_post",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          },
+          "201": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "question",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "detail": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "type",
+                  "detail"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports": {
+      "get": {
+        "operationId": "PreparationController_reports_get",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ]
+      }
+    },
+    "/routine-plan": {
+      "put": {
+        "operationId": "PreparationController_savePlan_put",
+        "tags": [
+          "Preparation"
+        ],
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON response; see integration guide and controller contract."
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Account or role not allowed"
+          },
+          "404": {
+            "description": "Resource unavailable or not owned"
+          },
+          "422": {
+            "description": "Validation error; JSON message and errors"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "419": {
+            "description": "Missing or expired CSRF token/session"
+          },
+          "409": {
+            "description": "State or foreign-key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "goal": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "minutes": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "custom": {
+                    "type": "boolean"
+                  },
+                  "tasks": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "maxLength": 160
+                        },
+                        "minutes": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 480
+                        },
+                        "completed": {
+                          "type": "boolean"
+                        },
+                        "client_id": {
+                          "type": "string",
+                          "maxLength": 80
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "review",
+                            "mixed",
+                            "subject"
+                          ]
+                        },
+                        "questions": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 500
+                        },
+                        "subject_id": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        },
+                        "position": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 19
+                        },
+                        "id": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        }
+                      },
+                      "required": [
+                        "client_id",
+                        "title",
+                        "minutes",
+                        "completed"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "date",
+                  "goal",
+                  "minutes",
+                  "custom",
+                  "tasks"
+                ]
+              }
+            }
+          }
+        }
       }
     }
   }

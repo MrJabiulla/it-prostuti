@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -11,7 +12,7 @@ class AdminContentController extends Controller
 {
     public function index(Request $request, string $resource)
     {
-        abort_unless(in_array($resource, ['lessons', 'questions', 'papers', 'current_affairs']), 404);
+        abort_unless(in_array($resource, ['lessons', 'questions', 'papers', 'current_affairs', 'notices']), 404);
         $request->validate(['per_page' => 'sometimes|integer|between:1,100']);
 
         return DB::table($resource)->orderByDesc('id')->paginate($request->integer('per_page', 20));
@@ -19,13 +20,14 @@ class AdminContentController extends Controller
 
     public function show(string $resource, int $id)
     {
-        abort_unless(in_array($resource, ['lessons', 'questions', 'papers', 'current_affairs']), 404);
+        abort_unless(in_array($resource, ['lessons', 'questions', 'papers', 'current_affairs', 'notices']), 404);
         $record = DB::table($resource)->find($id);
         abort_unless($record, 404);
         $related = match ($resource) {
             'lessons' => ['sections' => DB::table('lesson_sections')->where('lesson_id', $id)->orderBy('position')->get()],
             'questions' => ['options' => DB::table('question_options')->where('question_id', $id)->orderBy('position')->get()],
             'papers' => ['question_ids' => DB::table('paper_question')->where('paper_id', $id)->orderBy('position')->pluck('question_id')],
+            'notices' => [],
             'current_affairs' => ['question_ids' => DB::table('affair_question')->where('current_affair_id', $id)->pluck('question_id')],
         };
 
@@ -121,7 +123,7 @@ class AdminContentController extends Controller
 
     public function affair(Request $request, ?int $id = null)
     {
-        $data = $request->validate(['title' => 'required|string|max:200', 'body' => 'required|string|max:30000', 'source' => 'required|string|max:2000', 'publication_date' => 'required|date_format:Y-m-d', 'is_demo' => 'required|boolean', 'published' => 'required|boolean', 'question_ids' => 'present|array|max:50', 'question_ids.*' => ['required', 'integer', 'distinct', Rule::exists('questions', 'id')->where('published', true)]]);
+        $data = $request->validate(['title' => 'required|string|max:200', 'body' => 'required|string|max:30000', 'source' => 'required|string|max:2000', 'publication_date' => 'required|date_format:Y-m-d', 'category' => 'sometimes|nullable|string|max:100', 'is_demo' => 'required|boolean', 'published' => 'required|boolean', 'question_ids' => 'present|array|max:50', 'question_ids.*' => ['required', 'integer', 'distinct', Rule::exists('questions', 'id')->where('published', true)]]);
         $ids = $data['question_ids'];
         unset($data['question_ids']);
         $id = DB::transaction(function () use ($id, $data, $ids) {
@@ -135,6 +137,21 @@ class AdminContentController extends Controller
         });
 
         return $this->show('current_affairs', $id);
+    }
+
+    public function notice(Request $request, ?int $id = null)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:200', 'meta' => 'nullable|string|max:255',
+            'body' => 'nullable|string|max:10000', 'published' => 'required|boolean',
+            'publication_at' => 'nullable|date',
+        ]);
+        if (! empty($data['publication_at'])) {
+            $data['publication_at'] = Carbon::parse($data['publication_at'])->utc();
+        }
+        $id = DB::transaction(fn () => $this->save('notices', $id, $data));
+
+        return $this->show('notices', $id);
     }
 
     private function publication(array $data): void

@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
             $subjects = [];
             $topics = [];
             foreach ($data['subjects'] as $s => $subject) {
-                $subjects[$s] = $this->insert('subjects', ['title' => $subject['name'], 'slug' => Str::slug($subject['short']), 'position' => $s]);
+                $subjects[$s] = $this->insert('subjects', ['title' => $subject['name'], 'english' => $subject['name'], 'bengali' => $subject['bengali'], 'short' => $subject['short'], 'symbol' => $subject['symbol'], 'color' => $subject['color'], 'slug' => Str::slug($subject['short']), 'position' => $s]);
                 foreach ($subject['chapters'] as $c => $chapter) {
-                    $chapterId = $this->insert('chapters', ['subject_id' => $subjects[$s], 'title' => $chapter['title'], 'overview' => 'Local demo chapter. Content requires editorial review.', 'position' => $c]);
+                    $chapterId = $this->insert('chapters', ['subject_id' => $subjects[$s], 'title' => $chapter['title'], 'english' => $chapter['english'], 'overview' => 'Local demo chapter. Content requires editorial review.', 'position' => $c]);
                     foreach ($chapter['topics'] as $t => $topic) {
-                        $id = $this->insert('topics', ['chapter_id' => $chapterId, 'title' => $topic['name'], 'position' => $t]);
+                        $id = $this->insert('topics', ['chapter_id' => $chapterId, 'title' => $topic['name'], 'english' => $topic['english'], 'position' => $t]);
                         $topics[$s][$topic['name']] = $id;
                         $note = $data['lessons'][$topic['name']];
                         $lesson = $this->insert('lessons', ['topic_id' => $id, 'summary' => $note['summary'], 'reading_minutes' => max(1, (int) $note['readTime']), 'published' => true, 'is_demo' => true]);

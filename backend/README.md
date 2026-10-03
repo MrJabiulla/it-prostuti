@@ -36,15 +36,15 @@ The intended Next.js web and Admin clients use Laravel's encrypted HttpOnly sess
 
 1. `GET /api/v1/auth/csrf` returns `csrf_token` and initializes the cookie.
 2. Send `X-CSRF-TOKEN` on POST/PUT/DELETE, alongside the cookie and `Accept: application/json`.
-3. `POST /auth/otp/request` with `email` queues no account creation. The configured mail transport sends a six-digit code.
-4. `POST /auth/otp/verify` with `email`, `code`, and optional `name` creates/verifies a student and rotates the session ID.
+3. `POST /auth/otp/request` with `email` and registration `name` (1–80 characters) queues no account creation. Login may omit `name`. The registration name is retained in the current session for that email until verification. The configured mail transport sends a six-digit code.
+4. `POST /auth/otp/verify` with `email` and `code` creates/verifies a student using the saved registration name (an optional verification `name` remains supported) and rotates the session ID.
 5. Refetch `/auth/csrf` after login/logout because the CSRF token changes with session regeneration.
 
 Codes expire after 10 minutes, are hashed at rest, allow five attempts, and are consumed once. Resend cooldown is 60 seconds. Sending is limited by IP and normalized email; guessing has an additional IP limit. Failed guesses commit their counter. Use SMTP/API mail credentials for actual delivery. The default local `log` transport writes test messages to ignored `storage/logs/laravel.log`; it does not deliver emails. Do not use log transport or `APP_DEBUG=true` for real users. Mail sending is synchronous; configure a bounded SMTP timeout. A delivery failure rolls back the newly issued code, allowing retry.
 
 For Google, set `GOOGLE_CLIENT_ID` and register your actual frontend origin in Google Cloud. `GET /auth/google/nonce` returns the client ID, a one-time nonce and a CSRF token together. Supply that nonce to Google Identity Services. Send its ID credential to `POST /auth/google`. The backend validates RSA signature against cached Google keys, issuer, audience/authorized party, expiry, issued-at, verified email and nonce. Tokens issued for another application are rejected.
 
-An existing email is never automatically linked. Sign in by OTP, get a fresh Google nonce, then explicitly call authenticated `POST /auth/google/link`. The emails must match. A new non-Gmail Google identity without a hosted-domain claim must verify through email OTP before linking. Existing linked identities are recognized by Google's stable subject ID, not by a mutable email.
+Google sign-in reuses an existing account for a verified Gmail/Workspace email and automatically attaches the Google identity, preserving the account's name, role and progress. A new identity creates a student. An unlinked non-Gmail identity without a hosted-domain claim needs a matching OTP-authenticated session first, then the same Google sign-in action performs linking. Disabled accounts and conflicting Google identities are rejected. Existing linked identities are recognized by Google's stable subject ID, not a mutable email. The old explicit `/auth/google/link` endpoint remains for compatibility but is not shown in the simplified Postman authentication folder.
 
 Grant admin access only to an existing active verified account, from your trusted terminal:
 
@@ -54,9 +54,11 @@ php artisan app:make-admin student@example.com
 
 Registration payloads cannot set role, verification state or active status. All admin routes enforce the current database role. In the selected profile, set `SESSION_SECURE_COOKIE=true` with HTTPS and configure exact `FRONTEND_URLS` for future deployment. No wildcard credentialed CORS is enabled.
 
+Login sessions default to **30 days of inactivity** (`SESSION_LIFETIME=43200`), persist across browser restarts, and renew with activity. Logout invalidates the session immediately. OTP and Google nonce lifetimes remain 10 minutes. The API uses HttpOnly session cookies; clients do not manually copy bearer tokens.
+
 ## Data structure and ownership
 
-See the [complete database schema and relationship diagrams](docs/DATABASE.md) for all 36 tables, column definitions, keys and deletion rules.
+See the [complete database schema and relationship diagrams](docs/DATABASE.md) for all 42 tables, column definitions, keys and deletion rules.
 
 - Catalogue: subjects → chapters → topics → lessons → lesson_sections.
 - Questions: questions → question_options; one correct choice, source, demo/verification/publication flags.
@@ -71,6 +73,8 @@ Foreign keys protect referenced catalogue records. Sensitive data is always scop
 ## API contract
 
 See [OpenAPI specification](docs/openapi.json) and [integration examples](docs/API.md). Base path: `/api/v1`.
+
+An importable [Postman collection and local environment](docs/postman/README.md) provide 136 request entries under Admin, Web and Mobile with five visible authentication actions per client. CSRF and Google nonce are internal helper calls; the compatibility-only Google-link endpoint is omitted. The backend still has 62 route operations. See the [audited API inventory](docs/postman/API-INVENTORY.md).
 
 Screen-shaped reads avoid chains of small HTTP calls: chapter overview includes topics and completion; lesson includes sections, note, bookmark, progress and chapter navigation; dashboard includes user, preferences, recent results, active attempt and today's routine. Large lists are paginated. Questions/options are loaded in a fixed number of reads, not one query per question. FK and composite indexes support the actual publication, identity, user/status and date filters. Shared catalogue output is deliberately not cached across users.
 
@@ -101,3 +105,7 @@ composer validate --strict
 Tests use the dedicated MySQL `prosthuti_test` database configured in `phpunit.xml`; they migrate/roll back test data. Never point tests at an existing production/development database. They cover OTP lifecycle, access control, cryptographic Google validation with local keys, CSRF, content validation, snapshot integrity, deadlines, ownership, scoring/idempotence, user progress, files and bounded question-list query counts. External services are faked, not contacted. Query-count tests are not a production-scale latency/load benchmark.
 
 References: [Laravel session authentication](https://laravel.com/framework/docs/13.x/authentication), [Google server-side identity verification](https://developers.google.com/identity/gsi/web/guides/verify-google-id-token).
+
+## Frontend coverage
+
+The [field-by-field coverage contract](docs/FRONTEND-COVERAGE.md) documents the additive metadata, preferences, reports, routine plans, attempt resume/guess state, revision scheduling, notices and activity APIs. Student Web remains browser-local until separately integrated. Apply the additive coverage migration before using these fields.

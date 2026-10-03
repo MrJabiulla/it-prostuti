@@ -18,13 +18,28 @@ class AttemptService
             $correct = 0;
             $wrong = 0;
             $progress = DB::table('question_progress')->where('user_id', $attempt->user_id)->whereIn('question_id', $items->pluck('question_id'))->get()->keyBy('question_id');
+            $reviews = DB::table('question_reviews')->where('user_id', $attempt->user_id)->whereIn('question_id', $items->pluck('question_id'))->get()->keyBy('question_id');
+            $reviewUpdates = [];
             $updates = [];
             foreach ($items as $item) {
                 $isCorrect = $item->selected_option !== null && $item->selected_option === $item->correct_option;
                 $status = $item->selected_option === null ? 'skipped' : ($isCorrect ? 'correct' : 'wrong');
                 $correct += (int) $isCorrect;
                 $wrong += (int) ($status === 'wrong');
+                $review = $reviews->get($item->question_id);
+                if (! $isCorrect || $item->guess) {
+                    $reviewUpdates[] = ['user_id' => $attempt->user_id, 'question_id' => $item->question_id, 'due_at' => now(), 'level' => 0];
+                } elseif ($review) {
+                    $level = min($review->level + 1, 4);
+                    $reviewUpdates[] = ['user_id' => $attempt->user_id, 'question_id' => $item->question_id, 'due_at' => now()->addDays([1, 3, 7, 21][$level - 1]), 'level' => $level];
+                }
                 $updates[] = ['user_id' => $attempt->user_id, 'question_id' => $item->question_id, 'last_status' => $status, 'attempt_count' => ($progress->get($item->question_id)?->attempt_count ?? 0) + 1, 'last_attempted_at' => now()];
+            }
+            if ($reviewUpdates) {
+                DB::table('question_reviews')->upsert($reviewUpdates, ['user_id', 'question_id'], ['due_at', 'level']);
+            }
+            if ($attempt->routine_task_id) {
+                DB::table('routine_tasks')->where('user_id', $attempt->user_id)->where('id', $attempt->routine_task_id)->update(['completed_at' => now(), 'updated_at' => now()]);
             }
             DB::table('question_progress')->upsert($updates, ['user_id', 'question_id'], ['last_status', 'attempt_count', 'last_attempted_at']);
             DB::table('attempt_items')->where('attempt_id', $id)->update(['is_correct' => DB::raw('COALESCE(selected_option = correct_option, false)')]);
