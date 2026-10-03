@@ -669,6 +669,7 @@ async function initializeApi() {
       };
       preferences: ApiPreferences | null;
     }>('/me');
+    setAccountUser(profile.data.name);
     await loadApiCatalogue();
     applyApiProfile(profile);
     affairsMonth = new Date().toISOString().slice(0, 7);

@@ -38,7 +38,7 @@ These have not been resolved by redesigning the UI or changing backend contracts
 
 | # | Existing UI expectation | Current backend / integration boundary | Decision needed |
 | --- | --- | --- | --- |
-| 1 | No login, registration, OTP, Google sign-in or logout UI exists | All student reads/writes require an authenticated cookie. A disconnected browser shows the existing preview with a persistent sign-in notice; mutations cannot claim success | Approve an auth screen/entry point and logout placement |
+| 1 | Email login, registration and logout | Implemented with OTP request/verify and cookie sessions. Google sign-in/linking has no UI | Google provider UI is optional follow-up; email auth is available |
 | 2 | Custom mock accepts minutes, marks and penalty | General API exams enforce 20 minutes, +1, no penalty. Custom mocks are retained but cannot start with incompatible settings | Support validated custom rules in the API or change the form contract |
 | 3 | Chapter Test advertises 10 minutes | API chapter tests use the general 20-minute default | Align the displayed rule or backend default; the control remains visible and explains the mismatch |
 | 4 | Home institution cards contain curated labels, groups, counts; syllabus has MCQ/Written splits, marks, question shares and pass marks | API institutes have ID/title; exam syllabus is subject/text. There is no reliable stable mapping for the static cards or structured marks breakdown | Add explicit card/catalogue links and structured syllabus fields, or approve UI data changes. Static cards and tables remain; their unmatched practice actions do not launch the wrong subject |
@@ -57,12 +57,18 @@ The API's study `solutions=1` resource deliberately exposes study answers; this 
 
 ## Local setup and verification
 
-Run Laravel on `127.0.0.1:8000` and Next.js with `npm run dev`. Set `API_SERVER_URL` for another backend before starting/building Next.js. All browser requests use the Next.js origin so cookie and CSRF handling share one origin. A login performed in a separate HTTP client's cookie jar does not sign the browser in; missing auth UI remains item 1.
+Run Laravel on `127.0.0.1:8000` and Next.js with `npm run dev`. Set `API_SERVER_URL` for another backend before starting/building Next.js. All browser requests use the Next.js origin so cookie and CSRF handling share one origin. A login performed in a separate HTTP client's cookie jar does not sign the browser in; use the account controls in the browser to sign in.
 
 Checks performed:
 
-- 18 passing frontend regression and mocked API tests (including expired-attempt recovery and failed note autosave): catalogue/empty states, server IDs, snapshots/scoring, CSRF retry, unauthenticated isolation, failed-write retention, stable retry IDs, profile and routine mappings.
+- 22 passing frontend regression and mocked API tests (including expired-attempt recovery and failed note autosave): catalogue/empty states, server IDs, snapshots/scoring, CSRF retry, unauthenticated isolation, failed-write retention, stable retry IDs, profile and routine mappings.
 - Live local Next.js → Laravel smoke: disposable OTP identity, cookie/CSRF, catalogue, profile write, reading completion, question bookmark, attempt/answer/submit, history, routine write and reload persistence. Only the temporary test account/data were removed afterward.
 - Browser inspection: existing desktop Home/navigation/cards and disconnected-session feedback. Authenticated browser interaction and mobile visual parity are not claimed by the HTTP/VM tests.
 
-No commit, push or deployment was performed for this integration task.
+Deployment and real inbox delivery are separate release checks.
+
+## Email authentication
+
+`src/student/auth.ts` owns the account controls and login/registration dialog. It uses the existing CSRF client and OTP endpoints. Registration sends the name with the OTP request; Laravel retains it in the session until verification. Login and registration both use the backend's find-or-create email behavior. Successful verification and logout reload the document to clear account state. Failed requests preserve the form and show the server error. Logout waits for pending saves and unsaved note drafts.
+
+See [remaining work](REMAINING-WORK.md) for outstanding decisions and deployment verification.

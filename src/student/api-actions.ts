@@ -268,6 +268,7 @@ if (apiEnabled) {
   });
   // Keep the existing controls visible. Unavailable contracts cannot mutate preview data.
   document.addEventListener('submit', (event) => {
+    if ((event.target as HTMLElement).id === 'auth-form') return;
     if (!apiReady) {
       event.preventDefault();
       event.stopImmediatePropagation();

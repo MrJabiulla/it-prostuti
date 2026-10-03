@@ -64,7 +64,7 @@ test('expired CSRF refreshes once; authentication failure never loads another us
   const guest = createApiApp({ '/me': { status: 401, payload: {} } });
   await guest.ready();
   assert.equal(guest.run('apiReady'), false);
-  assert.match(guest.elements.get('api-status').textContent, /Sign in/);
+  assert.match(guest.elements.get('api-status').textContent, /log in/);
   await guest.run("start([0], 'Practice')");
   assert.equal(guest.calls.filter((call) => call.method === 'POST').length, 0);
 });

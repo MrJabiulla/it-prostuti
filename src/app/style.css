@@ -3789,3 +3789,21 @@ button.opt-card-v3:disabled {
 .lesson-article p {
   white-space: pre-line;
 }
+
+/* Account access stays available on both desktop and mobile. */
+.account-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 20px;
+}
+.account-controls .fine {
+  overflow-wrap: anywhere;
+}
+.auth-links {
+  margin-top: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}

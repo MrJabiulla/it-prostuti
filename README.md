@@ -25,10 +25,10 @@ npm start
 
 - `app/layout.tsx` and `app/page.tsx` provide the Next.js shell and original DOM.
 - `src/student/` preserves the browser renderer and hash routes. TypeScript
-  compiles its four scripts in their original order to `public/student.js`.
+  compiles its scripts in their original order to `public/student.js`.
   This generated file is ignored by Git and created before development,
   testing and production builds.
-- `src/app/style.css` is unchanged. The existing UI kit and backend remain
+- `src/app/style.css` preserves the existing design with account-control additions. The existing UI kit and backend remain
   separate from Student Web.
 - Student Web now uses Laravel through the same-origin `/api/v1` proxy. Legacy
   `prosthuti-mvp-v1` data is retained untouched; it is not imported or overwritten.
@@ -47,4 +47,4 @@ installed, re-enable it online so the matching worker replaces the newer cache.
 
 ## API integration
 
-See [implementation and UI/API mismatch list](docs/WEB-API-INTEGRATION.md). Start the local Laravel API on port 8000 alongside Next.js. Configure `API_SERVER_URL` to use another backend. Existing authenticated cookies are supported; the absent login/logout screens are listed as a UI gap.
+See [implementation and UI/API mismatch list](docs/WEB-API-INTEGRATION.md). Start the local Laravel API on port 8000 alongside Next.js. Configure `API_SERVER_URL` to use another backend. Use Log in or Create account to request an email OTP. Registration collects a name; verification creates or signs into the account. Log out revokes the current session. Configure Laravel mail delivery before using real email addresses. See [remaining work](docs/REMAINING-WORK.md).

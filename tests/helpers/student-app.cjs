@@ -8,6 +8,7 @@ function createApiApp(overrides = {}, liveFetch = null) {
   const listeners = {};
   const element = () => ({
     dataset: {}, style: { setProperty() {} }, classList: { toggle() {}, add() {}, remove() {} },
+    open: false, showModal() { this.open = true; }, close() { this.open = false; }, querySelectorAll() { return []; },
     innerHTML: '', textContent: '', value: '', hidden: true,
     addEventListener() {}, setAttribute() {}, removeAttribute() {}, getAttribute() { return null; },
   });
@@ -39,7 +40,7 @@ function createApiApp(overrides = {}, liveFetch = null) {
   };
   Object.assign(routes, overrides);
   const sandbox = {
-    console, Date, URL, Blob, AbortController, crypto: webcrypto, location: { hash: '', origin: 'http://localhost:3000' },
+    console, Date, URL, Blob, AbortController, crypto: webcrypto, location: { hash: '', origin: 'http://localhost:3000', reload() { getElement('reload').textContent = 'yes'; } },
     localStorage: { getItem() { throw new Error('Cloud mode must not read legacy storage'); }, setItem() { throw new Error('Cloud mode must not write legacy storage'); } },
     setTimeout, clearTimeout, setInterval() {}, requestAnimationFrame() {},
     matchMedia() { return { matches: false, addEventListener() {} }; },

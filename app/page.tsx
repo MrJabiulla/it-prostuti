@@ -5,11 +5,13 @@ export default function StudentPage() {
         <aside id="sidebar-nav" aria-label="Desktop navigation"></aside>
         <div id="app-body">
           <header id="desktop-header"></header>
+          <div id="account-controls" className="account-controls" aria-label="Account"></div>
           <p id="api-status" className="fine" role="status" hidden></p>
           <main id="main"></main>
         </div>
         <nav id="mobile-nav" aria-label="Main navigation"></nav>
       </div>
+      <dialog id="auth-dialog" aria-labelledby="auth-title"></dialog>
       <dialog id="report-dialog">
         <form id="report-form">
           <div className="row between">

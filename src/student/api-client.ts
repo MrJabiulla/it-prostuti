@@ -60,7 +60,7 @@ async function apiRequest<T>(path: string, method = 'GET', body?: unknown, retry
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
     const message = response.status === 401
-      ? 'Sign in to load your study data. A sign-in screen is not available here yet.'
+      ? 'Your session has ended. Please log in to continue.'
       : payload?.message || 'The request failed. Please try again.';
     throw new StudentApiError(message, response.status);
   }
@@ -105,6 +105,7 @@ function apiFailure(error: unknown) {
   const message = error instanceof Error ? error.message : 'Unable to save. Please try again.';
   if (error instanceof StudentApiError && error.status === 401) {
     apiReady = false;
+    setAccountUser(null);
     apiStatus(message);
   }
   toast(message);
