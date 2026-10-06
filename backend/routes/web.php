@@ -11,15 +11,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\ActiveUser;
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ApiResponseHeaders;
+use App\Http\Middleware\LoginAttemptLimit;
 use App\Http\Middleware\TrackDeviceActivity;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/v1')->middleware(['throttle:api', ApiResponseHeaders::class, TrackDeviceActivity::class])->group(function () {
     Route::get('auth/csrf', fn () => response()->json(['csrf_token' => csrf_token()])->header('Cache-Control', 'no-store'));
-    Route::post('auth/otp/request', [AuthController::class, 'requestOtp'])->middleware('throttle:otp-send');
-    Route::post('auth/otp/verify', [AuthController::class, 'verifyOtp'])->middleware('throttle:otp-verify');
-    Route::get('auth/google/nonce', [AuthController::class, 'googleNonce'])->middleware('throttle:login');
-    Route::post('auth/google', [AuthController::class, 'google'])->middleware('throttle:login');
+    Route::post('auth/otp/request', [AuthController::class, 'requestOtp'])->middleware([LoginAttemptLimit::class.':prepare', 'throttle:otp-send']);
+    Route::post('auth/otp/verify', [AuthController::class, 'verifyOtp'])->middleware(LoginAttemptLimit::class);
+    Route::get('auth/google/nonce', [AuthController::class, 'googleNonce'])->middleware([LoginAttemptLimit::class.':prepare', 'throttle:login']);
+    Route::post('auth/google', [AuthController::class, 'google'])->middleware(LoginAttemptLimit::class);
     Route::middleware(['auth', ActiveUser::class])->group(function () {
         Route::get('me', [ProfileController::class, 'show']);
         Route::put('me', [ProfileController::class, 'update']);
