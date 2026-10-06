@@ -2321,10 +2321,8 @@ const INSTITUTES = [
 
 function openInstituteModal(instId) {
   if (apiEnabled && (!apiReady || !apiInstituteLabels.has(instId))) return;
-  paperInstitute = instId;
-  paperPost = '';
-  paperYear = '';
-  navigate('papers');
+  institutePaperYear = '';
+  navigate(`institute-papers/${encodeURIComponent(instId)}`);
 }
 
 function home() {
@@ -2983,7 +2981,7 @@ function render() {
       'exam-preparation',
       'routine-edit',
       'restore-backup',
-    ].includes(page),
+    ].includes(page) || page.startsWith('institute-papers/'),
   );
   main.innerHTML = (
     {
@@ -3000,6 +2998,7 @@ function render() {
       custom: customPractice,
       exams,
       papers,
+      'institute-papers': institutePapersScreen,
       paper: paperScreen,
       preparation,
       history: historyScreen,
@@ -3008,7 +3007,7 @@ function render() {
       'exam-preparation': examPreparation,
       'routine-edit': routineEditorScreen,
       'restore-backup': restoreScreen,
-    }[page] || home
+    }[page.split('/')[0]] || home
   )();
   if (page === 'lesson')
     requestAnimationFrame(() => {

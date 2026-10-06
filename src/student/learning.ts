@@ -18,6 +18,8 @@ let studySubject = null;
 let studyChapter = null;
 let activeLesson = state.lastLesson || lessons[0].id;
 let paperInstitute = '';
+let paperReturnPage = 'papers';
+let institutePaperYear = '';
 let paperPost = '';
 let paperYear = '';
 let selectedPaper = demoPapers.some((paper) => paper.id === state.selectedPaper)
@@ -171,6 +173,24 @@ function paperOptions(values, selected) {
     )
     .join('');
 }
+function institutePapersScreen() {
+  const instituteId = page.split('/')[1];
+  const institutePapers = demoPapers.filter(
+    (paper) => paper.institute === instituteId,
+  );
+  const years = [...new Set(institutePapers.map((paper) => paper.year))]
+    .sort((first, second) => second - first);
+  const filtered = institutePapers.filter(
+    (paper) => String(paper.year) === institutePaperYear,
+  );
+  let content = '<p>Select a year to see exams / categories.</p>';
+  if (!institutePapers.length) {
+    content = '<p>No papers available for this selection.</p>';
+  } else if (institutePaperYear) {
+    content = `<h2>Exam name / Category</h2>${filtered.map((paper) => `<div class="learning-row"><h3>${esc(paper.title)}</h3><p>${esc(paper.post)} · ${paper.questionIds.length} questions · ${paper.rules.minutes} minutes</p><button class="secondary" data-action="open-paper" data-paper="${paper.id}">Read all questions & solutions</button></div>`).join('') || '<p>No papers available for this year.</p>'}`;
+  }
+  return `${learningHeader(apiInstituteLabels.get(instituteId) || 'Institute questions', 'home')}<section class="panel learning-panel"><div class="field-grid"><label>Year<select id="institute-paper-year"><option value="">Select year</option>${paperOptions(years, institutePaperYear)}</select></label></div>${content}</section>`;
+}
 function papers() {
   const institutePapers = demoPapers.filter(
     (paper) => !paperInstitute || paper.institute === paperInstitute,
@@ -195,7 +215,7 @@ function questionIdentity(question) {
 function paperScreen() {
   const paper = demoPapers.find((item) => item.id === selectedPaper);
   if (!paper) return `${learningHeader('Previous Questions', 'papers')}<p>No papers available for this selection.</p>`;
-  return `${learningHeader(paper.title, 'papers')}<section class="panel learning-panel"><p class="tag">Demo paper · not a historical exam</p><p>${esc(paper.post)} · ${paper.year} · ${esc(paper.stage)}</p><p>${paper.questionIds.length} questions · ${paper.rules.minutes} minutes · +${paper.rules.marks} correct · −${paper.rules.penalty} wrong · 0 skipped</p><p class="fine">Source: ${esc(paper.source)}. Explanation status: not verified.</p><button class="primary" data-action="paper-test">Take full demo paper test</button></section>${paper.questionIds
+  return `${learningHeader(paper.title, paperReturnPage)}<section class="panel learning-panel">${paper.demo ? '<p class="tag">Demo paper · not a historical exam</p>' : ''}<p>${esc(paper.post)} · ${paper.year} · ${esc(paper.stage)}</p><p>${paper.questionIds.length} questions · ${paper.rules.minutes} minutes · +${paper.rules.marks} correct · −${paper.rules.penalty} wrong · 0 skipped</p><p class="fine">Source: ${esc(paper.source)}. Explanation status: ${paper.verified ? 'verified' : 'not verified'}.</p><button class="primary" data-action="paper-test">Take full ${paper.demo ? 'demo paper' : 'paper'} test</button></section>${paper.questionIds
     .map((id, index) => {
       const question = questions[id];
       return `<section class="panel learning-panel"><h2>${index + 1}. ${esc(question.text)}</h2>${question.options.map((option, i) => `<p>${i + 1}. ${esc(option)}</p>`).join('')}<details><summary>Answer & explanation</summary><p>${esc(question.options[question.answer])}</p><p>${esc(question.explanation)}</p></details></section>`;
@@ -293,6 +313,7 @@ document.addEventListener('click', async (event) => {
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'open-paper') {
+    paperReturnPage = page.startsWith('institute-papers/') ? page : 'papers';
     if (apiEnabled) {
       if (!apiReady) return;
       try { await loadApiPaper(button.dataset.paper); } catch (error) { apiFailure(error); return; }
@@ -447,6 +468,9 @@ document.addEventListener('change', async (event) => {
   } else if (element.id === 'paper-post') {
     paperPost = element.value;
     paperYear = '';
+    render();
+  } else if (element.id === 'institute-paper-year') {
+    institutePaperYear = element.value;
     render();
   } else if (element.id === 'paper-year') {
     paperYear = element.value;
@@ -698,6 +722,7 @@ document.addEventListener('click', async (event) => {
 });
 
 function navigationPage(route) {
+  if (route.startsWith('institute-papers/')) return 'home';
   if (['study', 'lesson'].includes(route)) return 'study';
   if (['bank', 'papers', 'paper', 'exam-preparation'].includes(route))
     return 'bank';

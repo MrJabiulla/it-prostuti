@@ -36,6 +36,7 @@ const demoPapers = demoExams.flatMap((exam, examIndex) =>
     stage: 'Demo preliminary',
     source: 'Synthetic local fixture, adapted from the existing practice set',
     verified: false,
+    demo: true,
     rules: {
       minutes: 8 + examIndex * 2,
       marks: 1,

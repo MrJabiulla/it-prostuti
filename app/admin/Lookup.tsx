@@ -23,6 +23,7 @@ export default function Lookup({
   const [page, setPage] = useState(1);
   const [result, setResult] = useState<Page | null>(null);
   const [error, setError] = useState('');
+  const [instituteNames, setInstituteNames] = useState<Record<number, string>>({});
   const [revision, setRevision] = useState(0);
   const resource = resources.find((item) => item.key === resourceKey)!;
 
@@ -31,8 +32,26 @@ export default function Lookup({
     setResult(null);
     setError('');
     request<Page>(`${listPath(resource)}?page=${page}&per_page=50`)
-      .then((data) => {
-        if (active) setResult(data);
+      .then(async (data) => {
+        const names: Record<number, string> = {};
+        if (resourceKey === 'posts') {
+          let currentPage = 1;
+          let lastPage = 1;
+          do {
+            const institutes = await request<Page>(
+              `/admin/catalogue/institutes?page=${currentPage}&per_page=100`,
+            );
+            for (const institute of institutes.data) {
+              names[Number(institute.id)] = rowLabel(institute);
+            }
+            lastPage = institutes.last_page;
+            currentPage++;
+          } while (active && currentPage <= lastPage);
+        }
+        if (active) {
+          setInstituteNames(names);
+          setResult(data);
+        }
       })
       .catch((failure) => {
         if (!active) return;
@@ -42,7 +61,7 @@ export default function Lookup({
     return () => {
       active = false;
     };
-  }, [resource, page, revision, onFailure]);
+  }, [resource, resourceKey, page, revision, onFailure]);
 
   const rows = result?.data || [];
   const selectedVisible = rows.some((row) => row.id === Number(value));
@@ -68,7 +87,9 @@ export default function Lookup({
         ) : null}
         {rows.map((row) => (
           <option key={row.id} value={row.id}>
-            #{row.id} · {rowLabel(row).slice(0, 120)}
+            #{row.id} · {resourceKey === 'posts'
+              ? `${instituteNames[Number(row.institute_id)] || `Institute #${row.institute_id}`} → `
+              : ''}{rowLabel(row).slice(0, 120)}
             {row.published === false || row.published === 0 ? ' (draft)' : ''}
           </option>
         ))}

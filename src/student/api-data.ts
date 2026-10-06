@@ -336,6 +336,7 @@ async function loadApiCatalogue() {
     stage: paper.stage,
     source: paper.source,
     verified: Boolean(paper.verified),
+    demo: Boolean(paper.is_demo),
     rules: {
       minutes: paper.duration_minutes,
       marks: Number(paper.correct_marks),

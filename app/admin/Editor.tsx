@@ -91,6 +91,13 @@ export default function Editor({
           : `New ${resource.singular.toLowerCase()}`}
       </h2>
       <p className="fine">Fields marked * are required.</p>
+      {resource.key === 'papers' && (
+        <p className="fine">
+          Create the institute and its post first, then select that post below.
+          Students browse Institute → Year → Exam name / Category → All questions.
+          Add existing questions in paper order and publish each question before publishing this paper.
+        </p>
+      )}
       <form onSubmit={save}>
         <fieldset disabled={pending}>
           <div className="admin-fields">

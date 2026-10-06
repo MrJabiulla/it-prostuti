@@ -153,14 +153,15 @@ test('Home institutions use the API catalogue and open filtered previous questio
   assert.match(html, /1 papers · 1 questions/);
   assert.ok(!html.includes('data-inst="it"'));
   app.run("paperPost = 'Old post'; paperYear = '2000'; openInstituteModal('81')");
-  assert.equal(app.run('location.hash'), 'papers');
-  assert.equal(app.run('paperInstitute'), '81');
-  assert.equal(app.run('paperPost'), '');
-  assert.equal(app.run('paperYear'), '');
-  assert.match(app.run('papers()'), /data-paper="51"/);
-  app.run("openInstituteModal('82')");
-  assert.match(app.run('papers()'), /No papers available for this selection/);
-  assert.ok(!app.run('papers()').includes('data-paper="51"'));
+  assert.equal(app.run('location.hash'), 'institute-papers/81');
+  app.run("page = 'institute-papers/81'");
+  assert.equal(app.run('institutePaperYear'), '');
+  assert.match(app.run('institutePapersScreen()'), /Select a year/);
+  app.run("institutePaperYear = '2025'");
+  assert.match(app.run('institutePapersScreen()'), /data-paper="51"/);
+  app.run("openInstituteModal('82'); page = 'institute-papers/82'");
+  assert.match(app.run('institutePapersScreen()'), /No papers available for this selection/);
+  assert.ok(!app.run('institutePapersScreen()').includes('data-paper="51"'));
 });
 
 test('Home does not fall back to static institutions for an empty API catalogue', async () => {

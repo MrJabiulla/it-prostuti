@@ -226,9 +226,13 @@ export const resources: Resource[] = [
       question_ids: [],
     },
     fields: [
-      title,
+      {
+        ...title,
+        label: 'Exam name / Category',
+        help: 'Shown to students after they select the institute and year.',
+      },
       relation('exam_id', 'Exam', 'exams'),
-      relation('post_id', 'Post', 'posts'),
+      relation('post_id', 'Institute post', 'posts'),
       {
         name: 'year',
         label: 'Year',
